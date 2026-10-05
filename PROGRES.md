@@ -23,14 +23,14 @@ Urutan mengikuti FS 11.1 / BRD 18.3. UAT ditulis pada milestone pemiliknya.
 
 | ID | Isi | Layar | UAT | Status |
 |---|---|---|---|---|
-| **M1** | Fondasi Frontend: token (FS 2.5), komponen dasar, mock 13 tabel, sesi mock, SCR-01 Login | SCR-01 | UAT-37 (parsial) | ✅ **Selesai** (`c8778b0`, `f36d0a4`) — catatan: SCR-26 belum ada, lihat §5 |
+| **M1** | Fondasi Frontend: token (FS 2.5), komponen dasar, mock 13 tabel, sesi mock; SCR-01 Login + SCR-26 Akun dan Ganti Password (gerbang modul Akun, FS 3.1) | SCR-01, 26 | UAT-23, 35, 37 | 🔧 Fondasi + SCR-01 selesai (`c8778b0`, `f36d0a4`); SCR-26 menyusul |
 | **M2** | SCR-02 Beranda Guru: 6 keadaan tombol (KOM-02), jadwal hari ini, simulasi GPS (dalam/luar radius, akurasi rendah) | SCR-02 | UAT-01..07, 27, 36 | ⬜ Belum dimulai |
-| **M3** | SCR-03 Absen Siswa: pemindai QR (KOM-18), scan beruntun, ketik NISN (KOM-15), kontrol segmen (KOM-04) | SCR-03 (+SCR-06 usulan) | UAT-11..14, 30, 39 | ⬜ Belum dimulai |
+| **M3** | SCR-03 Absen Siswa: pemindai QR (KOM-18), scan beruntun, ketik NISN (KOM-15), kontrol segmen (KOM-04) | SCR-03, 06 | UAT-11..14, 30, 39 | ⬜ Belum dimulai |
 | **M4** | SCR-07/08 Dashboard Kepala/Admin + navigasi final per peran (FS 2.3) | SCR-07, 08 | UAT-41 | ⬜ Belum dimulai |
 | **M5** | Master Data: Lembaga, Admin/Kepala, Guru, Siswa, Kelas, wizard kenaikan kelas, impor Excel | SCR-10..14 | UAT-21, 23, 25, 29, 31 | ⬜ Belum dimulai |
 | **M6** | Jadwal Default, Override Guru, Kalender, Pengaturan | SCR-15..18 | UAT-08..10, 26 | ⬜ Belum dimulai |
 | **M7** | Izin & Koreksi: Izin Saya, Persetujuan, Izin input Admin, Koreksi Absen, Log Aktivitas | SCR-05, 09, 19, 20, 22 | UAT-16..20, 32, 33 | ⬜ Belum dimulai |
-| **M8** | Laporan + ekspor Excel/PDF (+ Rekap Saya usulan) | SCR-21 (+SCR-04 usulan) | UAT-24, 25 | ⬜ Belum dimulai |
+| **M8** | Laporan + ekspor Excel/PDF + Rekap Saya (SCR-04) | SCR-04, 21 | UAT-24, 25 | ⬜ Belum dimulai |
 | **M9** | Rekap Siswa, Kartu QR (cetak massal + saya), Bantuan | SCR-23, 24, 25, 27 | UAT-22, 34 | ⬜ Belum dimulai |
 | **M10** | **Fase Backend**: Supabase, SQL Lampiran A Data Model, SF-01..SF-10, Tutup Hari (23:30 WIB), impor Excel, login nyata | semua | UAT-01..41, DT-01..16, UAT-37, 40 | ⬜ Belum dimulai |
 
@@ -45,9 +45,9 @@ Nama dan peran mengikuti FS 3.2. Kolom "Milestone" kosong = belum ditempatkan (l
 | SCR-01 | Login | Semua | HP | M1 | ✅ Selesai |
 | SCR-02 | Beranda Guru (Masuk/Pulang) | Guru; Kepala (kartu opsional di SCR-07) | HP | M2 | ⬜ |
 | SCR-03 | Absen Siswa (QR/NISN) | Guru | HP | M3 | ⬜ |
-| SCR-04 | Rekap Saya | Guru | HP | — (usulan M8) | ⬜ menunggu penempatan |
+| SCR-04 | Rekap Saya | Guru | HP | M8 | ⬜ |
 | SCR-05 | Izin Saya | Guru | HP | M7 | ⬜ |
-| SCR-06 | Kelas Saya | Guru (wali kelas) | HP | — (usulan M3) | ⬜ menunggu penempatan |
+| SCR-06 | Kelas Saya | Guru (wali kelas) | HP | M3 | ⬜ |
 | SCR-07 | Dashboard Kepala | Kepala | HP, desktop | M4 | ⬜ |
 | SCR-08 | Dashboard Admin | Admin | Desktop | M4 | ⬜ |
 | SCR-09 | Persetujuan Izin Guru | Kepala | HP, desktop | M7 | ⬜ |
@@ -67,7 +67,7 @@ Nama dan peran mengikuti FS 3.2. Kolom "Milestone" kosong = belum ditempatkan (l
 | SCR-23 | Kartu QR (cetak massal) | Admin | Desktop | M9 | ⬜ |
 | SCR-24 | Rekap Siswa | Siswa | HP | M9 | ⬜ |
 | SCR-25 | Kartu QR Saya | Siswa | HP | M9 | ⬜ |
-| SCR-26 | Akun dan Ganti Password | Semua | HP, desktop | — (usulan M1) | ⬜ menunggu penempatan |
+| SCR-26 | Akun dan Ganti Password | Semua | HP, desktop | M1 | ⬜ |
 | SCR-27 | Bantuan | Semua | HP, desktop | M9 | ⬜ |
 
 Rute sementara: `/` = SCR-01; `/beranda` = placeholder hasil masuk (bukan SCR final; diganti navigasi final di M4).
@@ -155,10 +155,10 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Semua **belum dijalankan** (0
 
 ## 5. Catatan, Gap, dan Menunggu Keputusan
 
-1. **Gerbang M1 (modul Akun):** FS 3.1 dan 12.1 menetapkan modul Akun = **SCR-01 + SCR-26** (UAT-23, UAT-35). SCR-01 selesai; **SCR-26 belum dibangun** → M1 belum resmi tuntas. Menunggu keputusan penempatan (rekomendasi: SCR-26 masuk M1).
-2. **Penempatan 3 layar belum ditetapkan:** SCR-26, SCR-06, SCR-04 belum masuk milestone mana pun (roadmap plan §14 mencakup 25/27 layar). Rekomendasi (pilihan A): SCR-26 → M1, SCR-06 → M3, SCR-04 → M8.
+1. **Gerbang M1 (modul Akun):** FS 3.1 dan 12.1 menetapkan modul Akun = **SCR-01 + SCR-26** (UAT-23, UAT-35). Diputuskan 6 Okt 2026 (pilihan A): **SCR-26 masuk M1**. SCR-01 selesai; SCR-26 menyusul sebagai penutup gerbang M1.
+2. **Penempatan layar (diputuskan 6 Okt 2026, pilihan A):** SCR-26 → M1, SCR-06 → M3, SCR-04 → M8. Roadmap kini mencakup 27/27 layar.
 3. **Data contoh vs FS 11.1:** mock `src/data/contoh.ts` berisi 3 guru, 2 kelas, 2 siswa; syarat minimum FS 11.1 = 6 guru (1 wali kelas, 1 dengan override, 1 dengan izin), 3 kelas, ±30 siswa. `absensi_guru` mock belum memuat status Izin dan Dinas Luar. Perlu dilengkapi saat M2/M3.
-4. **Dokumen:** nama berkas FS masih `002_..._v1.1.md` padahal isi sudah v1.2 (Bagian 1.4); Master Instruction baris 31 masih menyebut `_v1.1`. Persetujuan BRD §22 dan FS §14 masih kosong.
+4. **Dokumen:** nama berkas FS sudah `002_..._v1.2.md` dan Master Instruction sudah diperbarui (6 Okt 2026). Persetujuan BRD §22 dan FS §14 masih kosong.
 5. **Push:** remote `origin` sudah memakai SSH (`git@github-ayahbebenraka:...`); push dari terminal berfungsi.
 
 ---
@@ -169,4 +169,5 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Semua **belum dijalankan** (0
 |---|---|---|---|---|
 | 5 Okt 2026 | M1 fondasi + SCR-01 | `c8778b0` | ✅ | ✅ Berhasil (build/lint lulus; 12 verifikasi, 6 penyimpangan tercatat) |
 | 5 Okt 2026 | M1 dokumen: peta sumber kebenaran `blueprint/README.md` | `f36d0a4` | ✅ | ✅ Berhasil |
-| 6 Okt 2026 | Pelacakan: `PROGRES.md` (4 tabel) | lihat git log | ✅ | ✅ Berhasil |
+| 6 Okt 2026 | Pelacakan: `PROGRES.md` (4 tabel) | `c621e95` | ✅ | ✅ Berhasil |
+| 6 Okt 2026 | Keputusan 1A/2A/3A: plan dilacak git; berkas FS → v1.2; penempatan SCR-26/06/04 | `6a51081`, `baf1142` | ✅ | ✅ Berhasil |
