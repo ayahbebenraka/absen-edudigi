@@ -26,24 +26,32 @@ Jika ada beberapa pilihan teknologi, **pilih solusi yang paling sederhana, stabi
 
 # 2. BLUEPRINT / SUMBER KEBENARAN
 
-Blueprint yang sudah tersedia:
-
-```text
-001_BRD_Aplikasi_Absensi_Geo_Tagging_v1.1.md
-002_FS_Aplikasi_Absensi_Geo_Tagging_v1.1.md
-003_DataModel_Aplikasi_Absensi_Geo_Tagging_v1.0.md
-```
-
-Ketiga dokumen tersebut adalah **sumber kebenaran utama (Single Source of Truth)** untuk pembangunan aplikasi.
+Blueprint yang sudah tersedia: 
+    blueprint\001_BRD_Aplikasi_Absensi_Geo_Tagging_v1.1.md
+    blueprint\002_FS_Aplikasi_Absensi_Geo_Tagging_v1.1.md
+    blueprint\003_DataModel_Aplikasi_Absensi_Geo_Tagging_v1.0.md
+    blueprint\004_01_Wireframe Absensi Geo Tagging · Modul 1–3.html
+    blueprint\004_02_Wireframe Absensi Geo Tagging · Dashboard.html
+    blueprint\004_03_Wireframe Absensi Geo Tagging · Master Data.html
+    blueprint\004_04_Wireframe Absensi Geo Tagging · Jadwal dan Pengaturan.html
+    blueprint\004_05_Wireframe Absensi Geo Tagging · Izin dan Koreksi.html
+    blueprint\004_06_Wireframe Absensi Geo Tagging · Laporan.html
+    blueprint\004_07_Wireframe Absensi Geo Tagging · Rekap dan Kartu QR.html
+    blueprint\004_08_Wireframe Absensi Geo Tagging · Akun dan Bantuan.html
+    blueprint\design.html
+    blueprint\DESIGN.md
+    
+Dokumen tersebut adalah **sumber kebenaran utama (Single Source of Truth)** untuk pembangunan aplikasi.
 
 Prioritas referensi:
 
 1. Blueprint/BRD
 2. Functional Specification/FS
 3. Data Model
-4. Keputusan yang telah disepakati dalam percakapan
-5. Dokumentasi resmi teknologi yang digunakan
-6. Baru kemudian rekomendasi Kilo Code
+4. Wireframe
+5. Keputusan yang telah disepakati dalam percakapan
+6. Dokumentasi resmi teknologi yang digunakan
+7. Baru kemudian rekomendasi Kilo Code
 
 **Jangan membuat asumsi yang bertentangan dengan blueprint.**
 

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wireframe Absensi Geo Tagging · Modul 4 Dashboard</title>
+<style>
+:root{--utama:#1F5C4A;--lembut:#EEF5F2;--teks:#1F2933;--redup:#52606D;--garis:#E4E7EB;--latar:#F7F9FA;--perm:#FFFFFF;--abu:#EDF0F2;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--utama:#6FC2A5;--lembut:#1B2B26;--teks:#E8ECEF;--redup:#9AA5B1;--garis:#323B44;--latar:#12171B;--perm:#1A2026;--abu:#262E35}}
+:root[data-theme="dark"]{--utama:#6FC2A5;--lembut:#1B2B26;--teks:#E8ECEF;--redup:#9AA5B1;--garis:#323B44;--latar:#12171B;--perm:#1A2026;--abu:#262E35}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--latar);color:var(--teks);font:16px/1.5 Inter,system-ui,"Segoe UI",Roboto,sans-serif}
+main{max-width:1200px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:24px;margin:0 0 4px}h2{font-size:20px;margin:40px 0 4px}h3{font-size:16px;margin:0 0 8px}
+.ket{font-size:14px;color:var(--redup)}
+.baris{display:flex;gap:16px;overflow-x:auto;padding:12px 2px 16px;align-items:flex-start}
+.fig{flex:0 0 auto}.fig>.ket{margin:0 0 6px;max-width:300px}
+.hp{width:300px;height:600px;border:2px solid var(--garis);border-radius:28px;background:var(--latar);display:flex;flex-direction:column;overflow:hidden}
+.dk{width:560px;height:380px;border:2px solid var(--garis);border-radius:12px;background:var(--latar);display:flex;align-items:center;justify-content:center}
+.isi{flex:1;padding:16px;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.bar{display:flex;border-top:1px solid var(--garis);background:var(--perm)}
+.bar span{flex:1;text-align:center;font-size:11px;padding:6px 0 8px;color:var(--redup);min-height:44px}
+.bar span.on{color:var(--utama);font-weight:600}
+.ic{display:block;width:18px;height:18px;border:1.5px solid currentColor;border-radius:5px;margin:0 auto 2px}
+.kartu{background:var(--perm);border:1px solid var(--garis);border-radius:12px;padding:12px}
+.info{background:var(--lembut);border-radius:12px;padding:12px;font-size:14px}
+.btn{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:10px;font-weight:600;border:1.5px solid var(--utama);color:var(--utama);background:var(--perm);padding:0 12px;text-align:center}
+.btn.u{background:var(--utama);color:#fff}
+.btn.x{background:var(--abu);border-color:var(--garis);color:var(--redup)}
+.besar{min-height:72px;font-size:20px;border-radius:12px}
+.teks{background:none;border:0;color:var(--utama);min-height:44px;font-weight:500}
+.isian{min-height:48px;border:1.5px solid var(--garis);border-radius:10px;background:var(--perm);padding:11px 12px;color:var(--redup)}
+.lbl{font-size:14px;font-weight:600;margin-bottom:4px}
+.pil{display:inline-flex;gap:4px;align-items:center;border-radius:999px;padding:2px 10px;font-size:14px;font-weight:600}
+.h{background:#E8F5E9;color:#1B5E20}.t{background:#FFF4E0;color:#8A5300}.i{background:#E3F2FD;color:#0D47A1}.a{background:#FDECEA;color:#B71C1C}
+.pen{background:var(--perm);border:1px solid var(--garis);color:var(--redup)}
+.seg{display:flex;border:1.5px solid var(--utama);border-radius:10px;overflow:hidden}
+.seg span{flex:1;text-align:center;min-height:44px;line-height:41px;font-weight:600;color:var(--utama)}
+.seg .on{background:var(--utama);color:#fff}
+.kam{height:150px;border:2px dashed var(--redup);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--redup);font-size:14px;position:relative}
+.kam:after{content:"";width:80px;height:80px;border:2px solid var(--utama);border-radius:8px;position:absolute}
+.galat{background:#FDECEA;color:#B71C1C;border-radius:12px;padding:12px;font-size:14px}
+.netral{background:var(--abu);border-radius:12px;padding:12px;font-size:14px}
+.c{text-align:center}.g{display:flex;gap:8px;align-items:center;justify-content:space-between}
+.sheet{margin:0 -16px -16px;border-top:1px solid var(--garis);border-radius:16px 16px 0 0;background:var(--perm);padding:16px;display:flex;flex-direction:column;gap:12px;box-shadow:0 -2px 8px rgba(0,0,0,.08)}
+.cat{margin-top:8px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.cat ul{margin:0;padding-left:18px;font-size:14px}
+.cek{font-size:14px;color:var(--redup);margin-top:8px}
+.st{display:grid;grid-template-columns:1fr 1fr;gap:8px}.st .kartu{padding:8px 12px}.st b{font-size:20px;display:block}
+.ws{display:flex;width:780px;height:560px;border:2px solid var(--garis);border-radius:12px;overflow:hidden;background:var(--latar)}
+.sb{width:170px;border-right:1px solid var(--garis);background:var(--perm);padding:12px 8px;display:flex;flex-direction:column;gap:2px;font-size:14px}
+.sb span{padding:10px;border-radius:10px;min-height:44px;color:var(--redup)}.sb .on{background:var(--lembut);color:var(--utama);font-weight:600}
+.ws .isi{overflow:hidden}.st4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.st4 .kartu{padding:8px 12px}.st4 b{font-size:24px;display:block}
+.tb{width:100%;border-collapse:collapse;font-size:14px}.tb th,.tb td{text-align:left;padding:8px;border-bottom:1px solid var(--garis);height:40px}
+.pil.ban{background:#FFF4E0;color:#8A5300}
+</style>
+</head>
+<body>
+<main>
+<h1>Wireframe Absensi Geo Tagging</h1>
+<p class="ket">Siklus 2 · Modul 4 Dashboard (SCR-07 Kepala, SCR-08 Admin) · BRD v1.1, FS v1.1 (FR-LP-01), Data Model v1.0 · Tanggal contoh: Senin, 5 Okt 2026</p>
+<div class="info" style="margin-top:12px">Angka “Hadir x/y”: x = Hadir + Terlambat, y = jumlah wajib absen dari SF-01. “Belum Absen” hanya tampilan, tidak disimpan (BR-AS-06). Penyegaran otomatis tiap 60 detik dan tombol Segarkan (T-10). Ikon masih kotak penanda.</div>
+<h2>SCR-07 · Dashboard Kepala dan SCR-08 · Dashboard Admin</h2>
+<p class="ket">FR-LP-01, FR-AG-04 · Navigasi bawah (HP) mengikuti FS 2.3 · Satu aksi utama per layar</p>
+<div class="baris"><div class="fig"><p class="ket">SCR-07 · Kepala · HP · Normal</p><div class="hp"><div class="isi" style="gap:10px"><div class="g"><div><h3 style="font-size:20px;margin:0">Dashboard</h3><div class="ket">Senin, 5 Okt 2026 · 08:15</div></div><span class="btn" style="min-height:44px">Segarkan</span></div><div class="kartu"><h3>Absen saya (opsional)</h3><div class="ket">Jadwal 07:00–14:00 · belum absen</div><div class="btn u" style="margin-top:8px">Masuk</div></div><div class="kartu"><h3>Guru</h3><div class="st">
+<div class="kartu"><span class="ket">Hadir</span><b>17/20</b></div><div class="kartu"><span class="ket">Terlambat</span><b>2</b></div>
+<div class="kartu"><span class="ket">Izin/Sakit/Dinas Luar</span><b>1</b></div><div class="kartu"><span class="ket">Belum Absen</span><b>2</b></div></div></div>
+<div class="kartu"><h3>Siswa</h3><div class="st">
+<div class="kartu"><span class="ket">Hadir</span><b>412/430</b></div><div class="kartu"><span class="ket">Terlambat</span><b>9</b></div>
+<div class="kartu"><span class="ket">Izin/Sakit</span><b>6</b></div><div class="kartu"><span class="ket">Belum Absen</span><b>3</b></div></div></div><div class="kartu"><h3>Perlu perhatian</h3><div class="g"><span>Izin menunggu persetujuan</span><span class="pil ban">1</span></div><div class="g"><span>Guru Belum Absen</span><span class="pil ban">2</span></div></div></div><div class="bar"><span class="on"><i class="ic"></i>Dashboard</span><span class=""><i class="ic"></i>Laporan</span><span class=""><i class="ic"></i>Izin</span><span class=""><i class="ic"></i>Log</span><span class=""><i class="ic"></i>Lainnya</span></div></div></div><div class="fig"><p class="ket">SCR-08 · Admin · HP · Banner koordinat (MSG-25)</p><div class="hp"><div class="isi" style="gap:10px"><div class="g"><div><h3 style="font-size:20px;margin:0">Dashboard</h3><div class="ket">Senin, 5 Okt 2026 · 08:15</div></div><span class="btn" style="min-height:44px">Segarkan</span></div><div class="info" style="border:1px solid #8A5300">⚠ Lokasi madrasah belum diatur. Absen ditolak sampai koordinat diisi. <b>Atur di Data Lembaga</b></div><div class="kartu"><h3>Guru</h3><div class="st">
+<div class="kartu"><span class="ket">Hadir</span><b>17/20</b></div><div class="kartu"><span class="ket">Terlambat</span><b>2</b></div>
+<div class="kartu"><span class="ket">Izin/Sakit/Dinas Luar</span><b>1</b></div><div class="kartu"><span class="ket">Belum Absen</span><b>2</b></div></div></div>
+<div class="kartu"><h3>Siswa</h3><div class="st">
+<div class="kartu"><span class="ket">Hadir</span><b>412/430</b></div><div class="kartu"><span class="ket">Terlambat</span><b>9</b></div>
+<div class="kartu"><span class="ket">Izin/Sakit</span><b>6</b></div><div class="kartu"><span class="ket">Belum Absen</span><b>3</b></div></div></div><div class="kartu"><h3>Perlu perhatian</h3><div class="g"><span>Guru Belum Absen</span><span class="pil ban">2</span></div><div class="g"><span>Lokasi Mencurigakan hari ini</span><span class="pil ban">1</span></div></div></div><div class="bar"><span class="on"><i class="ic"></i>Dashboard</span><span class=""><i class="ic"></i>Master Data</span><span class=""><i class="ic"></i>Jadwal</span><span class=""><i class="ic"></i>Laporan</span><span class=""><i class="ic"></i>Lainnya</span></div></div></div><div class="fig"><p class="ket">SCR-07 · Memuat</p><div class="hp"><div class="isi" style="gap:10px"><div class="g"><div><h3 style="font-size:20px;margin:0">Dashboard</h3><div class="ket">Senin, 5 Okt 2026 · 08:15</div></div><span class="btn" style="min-height:44px">Segarkan</span></div><div class="kartu" style="height:90px;background:var(--abu)"></div><div class="kartu" style="height:90px;background:var(--abu)"></div><div class="kartu" style="height:90px;background:var(--abu)"></div><div class="ket c">Memuat… (kerangka KOM-12)</div></div><div class="bar"><span class="on"><i class="ic"></i>Dashboard</span><span class=""><i class="ic"></i>Laporan</span><span class=""><i class="ic"></i>Izin</span><span class=""><i class="ic"></i>Log</span><span class=""><i class="ic"></i>Lainnya</span></div></div></div><div class="fig"><p class="ket">SCR-07 · Hari libur</p><div class="hp"><div class="isi" style="gap:10px"><h3 style="font-size:20px;margin:0">Dashboard</h3><div class="kartu c"><div class="ic" style="width:32px;height:32px"></div>Hari ini libur: Libur contoh. Tidak ada absen yang diperlukan.</div><div class="kartu"><h3>Perlu perhatian</h3><div class="g"><span>Izin menunggu persetujuan</span><span class="pil ban">1</span></div><div class="g"><span>Guru Belum Absen</span><span class="pil ban">0</span></div></div></div><div class="bar"><span class="on"><i class="ic"></i>Dashboard</span><span class=""><i class="ic"></i>Laporan</span><span class=""><i class="ic"></i>Izin</span><span class=""><i class="ic"></i>Log</span><span class=""><i class="ic"></i>Lainnya</span></div></div></div></div>
+<div class="baris"><div class="fig"><p class="ket">SCR-08 · Admin · Desktop ≥ 1024 px · sidebar kiri</p><div class="ws"><div class="sb"><span class="on">Dashboard</span><span class="">Master Data</span><span class="">Jadwal</span><span class="">Laporan</span><span class="">Izin</span><span class="">Koreksi</span><span class="">Pengaturan</span><span class="">Log</span><span class="">Kartu QR</span><span class="">Akun</span><span class="">Bantuan</span></div><div class="isi" style="gap:10px;padding:20px">
+<div class="g"><div><h3 style="font-size:20px;margin:0">Dashboard</h3><div class="ket">Senin, 5 Okt 2026 · 08:15</div></div><span class="btn" style="min-height:44px">Segarkan</span></div>
+<div class="info" style="border:1px solid #8A5300">⚠ Tutup Hari belum berjalan untuk 4 Okt 2026. Periksa Log. &nbsp; ⚠ Lokasi madrasah belum diatur.</div>
+<div class="st4"><div class="kartu"><span class="ket">Guru hadir</span><b>17/20</b></div><div class="kartu"><span class="ket">Guru terlambat</span><b>2</b></div><div class="kartu"><span class="ket">Siswa hadir</span><b>412/430</b></div><div class="kartu"><span class="ket">Siswa belum pulang</span><b>0</b></div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div class="kartu"><h3>Per kelas</h3><table class="tb"><tr><th>Kelas</th><th>Hadir</th><th>Terlambat</th><th>Alpa</th></tr><tr><td>VII-A</td><td>28/30</td><td>1</td><td>0</td></tr><tr><td>VII-B</td><td>27/29</td><td>2</td><td>0</td></tr></table></div><div class="kartu"><h3>Perlu perhatian</h3><div class="g"><span>Guru Belum Absen</span><span class="pil ban">2</span></div><div class="g"><span>Lokasi Mencurigakan hari ini</span><span class="pil ban">1</span></div></div></div>
+</div></div></div></div>
+<div class="cat"><div class="kartu"><h3>Catatan perilaku</h3><ul><li>Kepala: kartu “Absen saya (opsional)” memakai tombol KOM-02 yang sama; tidak pernah dihitung Alpa (AB-14). Admin tidak punya tombol absen.</li><li>“Izin menunggu persetujuan” menuju SCR-09 (hanya Kepala). “Lokasi Mencurigakan” hanya tampil bagi Admin dan Kepala (KP-6).</li><li>Siswa: kartu Belum Pulang muncul setelah jendela buka Pulang.</li><li>Banner Admin: koordinat belum diatur (UAT-41) dan Tutup Hari tertinggal (SF-07).</li></ul></div>
+<div class="kartu"><h3>Responsif dan keadaan</h3><ul><li>HP: kartu bertumpuk 1 kolom; tabel per kelas menjadi daftar kartu (PK-A4).</li><li>Desktop: 4 kartu sejajar, dua kolom di bawahnya, sidebar menggantikan menu “Lainnya”.</li><li>Keadaan: normal, memuat, hari libur (kosong), galat dengan Coba lagi, tanpa koneksi (MSG-21).</li></ul></div></div>
+<p class="ket">Berikutnya (BRD 18.3): Master Data (SCR-10..14).</p>
+</main></body></html>
