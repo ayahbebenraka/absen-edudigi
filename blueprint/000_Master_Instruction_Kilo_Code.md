@@ -28,7 +28,7 @@ Jika ada beberapa pilihan teknologi, **pilih solusi yang paling sederhana, stabi
 
 Blueprint yang sudah tersedia: 
     blueprint\001_BRD_Aplikasi_Absensi_Geo_Tagging_v1.1.md
-    blueprint\002_FS_Aplikasi_Absensi_Geo_Tagging_v1.1.md
+    blueprint\002_FS_Aplikasi_Absensi_Geo_Tagging_v1.2.md
     blueprint\003_DataModel_Aplikasi_Absensi_Geo_Tagging_v1.0.md
     blueprint\004_01_Wireframe Absensi Geo Tagging · Modul 1–3.html
     blueprint\004_02_Wireframe Absensi Geo Tagging · Dashboard.html
