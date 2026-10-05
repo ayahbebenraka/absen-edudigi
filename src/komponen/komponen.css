@@ -338,6 +338,48 @@
   }
 }
 
+/* --- KOM-16 Unggah File ---------------------------------------------- */
+.unggah {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-8);
+}
+
+.unggah-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.unggah-nama {
+  font-size: var(--ukuran-keterangan);
+  word-break: break-all;
+}
+
+/* --- Kepala profil (SCR-26; dipakai juga detail pengguna) ----------- */
+.profil-kepala {
+  display: flex;
+  align-items: center;
+  gap: var(--s-16);
+  margin-bottom: var(--s-16);
+}
+
+.foto-profil {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--r-pil);
+  background: var(--abu);
+  color: var(--redup);
+}
+
 /* --- KOM-17 Header Halaman -------------------------------------------- */
 .header {
   display: flex;

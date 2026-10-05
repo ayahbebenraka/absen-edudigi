@@ -138,3 +138,62 @@ export async function masuk(email: string, sandi: string): Promise<HasilMasuk> {
   simpanSesi(sesi);
   return { berhasil: true, sesi };
 }
+
+/* ------------------------------------------------------------------ */
+/* SCR-26: ganti password dan profil (FR-AK-02, FR-AK-04, FR-AK-05).   */
+/* Fase frontend menyimpan di localStorage; diganti Supabase di M10.   */
+
+const KUNCI_SANDI = "sandi-absen-edudigi";
+const KUNCI_PROFIL = "profil-absen-edudigi";
+
+export type ProfilTersimpan = {
+  nama?: string;
+  kontak?: string;
+  foto_path?: string;
+};
+
+function bacaJson<T>(kunci: string): T {
+  try {
+    const teks = window.localStorage.getItem(kunci);
+    return teks ? (JSON.parse(teks) as T) : ({} as T);
+  } catch {
+    return {} as T;
+  }
+}
+
+/** Password efektif: yang pernah diubah, atau password awal peran (D-05). */
+export function sandiEfektif(userId: string, role: Peran): string {
+  return bacaJson<Record<string, string>>(KUNCI_SANDI)[userId] ?? sandiPeran[role];
+}
+
+export type HasilGantiSandi =
+  | { berhasil: true }
+  | { berhasil: false; sebab: "koneksi" | "lama-salah" };
+
+export async function gantiPassword(
+  userId: string,
+  role: Peran,
+  lama: string,
+  baru: string
+): Promise<HasilGantiSandi> {
+  await jeda(JEDA_MOCK);
+  if (!ambilKoneksi()) return { berhasil: false, sebab: "koneksi" };
+  if (sandiEfektif(userId, role) !== lama) {
+    return { berhasil: false, sebab: "lama-salah" };
+  }
+
+  const ubahan = bacaJson<Record<string, string>>(KUNCI_SANDI);
+  ubahan[userId] = baru;
+  window.localStorage.setItem(KUNCI_SANDI, JSON.stringify(ubahan));
+  return { berhasil: true };
+}
+
+export function ambilProfil(userId: string): ProfilTersimpan {
+  return bacaJson<Record<string, ProfilTersimpan>>(KUNCI_PROFIL)[userId] ?? {};
+}
+
+export function simpanProfil(userId: string, profil: ProfilTersimpan) {
+  const semua = bacaJson<Record<string, ProfilTersimpan>>(KUNCI_PROFIL);
+  semua[userId] = profil;
+  window.localStorage.setItem(KUNCI_PROFIL, JSON.stringify(semua));
+}

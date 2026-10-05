@@ -79,6 +79,8 @@ export type BarisUser = {
   role: Peran;
   nomor_induk: string;
   nama: string;
+  kontak: string | null;
+  foto_path: string | null;
   aktif: boolean;
   wajib_absen: boolean;
 };
@@ -90,6 +92,8 @@ export const users: BarisUser[] = [
     role: "admin",
     nomor_induk: "ADM-001",
     nama: "Admin Madrasah",
+    kontak: null,
+    foto_path: null,
     aktif: true,
     wajib_absen: false,
   },
@@ -99,6 +103,8 @@ export const users: BarisUser[] = [
     role: "kepala",
     nomor_induk: "KPL-001",
     nama: "Kepala Madrasah",
+    kontak: null,
+    foto_path: null,
     aktif: true,
     wajib_absen: false,
   },
@@ -108,6 +114,8 @@ export const users: BarisUser[] = [
     role: "guru",
     nomor_induk: "G-001",
     nama: "Guru Satu (wali kelas VII-A)",
+    kontak: null,
+    foto_path: null,
     aktif: true,
     wajib_absen: true,
   },
@@ -117,6 +125,8 @@ export const users: BarisUser[] = [
     role: "guru",
     nomor_induk: "G-002",
     nama: "Guru Dua (override jadwal)",
+    kontak: null,
+    foto_path: null,
     aktif: true,
     wajib_absen: true,
   },
@@ -126,6 +136,8 @@ export const users: BarisUser[] = [
     role: "guru",
     nomor_induk: "G-003",
     nama: "Guru Tiga (izin menunggu)",
+    kontak: null,
+    foto_path: null,
     aktif: true,
     wajib_absen: true,
   },
@@ -135,6 +147,8 @@ export const users: BarisUser[] = [
     role: "siswa",
     nomor_induk: "0012345601",
     nama: "Siswa Contoh Satu",
+    kontak: null,
+    foto_path: null,
     aktif: true,
     wajib_absen: false,
   },
@@ -144,6 +158,8 @@ export const users: BarisUser[] = [
     role: "siswa",
     nomor_induk: "0012345602",
     nama: "Siswa Contoh Dua",
+    kontak: null,
+    foto_path: null,
     aktif: true,
     wajib_absen: false,
   },

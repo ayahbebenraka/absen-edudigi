@@ -80,6 +80,11 @@ export default function HalamanBeranda() {
           <p className="ket angka">
             Email {sesi.email} · Nomor induk {sesi.nomor_induk}
           </p>
+          <Tombol
+            label="Akun dan Ganti Password"
+            varian="teks"
+            onClick={() => router.push("/akun")}
+          />
         </Kartu>
       </div>
     </main>
