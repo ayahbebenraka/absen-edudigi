@@ -10,8 +10,8 @@ Sumber ID: BRD v1.1, FS v1.2, Data Model v1.0, dan plan M1 (`.kilo/plans/`).
 | Fase (BRD 18.2) | **Tahap 3 — Fase Frontend (layout)** dengan data contoh |
 | Milestone aktif | **M1** — Fondasi Frontend + SCR-01 Login |
 | Commit terakhir | `f36d0a4` (5 Okt 2026) · branch `main` · remote `origin` (SSH `github-ayahbebenraka`) |
-| Layar selesai | 1/27 (SCR-01) |
-| Komponen selesai | 8/18 (KOM-01, 03, 05, 08, 10, 11, 12, 17) |
+| Layar selesai | 2/27 (SCR-01, SCR-26) |
+| Komponen selesai | 9/18 (KOM-01, 03, 05, 08, 10, 11, 12, 16, 17) |
 | UAT dijalankan | 0/41 |
 | Build/lint | Lulus (`npm run build`, `npm run lint`) |
 
@@ -23,7 +23,7 @@ Urutan mengikuti FS 11.1 / BRD 18.3. UAT ditulis pada milestone pemiliknya.
 
 | ID | Isi | Layar | UAT | Status |
 |---|---|---|---|---|
-| **M1** | Fondasi Frontend: token (FS 2.5), komponen dasar, mock 13 tabel, sesi mock; SCR-01 Login + SCR-26 Akun dan Ganti Password (gerbang modul Akun, FS 3.1) | SCR-01, 26 | UAT-23, 35, 37 | 🔧 Fondasi + SCR-01 selesai (`c8778b0`, `f36d0a4`); SCR-26 menyusul |
+| **M1** | Fondasi Frontend: token (FS 2.5), komponen dasar, mock 13 tabel, sesi mock; SCR-01 Login + SCR-26 Akun dan Ganti Password (gerbang modul Akun, FS 3.1) | SCR-01, 26 | UAT-23, 35, 37 | ✅ **Selesai** (`c8778b0`, `f7bd64a`); UAT-23/35/37 menyusul |
 | **M2** | SCR-02 Beranda Guru: 6 keadaan tombol (KOM-02), jadwal hari ini, simulasi GPS (dalam/luar radius, akurasi rendah) | SCR-02 | UAT-01..07, 27, 36 | ⬜ Belum dimulai |
 | **M3** | SCR-03 Absen Siswa: pemindai QR (KOM-18), scan beruntun, ketik NISN (KOM-15), kontrol segmen (KOM-04) | SCR-03, 06 | UAT-11..14, 30, 39 | ⬜ Belum dimulai |
 | **M4** | SCR-07/08 Dashboard Kepala/Admin + navigasi final per peran (FS 2.3) | SCR-07, 08 | UAT-41 | ⬜ Belum dimulai |
@@ -67,10 +67,10 @@ Nama dan peran mengikuti FS 3.2. Kolom "Milestone" kosong = belum ditempatkan (l
 | SCR-23 | Kartu QR (cetak massal) | Admin | Desktop | M9 | ⬜ |
 | SCR-24 | Rekap Siswa | Siswa | HP | M9 | ⬜ |
 | SCR-25 | Kartu QR Saya | Siswa | HP | M9 | ⬜ |
-| SCR-26 | Akun dan Ganti Password | Semua | HP, desktop | M1 | ⬜ |
+| SCR-26 | Akun dan Ganti Password | Semua | HP, desktop | M1 | ✅ Selesai |
 | SCR-27 | Bantuan | Semua | HP, desktop | M9 | ⬜ |
 
-Rute sementara: `/` = SCR-01; `/beranda` = placeholder hasil masuk (bukan SCR final; diganti navigasi final di M4).
+Rute: `/` = SCR-01; `/akun` = SCR-26; `/beranda` = placeholder hasil masuk (bukan SCR final; diganti navigasi final di M4).
 
 ---
 
@@ -95,7 +95,7 @@ Spesifikasi mengikuti FS 2.6. Milestone = perkiraan pertama dipakai.
 | KOM-13 | Banner Info | M4 | ⬜ |
 | KOM-14 | Kalender Kehadiran (grid bulan H/T/I/S/D/A) | M8 (Rekap Saya) | ⬜ |
 | KOM-15 | Pencarian (nama, NIP, NISN) | M3 (Ketik NISN) | ⬜ |
-| KOM-16 | Unggah File | M7 (lampiran izin) | ⬜ |
+| KOM-16 | Unggah File | M1 (foto SCR-26) | ✅ Selesai |
 | KOM-17 | Header Halaman | M1 | ✅ Selesai |
 | KOM-18 | Pemindai QR (bingkai kamera, hitungan, 5 terakhir) | M3 | ⬜ |
 
@@ -160,6 +160,7 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Semua **belum dijalankan** (0
 3. **Data contoh vs FS 11.1:** mock `src/data/contoh.ts` berisi 3 guru, 2 kelas, 2 siswa; syarat minimum FS 11.1 = 6 guru (1 wali kelas, 1 dengan override, 1 dengan izin), 3 kelas, ±30 siswa. `absensi_guru` mock belum memuat status Izin dan Dinas Luar. Perlu dilengkapi saat M2/M3.
 4. **Dokumen:** nama berkas FS sudah `002_..._v1.2.md` dan Master Instruction sudah diperbarui (6 Okt 2026). Persetujuan BRD §22 dan FS §14 masih kosong.
 5. **Push:** remote `origin` sudah memakai SSH (`git@github-ayahbebenraka:...`); push dari terminal berfungsi.
+6. **SCR-26 (catatan implementasi):** pesan "Password lama tidak cocok. Periksa lalu coba lagi." adalah **usulan H-09** — Lampiran A belum memilikinya (mengikuti pola MSG-15); perlu dikukuhkan di versi FS berikutnya (PK-E3). Foto hanya dipratinjau namanya lewat KOM-16; unggah dan kompres sebenarnya (T-06) berjalan di Fase Backend (M10). Ikon `gembok` dan `pengguna` ditambahkan ke set baku (PK-C4). Mock `users` ditambah kolom `kontak` dan `foto_path` sesuai Data Model.
 
 ---
 
@@ -171,3 +172,4 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Semua **belum dijalankan** (0
 | 5 Okt 2026 | M1 dokumen: peta sumber kebenaran `blueprint/README.md` | `f36d0a4` | ✅ | ✅ Berhasil |
 | 6 Okt 2026 | Pelacakan: `PROGRES.md` (4 tabel) | `c621e95` | ✅ | ✅ Berhasil |
 | 6 Okt 2026 | Keputusan 1A/2A/3A: plan dilacak git; berkas FS → v1.2; penempatan SCR-26/06/04 | `6a51081`, `baf1142` | ✅ | ✅ Berhasil |
+| 6 Okt 2026 | M1 penutup gerbang: SCR-26 Akun dan Ganti Password + KOM-16 | `f7bd64a` | ✅ | ✅ Berhasil (lint + build lulus) |
