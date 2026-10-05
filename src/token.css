@@ -1,0 +1,199 @@
+/* =====================================================================
+   token.css — satu-satunya sumber gaya dasar aplikasi.
+   Acuan: FS 2.5 PK-C (warna, tipografi, ruang, bentuk) + wireframe.
+   Jangan menambah nilai di sini atau di layar tanpa rujukan FS baru.
+   ===================================================================== */
+
+/* --- 2.5 Warna terang (nilai FS 2.5) ---------------------------------- */
+:root {
+  --utama: #1f5c4a;
+  --lembut: #eef5f2;
+  --teks: #1f2933;
+  --redup: #52606d;
+  --garis: #e4e7eb;
+  --latar: #f7f9fa;
+  --perm: #ffffff;
+  --abu: #edf0f2;
+
+  --s-hadir: #1b5e20;
+  --s-hadir-bg: #e8f5e9;
+  --s-terlambat: #8a5300;
+  --s-terlambat-bg: #fff4e0;
+  --s-izin: #0d47a1;
+  --s-izin-bg: #e3f2fd;
+  --s-alpa: #b71c1c;
+  --s-alpa-bg: #fdecea;
+
+  --bahaya: var(--s-alpa);
+  --bahaya-bg: var(--s-alpa-bg);
+
+  --atas-utama: #ffffff;
+
+  --s-4: 4px;
+  --s-8: 8px;
+  --s-12: 12px;
+  --s-16: 16px;
+  --s-24: 24px;
+  --s-32: 32px;
+
+  --r-kartu: 12px;
+  --r-isian: 10px;
+  --r-pil: 9999px;
+
+  --garis-tipis: 1px solid var(--garis);
+
+  --lebar-konten: 1200px;
+  --lebar-form: 640px;
+
+  --sisi-halaman: var(--s-16);
+
+  --ukuran-judul: 20px;
+  --ukuran-isi: 16px;
+  --ukuran-keterangan: 14px;
+
+  --huruf-judul: 600;
+  --tinggi-isian: 48px;
+  --tinggi-sentuh: 48px;
+}
+
+/* --- 2.5 Warna gelap (mengikuti prefers-color-scheme) ------------------ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --utama: #6fc2a5;
+    --lembut: #1b2b26;
+    --teks: #e8ecef;
+    --redup: #9aa5b1;
+    --garis: #323b44;
+    --latar: #12171b;
+    --perm: #1a2026;
+    --abu: #262e35;
+
+    --s-hadir: #7fd18a;
+    --s-hadir-bg: #1c3320;
+    --s-terlambat: #f0c27a;
+    --s-terlambat-bg: #3a2c12;
+    --s-izin: #8fb8ef;
+    --s-izin-bg: #16273f;
+    --s-alpa: #f0a3a3;
+    --s-alpa-bg: #3a1c1c;
+
+    --atas-utama: #10201b;
+  }
+}
+
+/* --- 2.5 Desktop >= 1024 px ------------------------------------------- */
+@media (min-width: 1024px) {
+  :root {
+    --sisi-halaman: var(--s-24);
+    --ukuran-judul: 24px;
+    --tinggi-sentuh: 44px;
+  }
+}
+
+/* --- Reset ------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  color-scheme: light dark;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--latar);
+  color: var(--teks);
+  font-family: Inter, system-ui, "Segoe UI", Roboto, sans-serif;
+  font-size: var(--ukuran-isi);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* --- Tipografi dasar (PK-C2: hanya tiga tingkat ukuran) ---------------- */
+h1,
+h2,
+h3 {
+  font-size: var(--ukuran-judul);
+  font-weight: var(--huruf-judul);
+  line-height: 1.3;
+}
+
+.ket {
+  color: var(--redup);
+  font-size: var(--ukuran-keterangan);
+  font-weight: 400;
+}
+
+.angka {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Rangka halaman (PK-A: mobile-first) ------------------------------ */
+.rangka {
+  width: 100%;
+  max-width: var(--lebar-konten);
+  margin: 0 auto;
+  padding: var(--s-24) var(--sisi-halaman);
+}
+
+.rangka-form {
+  width: 100%;
+  max-width: var(--lebar-form);
+  margin: 0 auto;
+  padding: var(--s-24) var(--sisi-halaman);
+}
+
+.rangka-layar {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* --- Blok judul di atas formulir --------------------------------------- */
+.pusat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-8);
+  text-align: center;
+}
+
+.pusat h1 {
+  margin-top: var(--s-8);
+}
+
+.merek {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tinggi-sentuh);
+  height: var(--tinggi-sentuh);
+  border: var(--garis-tipis);
+  border-radius: var(--r-kartu);
+  background: var(--lembut);
+  color: var(--utama);
+}

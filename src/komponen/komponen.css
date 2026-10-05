@@ -1,0 +1,383 @@
+/* =====================================================================
+   komponen.css — kelas baku bersama untuk komponen dasar.
+   Acuan: FS 2.6 PK-C7 (KOM-01, 03, 05, 08, 10, 11, 12, 17).
+   Larang membuat gaya baru per layar (FS 2.6).
+   ===================================================================== */
+
+/* --- KOM-01 Tombol ----------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-8);
+  min-height: var(--tinggi-sentuh);
+  padding: 0 var(--s-16);
+  border: var(--garis-tipis);
+  border-radius: var(--r-isian);
+  background: var(--perm);
+  color: var(--utama);
+  font-size: var(--ukuran-isi);
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+}
+
+.btn-utama {
+  background: var(--utama);
+  border-color: var(--utama);
+  color: var(--atas-utama);
+}
+
+.btn-bahaya {
+  background: var(--bahaya-bg);
+  border-color: var(--bahaya);
+  color: var(--bahaya);
+}
+
+.btn-teks {
+  border-color: transparent;
+  background: none;
+  padding: 0 var(--s-8);
+}
+
+.btn-lebar {
+  width: 100%;
+}
+
+.btn-nonaktif {
+  background: var(--abu);
+  border-color: var(--garis);
+  color: var(--redup);
+}
+
+.btn-alasan {
+  align-self: center;
+}
+
+.btn-muatan {
+  flex: 0 0 auto;
+  display: inline-flex;
+}
+
+/* --- KOM-03 Isian ------------------------------------------------------ */
+.isian-satuan {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.isian {
+  display: flex;
+  align-items: stretch;
+  gap: var(--s-8);
+  min-height: var(--tinggi-isian);
+  padding: 0 var(--s-12);
+  border: var(--garis-tipis);
+  border-radius: var(--r-isian);
+  background: var(--perm);
+}
+
+.isian:focus-within {
+  border-color: var(--utama);
+}
+
+.isian input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  padding: 0;
+}
+
+.isian input:focus {
+  outline: none;
+}
+
+.isian input::placeholder {
+  color: var(--redup);
+}
+
+.isian-salah {
+  border-color: var(--bahaya);
+}
+
+.isian-salah:focus-within {
+  border-color: var(--bahaya);
+}
+
+.isian-keterangan {
+  display: flex;
+  gap: var(--s-4);
+  align-items: flex-start;
+  margin-top: var(--s-4);
+  font-size: var(--ukuran-keterangan);
+}
+
+.isian-galat {
+  color: var(--bahaya);
+}
+
+.isian-bantuan {
+  color: var(--redup);
+}
+
+.isian-tombol {
+  flex: 0 0 auto;
+  align-self: stretch;
+  padding: 0 var(--s-4);
+  border: 0;
+  background: none;
+  color: var(--utama);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.isian-label {
+  display: block;
+  margin-bottom: var(--s-4);
+  font-size: var(--ukuran-keterangan);
+  font-weight: 600;
+}
+
+/* --- KOM-05 Lencana ---------------------------------------------------- */
+.pil-berbaris {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-8);
+}
+
+.pil {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-4);
+  padding: 2px var(--s-12);
+  border-radius: var(--r-pil);
+  font-size: var(--ukuran-keterangan);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.pil-hadir {
+  background: var(--s-hadir-bg);
+  color: var(--s-hadir);
+}
+
+.pil-terlambat {
+  background: var(--s-terlambat-bg);
+  color: var(--s-terlambat);
+}
+
+.pil-izin {
+  background: var(--s-izin-bg);
+  color: var(--s-izin);
+}
+
+.pil-alpa {
+  background: var(--s-alpa-bg);
+  color: var(--s-alpa);
+}
+
+.pil-penanda {
+  background: var(--perm);
+  border: var(--garis-tipis);
+  color: var(--redup);
+}
+
+/* --- KOM-08 Kartu ------------------------------------------------------ */
+.kartu {
+  padding: var(--s-16);
+  border: var(--garis-tipis);
+  border-radius: var(--r-kartu);
+  background: var(--perm);
+}
+
+.kartu-judul {
+  margin-bottom: var(--s-8);
+  font-size: var(--ukuran-isi);
+  font-weight: 600;
+}
+
+.kartu-padat {
+  padding: var(--s-12);
+}
+
+/* --- KOM-10 Pesan Singkat --------------------------------------------- */
+.pesan {
+  position: fixed;
+  z-index: 20;
+  top: var(--s-16);
+  left: var(--sisi-halaman);
+  right: var(--sisi-halaman);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-8);
+  padding: var(--s-12);
+  border: var(--garis-tipis);
+  border-radius: var(--r-kartu);
+  background: var(--perm);
+}
+
+.pesan-ikon {
+  flex: 0 0 auto;
+}
+
+.pesan-teks {
+  flex: 1;
+  font-size: var(--ukuran-keterangan);
+}
+
+.pesan-tutup {
+  flex: 0 0 auto;
+  min-width: var(--tinggi-sentuh);
+  min-height: var(--tinggi-sentuh);
+  margin: calc(var(--s-12) * -1) calc(var(--s-12) * -1) calc(var(--s-12) * -1) 0;
+  border: 0;
+  background: none;
+  color: var(--redup);
+  cursor: pointer;
+}
+
+.pesan-sukses {
+  background: var(--s-hadir-bg);
+  border-color: var(--s-hadir);
+  color: var(--s-hadir);
+}
+
+.pesan-galat {
+  background: var(--s-alpa-bg);
+  border-color: var(--s-alpa);
+  color: var(--s-alpa);
+}
+
+.pesan-info {
+  background: var(--s-izin-bg);
+  border-color: var(--s-izin);
+  color: var(--s-izin);
+}
+
+@media (min-width: 1024px) {
+  .pesan {
+    left: auto;
+    right: var(--s-24);
+    top: var(--s-24);
+    max-width: 480px;
+  }
+}
+
+/* --- KOM-11 Keadaan Kosong -------------------------------------------- */
+.kosong {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-12);
+  padding: var(--s-32) var(--s-16);
+  text-align: center;
+}
+
+.kosong-ikon {
+  color: var(--redup);
+}
+
+.kosong-teks {
+  max-width: 40ch;
+  color: var(--redup);
+}
+
+/* --- KOM-12 Pemuat ----------------------------------------------------- */
+.muat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-8);
+}
+
+.muat-kerangka {
+  height: var(--s-16);
+  border-radius: var(--r-isian);
+  background: var(--abu);
+}
+
+.muat-kerangka-lebar {
+  width: 100%;
+}
+
+.muat-kerangka-judul {
+  width: 70%;
+  height: var(--s-24);
+}
+
+.muat-teks {
+  color: var(--redup);
+  font-size: var(--ukuran-keterangan);
+}
+
+/* --- Indikator berputar (KOM-12) --------------------------------------- */
+.berputar {
+  display: inline-block;
+  width: var(--ukuran-isi);
+  height: var(--ukuran-isi);
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: var(--r-pil);
+  animation: putar 1s linear infinite;
+}
+
+@keyframes putar {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .berputar {
+    animation-duration: 3s;
+  }
+}
+
+/* --- KOM-17 Header Halaman -------------------------------------------- */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-12);
+  margin-bottom: var(--s-24);
+}
+
+.header-aksi {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-8);
+}
+
+@media (min-width: 1024px) {
+  .header {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+}
+
+/* --- Utilitas bentuk dari wireframe ------------------------------------ */
+.satuan {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  width: 100%;
+}
+
+.rata-tengah {
+  text-align: center;
+}
+
+.tumpuk {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-16);
+}
+
+.tumpuk-rapat {
+  gap: var(--s-12);
+}

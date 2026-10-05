@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| **Versi** | 1.1 (draf untuk persetujuan; menambah PK-F dan menyelaraskan Data Model v1.0) |
+| **Versi** | 1.2 (dark mode disetujui pada 2.5 dan dicatat sebagai H-08) |
 | **Tanggal** | 5 Oktober 2026 |
 | **Sumber** | BRD v1.1 (PK-F ditambahkan), Data Model v1.0, dan Rancangan Final v1.0 |
 | **Dokumen turunan** | Wireframe/UI-UX → Prompt Playbook → Pembangunan (Data Model v1.0 sudah disusun) |
@@ -68,6 +68,7 @@ FS ini menjelaskan **bagaimana** aplikasi berperilaku agar kebutuhan di BRD terp
 |---|---|---|
 | 1.0 | 4 Okt 2026 | FS disusun dari BRD v1.0 |
 | 1.1 | 5 Okt 2026 | **PK-F** ditambahkan ke Pedoman Konsistensi (callout awal, 2.1, 2.9 baru, Daftar Periksa 2.10); penyelarasan dengan **Data Model v1.0** (10.2, FR-MD-01, FR-KR-03/04, SF-01/03/07, 6.2.1, MSG-25); UAT-40 dan UAT-41; H-07 |
+| 1.2 | 5 Okt 2026 | Dark mode (prefers-color-scheme) disetujui; token.css mengikuti FS 2.5; H-08 dicatat |
 
 ---
 
@@ -129,6 +130,8 @@ Aturan: item menu aktif ditandai warna utama dan teks tebal; ikon selalu diserta
 | **Bahasa** | Bahasa Indonesia sehari-hari; tanpa istilah teknis (mis. "server", "GPS error", "token"). | B1 |
 
 ### 2.5 PK-C: Token Visual
+
+> Implementasi menyediakan token terang dan gelap; keduanya memakai nama variabel yang sama.
 
 **Warna** (nilai awal; **wajib diverifikasi** kontras ≥ 4,5:1 untuk teks isi dan ≥ 3:1 untuk komponen besar, PK-C6):
 
@@ -843,6 +846,7 @@ Database dan login; SF-01..SF-10; endpoint absen dengan validasi di server; impo
 | **H-05** | Pembatasan percobaan login (mis. 5 kali gagal → tunggu 5 menit) | **Tidak diaktifkan** (sesuai D-05); tersedia sebagai opsi bila lembaga menginginkan | FR-AK-01 |
 | **H-06** | Siswa pindah kelas di tengah tahun ajaran | Admin mengubah kelas; berlaku **hari berikutnya**; catatan lama tetap kelas lama | FR-MD-09 |
 | **H-07** | Salah ketik email, NIP, atau NISN (dikunci setelah dibuat, FR-MD-05; DM-H2) | Admin menonaktifkan akun lalu membuat akun baru; bila riwayat harus ikut, **prosedur khusus oleh pengembang** yang tercatat di log | FR-MD-05 |
+| **H-08** | Mode gelap — BRD dan FS v1.1 tidak menyebutnya, sedangkan wireframe memakai `prefers-color-scheme` | **Aktif** mengikuti `prefers-color-scheme` seperti wireframe; tombol pengalih tema ditunda | token visual 2.5 dan seluruh komponen 2.6 |
 
 ---
 
