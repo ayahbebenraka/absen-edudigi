@@ -8,7 +8,8 @@ out/
 .env.local
 .env.*.local
 
-.kilo/
+# Kilo Code: hanya worktree yang diabaikan; plans/ dilacak git
+.kilo/worktrees/
 
 npm-debug.log*
 yarn-error.log*
