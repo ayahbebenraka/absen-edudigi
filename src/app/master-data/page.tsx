@@ -14,7 +14,7 @@ import { Pesan } from "../../komponen/Pesan";
 import { Tombol } from "../../komponen/Tombol";
 import { Unggah } from "../../komponen/Unggah";
 import { NavigasiPeran } from "../../komponen/NavigasiPeran";
-import { lembaga, type BarisLembaga, users, type BarisUser, kelas, siswa } from "../../data/contoh";
+import { lembaga, type BarisLembaga, users, type BarisUser, kelas, type BarisKelas, siswa } from "../../data/contoh";
 import { ambilSesi, ambilSesiServer, dengarSesi, keluar, type Sesi } from "../../data/sesi";
 
 const MSG_TANPA_HAK_AKSES = "Halaman ini tidak tersedia untuk Anda.";
@@ -1689,14 +1689,663 @@ function ManajemenSiswa({ sesi: _sesi }: { sesi: Sesi }) {
   );
 }
 
-function PlaceholderTab({ label }: { label: string }) {
+type GalatKelas = {
+  nama?: string;
+  tahun_ajaran?: string;
+  wali_user_id?: string;
+};
+
+type FormKelas = {
+  nama: string;
+  tahun_ajaran: string;
+  wali_user_id: string;
+};
+
+const FORM_KELAS_KOSONG: FormKelas = {
+  nama: "",
+  tahun_ajaran: "",
+  wali_user_id: "",
+};
+
+type PemetaanKelas = { nama: string; wali_user_id: string };
+
+const MSG_NAMA_KELAS = "Nama kelas wajib diisi, 3–100 karakter.";
+const MSG_WALI_KELAS_WAJIB = "Pilih wali kelas.";
+const MSG_KELAS_DUPLIKAT = "Kelas dengan nama dan tahun ajaran yang sama sudah ada.";
+const MSG_WALI_TERPAKAI = "Guru ini sudah menjadi wali kelas kelas lain pada tahun ajaran yang sama.";
+const MSG_TAHUN_AJARAN_BARU = "Tahun ajaran baru wajib diisi, format YYYY/YYYY, mis. 2027/2028.";
+
+function ManajemenKelas({ sesi: _sesi }: { sesi: Sesi }) {
+  void _sesi;
+  const router = useRouter();
+
+  const [modus, setModus] = useState<"daftar" | "tambah" | "ubah">("daftar");
+  const [form, setForm] = useState<FormKelas>(FORM_KELAS_KOSONG);
+  const [galat, setGalat] = useState<GalatKelas>({});
+  const [pesan, setPesan] = useState<{ jenis: "sukses" | "galat" | "info"; teks: string } | null>(
+    null,
+  );
+  const [kelasEditId, setKelasEditId] = useState<string | null>(null);
+  const [cari, setCari] = useState("");
+
+  const [wizardAktif, setWizardAktif] = useState(false);
+  const [wizardStep, setWizardStep] = useState<1 | 2 | 3>(1);
+  const [tahunAjaranBaru, setTahunAjaranBaru] = useState("");
+  const [galatWizard, setGalatWizard] = useState<string | null>(null);
+  const [pemetaan, setPemetaan] = useState<Record<string, PemetaanKelas | "lulus">>({});
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const guruWaliAktif = users.filter(
+    (u) => u.role === "guru" && u.wali_kelas === true && u.aktif,
+  );
+
+  const daftarTerfilter = kelas.filter((k) => {
+    const cocokCari =
+      cari.trim() === "" ||
+      k.nama.toLowerCase().includes(cari.toLowerCase()) ||
+      k.tahun_ajaran.toLowerCase().includes(cari.toLowerCase());
+    return cocokCari;
+  });
+
+  function namaGuru(userId: string | null): string {
+    if (!userId) return "-";
+    const u = users.find((usr) => usr.id === userId);
+    return u ? u.nama : "-";
+  }
+
+  function jumlahSiswa(kelasId: string): number {
+    return siswa.filter((s) => s.kelas_id === kelasId).length;
+  }
+
+  function bukaForm() {
+    setForm(FORM_KELAS_KOSONG);
+    setGalat({});
+    setKelasEditId(null);
+    setModus("tambah");
+  }
+
+  function editKelas(k: BarisKelas) {
+    setForm({
+      nama: k.nama,
+      tahun_ajaran: k.tahun_ajaran,
+      wali_user_id: k.wali_user_id ?? "",
+    });
+    setKelasEditId(k.id);
+    setGalat({});
+    setModus("ubah");
+  }
+
+  function validasi(): GalatKelas {
+    const g: GalatKelas = {};
+
+    if (!form.nama || form.nama.trim().length < 3 || form.nama.trim().length > 100) {
+      g.nama = MSG_NAMA_KELAS;
+    }
+    if (!form.tahun_ajaran || !polaTahunAjaran.test(form.tahun_ajaran)) {
+      g.tahun_ajaran = MSG_TERBUKA;
+    }
+    if (!form.wali_user_id) {
+      g.wali_user_id = MSG_WALI_KELAS_WAJIB;
+    } else {
+      const waliSama = kelas.find(
+        (kk) =>
+          kk.tahun_ajaran === form.tahun_ajaran &&
+          kk.wali_user_id === form.wali_user_id &&
+          kk.id !== kelasEditId,
+      );
+      if (waliSama) {
+        g.wali_user_id = MSG_WALI_TERPAKAI;
+      }
+    }
+
+    const duplikat = kelas.find(
+      (kk) =>
+        kk.nama === form.nama.trim() &&
+        kk.tahun_ajaran === form.tahun_ajaran &&
+        kk.id !== kelasEditId,
+    );
+    if (duplikat) {
+      g.nama = MSG_KELAS_DUPLIKAT;
+    }
+
+    return g;
+  }
+
+  function simpanHandler() {
+    const g = validasi();
+    setGalat(g);
+    if (Object.keys(g).length > 0) return;
+
+    if (modus === "tambah") {
+      const idBaru = `k-${Date.now().toString(36).slice(-6)}`;
+      kelas.push({
+        id: idBaru,
+        nama: form.nama.trim(),
+        tahun_ajaran: form.tahun_ajaran,
+        wali_user_id: form.wali_user_id || null,
+      });
+      setPesan({ jenis: "sukses", teks: `Kelas ${form.nama} ditambahkan.` });
+    } else if (modus === "ubah" && kelasEditId) {
+      const idx = kelas.findIndex((k) => k.id === kelasEditId);
+      if (idx >= 0) {
+        kelas[idx].nama = form.nama.trim();
+        kelas[idx].tahun_ajaran = form.tahun_ajaran;
+        kelas[idx].wali_user_id = form.wali_user_id || null;
+      }
+      setPesan({ jenis: "sukses", teks: MSG_TERSIMPAN });
+    }
+
+    setModus("daftar");
+    setForm(FORM_KELAS_KOSONG);
+    setGalat({});
+    setKelasEditId(null);
+  }
+
+  function bukaWizard() {
+    setWizardAktif(true);
+    setWizardStep(1);
+    setTahunAjaranBaru("");
+    setGalatWizard(null);
+    setPemetaan({});
+    setShowConfirm(false);
+  }
+
+  function wizardLanjut1() {
+    if (!tahunAjaranBaru || !polaTahunAjaran.test(tahunAjaranBaru)) {
+      setGalatWizard(MSG_TAHUN_AJARAN_BARU);
+      return;
+    }
+    setGalatWizard(null);
+    const map: Record<string, PemetaanKelas | "lulus"> = {};
+    kelas.forEach((k) => {
+      map[k.id] = {
+        nama: k.nama,
+        wali_user_id: k.wali_user_id ?? "",
+      };
+    });
+    setPemetaan(map);
+    setWizardStep(2);
+  }
+
+  function waliTersediaUntuk(sourceId: string): BarisUser[] {
+    const terpakai = new Set<string>();
+    Object.entries(pemetaan).forEach(([id, p]) => {
+      if (id !== sourceId && p !== "lulus" && (p as PemetaanKelas).wali_user_id) {
+        terpakai.add((p as PemetaanKelas).wali_user_id);
+      }
+    });
+    return guruWaliAktif.filter((u) => !terpakai.has(u.id));
+  }
+
+  function validasiPemetaan(): string | null {
+    for (const [id, p] of Object.entries(pemetaan)) {
+      if (p === "lulus") continue;
+      const sumber = kelas.find((k) => k.id === id);
+      const label = sumber ? sumber.nama : id;
+      if (!p.nama || p.nama.trim().length < 3 || p.nama.trim().length > 100) {
+        return `Nama kelas tidak valid untuk ${label}.`;
+      }
+      if (!p.wali_user_id) {
+        return `Wali kelas wajib dipilih untuk ${label}.`;
+      }
+    }
+    const namaList = Object.entries(pemetaan)
+      .filter(([, p]) => p !== "lulus")
+      .map(([, p]) => (p as PemetaanKelas).nama.trim());
+    if (new Set(namaList).size !== namaList.length) {
+      return "Nama kelas tidak boleh duplikat dalam tahun ajaran baru.";
+    }
+    return null;
+  }
+
+  function wizardLanjut2() {
+    const err = validasiPemetaan();
+    if (err) {
+      setGalatWizard(err);
+      return;
+    }
+    setGalatWizard(null);
+    setWizardStep(3);
+  }
+
+  function wizardKembali() {
+    if (wizardStep > 1) {
+      setWizardStep((s) => (s - 1) as 1 | 2 | 3);
+    }
+  }
+
+  function wizardBatal() {
+    setWizardAktif(false);
+    setWizardStep(1);
+    setTahunAjaranBaru("");
+    setGalatWizard(null);
+    setPemetaan({});
+    setShowConfirm(false);
+  }
+
+  function hitungRingkasan(): { pindah: number; lulus: number } {
+    let pindah = 0;
+    let lulus = 0;
+    kelas.forEach((k) => {
+      const jumlah = jumlahSiswa(k.id);
+      const p = pemetaan[k.id];
+      if (p === "lulus") {
+        lulus += jumlah;
+      } else {
+        pindah += jumlah;
+      }
+    });
+    return { pindah, lulus };
+  }
+
+  function konfirmasiTerapkan() {
+    const ringkasan = hitungRingkasan();
+    let counter = 0;
+    kelas.forEach((k) => {
+      const p = pemetaan[k.id];
+      if (p !== "lulus") {
+        const idBaru = `k-${Date.now().toString(36).slice(-6)}-${counter}`;
+        counter++;
+        kelas.push({
+          id: idBaru,
+          nama: p.nama,
+          tahun_ajaran: tahunAjaranBaru,
+          wali_user_id: p.wali_user_id || null,
+        });
+        siswa.forEach((s) => {
+          if (s.kelas_id === k.id) {
+            s.kelas_id = idBaru;
+          }
+        });
+      } else {
+        siswa.forEach((s) => {
+          if (s.kelas_id === k.id) {
+            const u = users.find((usr) => usr.id === s.user_id);
+            if (u) u.aktif = false;
+          }
+        });
+      }
+    });
+    if (lembaga[0]) {
+      lembaga[0].tahun_ajaran_aktif = tahunAjaranBaru;
+    }
+    setPesan({
+      jenis: "sukses",
+      teks: `Kenaikan kelas diterapkan. ${ringkasan.pindah} siswa pindah, ${ringkasan.lulus} siswa lulus.`,
+    });
+    setWizardAktif(false);
+    setWizardStep(1);
+    setTahunAjaranBaru("");
+    setPemetaan({});
+    setShowConfirm(false);
+  }
+
+  function renderDaftar() {
+    return (
+      <div className="tumpak">
+        <div className="form-pencarian-filter">
+          <Isian
+            id="cari-kelas"
+            label="Cari"
+            nilai={cari}
+            onChange={(v) => setCari(v)}
+            placeholder="Nama, tahun ajaran"
+          />
+        </div>
+
+        {daftarTerfilter.length === 0 ? (
+          <Kartu>
+            <KeadaanKosong
+              ikon="info"
+              teks="Belum ada data kelas."
+              aksi={<Tombol label="Tambah" varian="utama" onClick={bukaForm} />}
+            />
+          </Kartu>
+        ) : (
+          <Kartu judul={`Kelas (${daftarTerfilter.length})`}>
+            <ul className="daftar-pengguna">
+              {daftarTerfilter.map((k) => (
+                <li key={k.id} className="baris-pengguna">
+                  <div className="baris-pengguna-info">
+                    <strong>{k.nama}</strong>
+                    <div className="baris-pengguna-meta">
+                      <span className="ket">{k.tahun_ajaran}</span>
+                      <span className="ket">Wali: {namaGuru(k.wali_user_id)}</span>
+                      <span className="ket">{jumlahSiswa(k.id)} siswa</span>
+                    </div>
+                  </div>
+                  <div className="baris-pengguna-aksi">
+                    <Tombol label="Ubah" varian="teks" onClick={() => editKelas(k)} />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Kartu>
+        )}
+
+        <div className="rata-tengah">
+          <Tombol
+            label="Mulai Kenaikan Kelas"
+            varian="utama"
+            muatan={<Ikon nama="jam" ukuran={20} />}
+            onClick={bukaWizard}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  function renderForm() {
+    return (
+      <Kartu judul={modus === "tambah" ? "Tambah" : "Ubah"} subjudul="Kelas">
+        <div className="tumpak-rapat">
+          <Isian
+            id="nama-kelas"
+            label="Nama"
+            nilai={form.nama}
+            onChange={(v) => setForm((f) => ({ ...f, nama: v }))}
+            galat={galat.nama}
+            placeholder="Contoh: VII-A"
+          />
+
+          <Isian
+            id="tahun-ajaran-kelas"
+            label="Tahun Ajaran"
+            nilai={form.tahun_ajaran}
+            onChange={(v) => setForm((f) => ({ ...f, tahun_ajaran: v }))}
+            galat={galat.tahun_ajaran}
+            placeholder="YYYY/YYYY"
+            bantuan='Format: 2026/2027'
+          />
+
+          <span className="isian-satuan">
+            <label className="isian-label" htmlFor="wali-kelas">
+              Wali Kelas
+            </label>
+            <select
+              id="wali-kelas"
+              className="isian-bulan"
+              value={form.wali_user_id}
+              onChange={(e) => setForm((f) => ({ ...f, wali_user_id: e.target.value }))}
+            >
+              <option value="">Pilih guru wali kelas</option>
+              {guruWaliAktif.map((u) => (
+                <option key={u.id} value={u.id}>
+                  {u.nama}
+                </option>
+              ))}
+            </select>
+          </span>
+          {galat.wali_user_id ? (
+            <span className="isian-keterangan isian-galat">
+              <Ikon nama="silang" ukuran={16} />
+              <span>{galat.wali_user_id}</span>
+            </span>
+          ) : null}
+        </div>
+
+        <div className="tumpak-rapat">
+          <Tombol label="Simpan" varian="utama" lebar onClick={simpanHandler} />
+          <Tombol
+            label="Batal"
+            varian="teks"
+            lebar
+            onClick={() => {
+              setModus("daftar");
+              setForm(FORM_KELAS_KOSONG);
+              setGalat({});
+              setKelasEditId(null);
+            }}
+          />
+        </div>
+      </Kartu>
+    );
+  }
+
+  function renderWizard() {
+    const ringkasan = hitungRingkasan();
+
+    return (
+      <div className="tumpak">
+        <div className="wizard-langkah">
+          <span className={wizardStep >= 1 ? "wizard-langkah-item aktif" : "wizard-langkah-item"}>
+            1 Tahun Ajaran Baru
+          </span>
+          <span className={wizardStep >= 2 ? "wizard-langkah-item aktif" : "wizard-langkah-item"}>
+            2 Pemetaan
+          </span>
+          <span className={wizardStep >= 3 ? "wizard-langkah-item aktif" : "wizard-langkah-item"}>
+            3 Pratinjau
+          </span>
+        </div>
+
+        {wizardStep === 1 && (
+          <Kartu judul="Tahun Ajaran Baru">
+            <div className="tumpak-rapat">
+              <Isian
+                id="tahun-ajaran-baru"
+                label="Tahun Ajaran Baru"
+                nilai={tahunAjaranBaru}
+                onChange={(v) => setTahunAjaranBaru(v)}
+                galat={galatWizard ?? undefined}
+                placeholder="YYYY/YYYY"
+                bantuan="Contoh: 2027/2028. Sistem akan menyiapkan salinan daftar kelas."
+              />
+              <div className="tumpak-rapat">
+                <Tombol label="Batal" varian="teks" lebar onClick={wizardBatal} />
+                <Tombol label="Lanjut" varian="utama" lebar onClick={wizardLanjut1} />
+              </div>
+            </div>
+          </Kartu>
+        )}
+
+        {wizardStep === 2 && (
+          <Kartu judul="Pemetaan Kelas">
+            <div className="tumpak">
+              <div className="tumpak">
+                {kelas.map((k) => {
+                  const p = pemetaan[k.id];
+                  const lulus = p === "lulus";
+                  const target = (p !== "lulus" ? p : null) as PemetaanKelas | null;
+                  const namaTarget = target ? target.nama : k.nama;
+                  const waliTarget = target ? target.wali_user_id : k.wali_user_id ?? "";
+                  const walis = waliTersediaUntuk(k.id);
+
+                  return (
+                    <div key={k.id} className="pemetaan-baris">
+                      <div className="pemetaan-sumber">
+                        <strong>{k.nama}</strong>
+                        <span className="ket">{k.tahun_ajaran}</span>
+                        <span className="ket">Wali: {namaGuru(k.wali_user_id)}</span>
+                        <span className="ket">{jumlahSiswa(k.id)} siswa</span>
+                      </div>
+                      <div className="pemetaan-target">
+                        <label className="satuan">
+                          <span className="isian-label">Pilih</span>
+                          <div className="pil-peran">
+                            <label>
+                              <input
+                                type="radio"
+                                name={`mode-${k.id}`}
+                                value="lanjut"
+                                checked={!lulus}
+                                onChange={() =>
+                                  setPemetaan((prev) => ({
+                                    ...prev,
+                                    [k.id]: {
+                                      nama: target ? target.nama : k.nama,
+                                      wali_user_id: target ? target.wali_user_id : k.wali_user_id ?? "",
+                                    },
+                                  }))
+                                }
+                              />
+                              <span>Teruskan ke kelas baru</span>
+                            </label>
+                            <label>
+                              <input
+                                type="radio"
+                                name={`mode-${k.id}`}
+                                value="lulus"
+                                checked={lulus}
+                                onChange={() =>
+                                  setPemetaan((prev) => ({
+                                    ...prev,
+                                    [k.id]: "lulus",
+                                  }))
+                                }
+                              />
+                              <span>Lulus</span>
+                            </label>
+                          </div>
+                        </label>
+
+                        {!lulus && (
+                          <div className="tumpak-rapat">
+                            <Isian
+                              id={`nama-baru-${k.id}`}
+                              label="Nama Baru"
+                              nilai={namaTarget}
+                              onChange={(v) =>
+                                setPemetaan((prev) => ({
+                                  ...prev,
+                                  [k.id]: { nama: v, wali_user_id: waliTarget },
+                                }))
+                              }
+                              placeholder="Nama kelas"
+                            />
+                            <span className="isian-satuan">
+                              <label className="isian-label" htmlFor={`wali-baru-${k.id}`}>
+                                Wali Kelas Baru
+                              </label>
+                              <select
+                                id={`wali-baru-${k.id}`}
+                                className="isian-bulan"
+                                value={waliTarget}
+                                onChange={(e) =>
+                                  setPemetaan((prev) => ({
+                                    ...prev,
+                                    [k.id]: {
+                                      nama: namaTarget,
+                                      wali_user_id: e.target.value,
+                                    },
+                                  }))
+                                }
+                              >
+                                <option value="">Pilih guru wali kelas</option>
+                                {walis.map((u) => (
+                                  <option key={u.id} value={u.id}>
+                                    {u.nama}
+                                  </option>
+                                ))}
+                              </select>
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {galatWizard ? (
+                <span className="isian-keterangan isian-galat">
+                  <Ikon nama="silang" ukuran={16} />
+                  <span>{galatWizard}</span>
+                </span>
+              ) : null}
+
+              <div className="tumpak-rapat">
+                <Tombol label="Kembali" varian="teks" lebar onClick={wizardKembali} />
+                <Tombol label="Lanjut" varian="utama" lebar onClick={wizardLanjut2} />
+              </div>
+            </div>
+          </Kartu>
+        )}
+
+        {wizardStep === 3 && (
+          <Kartu judul="Pratinjau dan Konfirmasi">
+            {!showConfirm ? (
+              <div className="tumpak">
+                <div className="ringkasan-kenaikan">
+                  <div className="ringkasan-box">
+                    <span className="ringkasan-nilai">{ringkasan.pindah}</span>
+                    <span className="ringkasan-label">Siswa pindah kelas</span>
+                  </div>
+                  <div className="ringkasan-box">
+                    <span className="ringkasan-nilai">{ringkasan.lulus}</span>
+                    <span className="ringkasan-label">Siswa lulus</span>
+                  </div>
+                </div>
+                <div className="tumpak-rapat">
+                  <Tombol label="Kembali" varian="teks" lebar onClick={wizardKembali} />
+                  <Tombol
+                    label="Terapkan"
+                    varian="utama"
+                    lebar
+                    onClick={() => setShowConfirm(true)}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="tumpak">
+                <p className="konfirmasi-teks">
+                  Terapkan kenaikan kelas? {ringkasan.pindah} siswa pindah kelas dan{" "}
+                  {ringkasan.lulus} siswa dinyatakan lulus (dinonaktifkan). Riwayat absen tidak
+                  berubah.
+                </p>
+                <div className="tumpak-rapat">
+                  <Tombol label="Batal" varian="teks" lebar onClick={() => setShowConfirm(false)} />
+                  <Tombol label="Terapkan" varian="utama" lebar onClick={konfirmasiTerapkan} />
+                </div>
+              </div>
+            )}
+          </Kartu>
+        )}
+      </div>
+    );
+  }
+
   return (
-    <Kartu>
-      <KeadaanKosong
-        ikon="info"
-        teks={`Modul ${label} sedang dikembangkan pada milestone berikutnya.`}
+    <main className="rangka rangka-guru rangka-kelas">
+      <Header
+        judul="Master Data"
+        aksi={
+          <Tombol
+            label="Keluar"
+            varian="sekunder"
+            muatan={<Ikon nama="keluar" ukuran={20} />}
+            onClick={() => {
+              keluar();
+              router.replace("/");
+            }}
+          />
+        }
       />
-    </Kartu>
+
+      {pesan ? <Pesan jenis={pesan.jenis} teks={pesan.teks} onTutup={() => setPesan(null)} /> : null}
+
+      <Kartu>
+        <div className="tumpak-rapat">
+          {modus === "daftar" && !wizardAktif && (
+            <div className="rata-tengah">
+              <Tombol
+                label="Tambah"
+                varian="utama"
+                muatan={<Ikon nama="tambah" ukuran={20} />}
+                onClick={bukaForm}
+              />
+            </div>
+          )}
+          {modus === "daftar" && !wizardAktif
+            ? renderDaftar()
+            : modus === "tambah" || modus === "ubah"
+              ? renderForm()
+              : renderWizard()}
+        </div>
+      </Kartu>
+
+      <NavigasiPeran role="admin" aktif="master-data" />
+    </main>
   );
 }
 
@@ -1752,7 +2401,7 @@ function MasterDataApp({ sesi }: { sesi: Sesi }) {
         {tab === "admin-kepala" && <ManajemenAdminKepala sesi={sesi} />}
         {tab === "guru" && <ManajemenGuru sesi={sesi} />}
         {tab === "siswa" && <ManajemenSiswa sesi={sesi} />}
-        {tab === "kelas" && <PlaceholderTab label="Kelas" />}
+        {tab === "kelas" && <ManajemenKelas sesi={sesi} />}
       </div>
     </>
   );

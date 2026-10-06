@@ -978,3 +978,87 @@
 .form-pencarian-filter .isian-satuan {
   margin-bottom: 0;
 }
+
+/* --- Manajemen Kelas ---------------------------------------------------- */
+
+.wizard-langkah {
+  display: flex;
+  gap: var(--s-8);
+  justify-content: center;
+  margin-bottom: var(--s-16);
+  flex-wrap: wrap;
+}
+
+.wizard-langkah-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-4);
+  font-size: var(--ukuran-isi);
+  font-weight: 600;
+  color: var(--redup);
+}
+
+.wizard-langkah-item.aktif {
+  color: var(--utama);
+}
+
+.pemetaan-baris {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: var(--s-12);
+  padding: var(--s-12) 0;
+  border-bottom: var(--garis-tipis);
+  align-items: start;
+}
+
+.pemetaan-baris:last-child {
+  border-bottom: 0;
+}
+
+.pemetaan-sumber {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.pemetaan-sumber strong {
+  font-weight: 600;
+}
+
+.pemetaan-target {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-12);
+}
+
+.ringkasan-kenaikan {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-16);
+  margin: var(--s-16) 0;
+}
+
+.ringkasan-box {
+  background: var(--abu);
+  padding: var(--s-16);
+  border-radius: var(--r-isian);
+  text-align: center;
+}
+
+.ringkasan-nilai {
+  font-size: var(--ukuran-judul);
+  font-weight: 700;
+  color: var(--utama);
+  line-height: 1.2;
+}
+
+.ringkasan-label {
+  font-size: var(--ukuran-isi);
+  color: var(--redup);
+}
+
+.konfirmasi-teks {
+  font-size: var(--ukuran-isi);
+  color: var(--teks);
+  margin-bottom: var(--s-16);
+}
