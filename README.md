@@ -20,7 +20,7 @@ Status terakhir:
 - M4 (Dashboard Kepala/Admin) selesai sebagai simulasi frontend; validasi server tetap menunggu M10.
 - Fixture mock sudah dilengkapi menjadi 6 guru, 3 kelas, dan 30 siswa.
 - M3 selesai sebagai simulasi frontend. UAT kamera/lokasi nyata, Tutup Hari, dan input izin/koreksi masih menunggu tahap yang sesuai.
-- M5 mulai dikerjakan: SCR-10 Data Lembaga tersedia sebagai mock awal; akses dibatasi untuk Admin. Layar lain pada M5 belum dimulai.
+- M5 sedang dikerjakan: SCR-10 Data Lembaga dan SCR-11 Admin & Kepala tersedia sebagai mock; akses dibatasi untuk Admin. Layar Guru, Siswa, dan Kelas belum dimulai.
 - Lint dan build terakhir berhasil. Perubahan belum di-commit atau di-push.
 
 

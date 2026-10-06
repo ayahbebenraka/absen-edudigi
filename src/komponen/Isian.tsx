@@ -17,6 +17,7 @@ type IsianProps = {
   placeholder?: string;
   autoComplete?: "username" | "current-password" | "new-password" | "off";
   bolehLihat?: boolean;
+  nonaktif?: boolean;
 };
 
 const native: Record<TipeIsian, string> = {
@@ -37,6 +38,7 @@ export function Isian({
   placeholder,
   autoComplete = "off",
   bolehLihat = false,
+  nonaktif = false,
 }: IsianProps) {
   const idGalat = useId();
   const idBantuan = useId();
@@ -61,6 +63,7 @@ export function Isian({
           inputMode={tipe === "nomor" ? "numeric" : undefined}
           aria-invalid={galat ? true : undefined}
           aria-describedby={deskripsi}
+          disabled={nonaktif}
         />
         {bolehLihat && tipe === "password" ? (
           <button

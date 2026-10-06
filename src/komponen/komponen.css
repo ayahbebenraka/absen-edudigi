@@ -110,6 +110,11 @@
   color: var(--redup);
 }
 
+.isian input:disabled {
+  color: var(--redup);
+  cursor: not-allowed;
+}
+
 .isian-salah {
   border-color: var(--bahaya);
 }
@@ -209,6 +214,13 @@
   margin-bottom: var(--s-8);
   font-size: var(--ukuran-isi);
   font-weight: 600;
+}
+
+.kartu-subjudul {
+  margin-bottom: var(--s-8);
+  font-size: var(--ukuran-keterangan);
+  font-weight: 600;
+  color: var(--redup);
 }
 
 .kartu-padat {
@@ -849,4 +861,109 @@
 
 .pengaturan-link:hover {
   text-decoration: underline;
+}
+
+/* --- Master Data: tab dan manajemen pengguna --------------------------- */
+.tab-master-data {
+  display: flex;
+  gap: var(--s-8);
+  overflow-x: auto;
+  padding-bottom: var(--s-4);
+  margin-bottom: var(--s-16);
+}
+
+.tab-master-data button {
+  flex: 0 0 auto;
+  min-height: var(--tinggi-sentuh);
+  padding: 0 var(--s-16);
+  border: var(--garis-tipis);
+  border-radius: var(--r-isian);
+  background: var(--perm);
+  color: var(--teks);
+  font-size: var(--ukuran-isi);
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tab-master-data button.aktif,
+.tab-master-data button:hover {
+  background: var(--utama);
+  border-color: var(--utama);
+  color: var(--atas-utama);
+}
+
+.tab-master-data button.aktif {
+  font-weight: 700;
+}
+
+.daftar-pengguna {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-8);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.baris-pengguna {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-8);
+  padding: var(--s-12) 0;
+  border-bottom: var(--garis-tipis);
+}
+
+.baris-pengguna:last-child {
+  border-bottom: 0;
+}
+
+.baris-pengguna-info {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.baris-pengguna-info strong {
+  font-weight: 600;
+}
+
+.baris-pengguna-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-8);
+  align-items: center;
+}
+
+.baris-pengguna-meta .ket {
+  white-space: nowrap;
+}
+
+.baris-pengguna-aksi {
+  display: flex;
+  gap: var(--s-8);
+  flex: 0 0 auto;
+}
+
+.pil-peran {
+  display: flex;
+  gap: var(--s-8);
+  margin: var(--s-12) 0;
+}
+
+.pil-peran label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-4);
+  font-size: var(--ukuran-isi);
+  cursor: pointer;
+}
+
+.pil-peran input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
 }
