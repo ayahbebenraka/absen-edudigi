@@ -23,8 +23,3 @@ Status terakhir:
 - Lint dan build terakhir berhasil. Perubahan belum di-commit atau di-push.
 
 
--- op
--- saat ini saya ingin jeda.
--- apa yang saya tulis di chat nanti agar copilot melanjutkan proyek -- sesuai langkah, tindakan dan rekomendasi terakhir.
--- next
-Lanjutkan M3 secara bertahap dari sini. Periksa dulu status workspace dan PROGRES.md, pertahankan perubahan yang sudah ada, verifikasi perilaku dan responsivitas sebelum menandai UAT, lalu perbarui checkpoint. Jangan mulai mengubah skema atau autentikasi backend sebelum konflik `password_hash` antara BRD dan FS/Data Model diselesaikan. Jangan commit atau push tanpa instruksi saya.
