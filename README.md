@@ -17,9 +17,10 @@ Akun mock (hanya fase frontend, belum Supabase): `admin@akademik.sch.id`/`admin1
 Lanjutkan proyek dari kondisi workspace saat ini, jangan mulai ulang analisis dari awal. Ikuti blueprint/000_Master_Instruction_copilot.md dan urutan sumber kebenaran yang ditetapkan blueprint/README.md.
 
 Status terakhir:
-- Gerbang frontend M2 (SCR-02) ditutup; UAT server dan dashboard yang belum terpenuhi tetap terbuka.
+- M4 (Dashboard Kepala/Admin) selesai sebagai simulasi frontend; validasi server tetap menunggu M10.
 - Fixture mock sudah dilengkapi menjadi 6 guru, 3 kelas, dan 30 siswa.
-- M3 sedang berjalan: SCR-03 Absen Siswa dan SCR-06 Kelas Saya sudah dibuat sebagai simulasi frontend. UAT-12, UAT-13, dan UAT-30 lulus simulasi; UAT kamera/lokasi nyata, Tutup Hari, dan input izin/koreksi masih menunggu tahap yang sesuai.
+- M3 selesai sebagai simulasi frontend. UAT kamera/lokasi nyata, Tutup Hari, dan input izin/koreksi masih menunggu tahap yang sesuai.
+- M5 mulai dikerjakan: SCR-10 Data Lembaga tersedia sebagai mock awal; akses dibatasi untuk Admin. Layar lain pada M5 belum dimulai.
 - Lint dan build terakhir berhasil. Perubahan belum di-commit atau di-push.
 
 

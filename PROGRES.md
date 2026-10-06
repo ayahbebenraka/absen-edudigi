@@ -8,7 +8,7 @@ Sumber ID: BRD v1.1, FS v1.2, Data Model v1.0, dan plan M1 (`.kilo/plans/`).
 | Item | Nilai |
 |---|---|
 | Fase (BRD 18.2) | **Tahap 3 — Fase Frontend (layout)** dengan data contoh |
-| Milestone aktif | **M4** — Dashboard Kepala/Admin (frontend mock) |
+| Milestone aktif | **M5** — Master Data (frontend mock) |
 | Commit implementasi terakhir | `a4a8148` (6 Okt 2026) · branch `main` · remote `origin` (SSH `github-ayahbebenraka`) |
 | Layar selesai | 5/27 (SCR-01, SCR-02, SCR-03, SCR-06, SCR-26; frontend mock) |
 | Komponen selesai | 13/18 (KOM-01, 02, 03, 04, 05, 08, 10, 11, 12, 13, 16, 17, 18) |
@@ -26,8 +26,8 @@ Urutan mengikuti FS 11.1 / BRD 18.3. UAT ditulis pada milestone pemiliknya.
 | **M1** | Fondasi Frontend: token (FS 2.5), komponen dasar, mock 13 tabel, sesi mock; SCR-01 Login + SCR-26 Akun dan Ganti Password (gerbang modul Akun, FS 3.1) | SCR-01, 26 | UAT-23, 35, 37 | ✅ **Selesai** (`c8778b0`, `f7bd64a`); UAT-23 lulus, UAT-35/37 menunggu cakupan terkait |
 | **M2** | SCR-02 Beranda Guru: 6 keadaan tombol (KOM-02), jadwal hari ini, simulasi GPS (dalam/luar radius, akurasi rendah) | SCR-02 | UAT-01..07, 27, 36 | ✅ Selesai untuk frontend SCR-02; UAT-01/02/03/05 lulus simulasi. Validasi server dan Tutup Hari tetap di M10; dashboard Kepala M4 |
 | **M3** | SCR-03 Absen Siswa: pemindai QR simulasi, scan beruntun, ketik NISN, kontrol segmen; Kelas Saya untuk wali kelas | SCR-03, 06 | UAT-11..14, 30, 39 | 🔄 Frontend mock SCR-03/06 selesai; UAT-11/39 menunggu kamera/GPS dan server M10, UAT-14 menunggu Alpa M10 serta izin/koreksi M7; belum lulus end-to-end |
-| **M4** | SCR-07/08 Dashboard Kepala/Admin + navigasi per peran (FS 2.3) | SCR-07, 08 | UAT-41 | 🔄 SCR-07/08 mock tersedia; navigasi Kepala/Admin hanya Dashboard/Akun; UAT-41 lulus simulasi frontend, validasi server menunggu M10 |
-| **M5** | Master Data: Lembaga, Admin/Kepala, Guru, Siswa, Kelas, wizard kenaikan kelas, impor Excel | SCR-10..14 | UAT-21, 23, 25, 29, 31 | ⬜ Belum dimulai |
+| **M4** | SCR-07/08 Dashboard Kepala/Admin + navigasi per peran (FS 2.3) | SCR-07, 08 | UAT-41 | ✅ Selesai sebagai mock; UAT-41 lulus simulasi frontend, validasi server menunggu M10 |
+| **M5** | Master Data: Lembaga, Admin/Kepala, Guru, Siswa, Kelas, wizard kenaikan kelas, impor Excel | SCR-10..14 | UAT-21, 23, 25, 29, 31 | 🔄 SCR-10 mock awal tersedia dan dibatasi untuk Admin; UAT layar belum diverifikasi; SCR-11..14 belum dimulai |
 | **M6** | Jadwal Default, Override Guru, Kalender, Pengaturan | SCR-15..18 | UAT-08..10, 26 | ⬜ Belum dimulai |
 | **M7** | Izin & Koreksi: Izin Saya, Persetujuan, Izin input Admin, Koreksi Absen, Log Aktivitas | SCR-05, 09, 19, 20, 22 | UAT-16..20, 32, 33 | ⬜ Belum dimulai |
 | **M8** | Laporan + ekspor Excel/PDF + Rekap Saya (SCR-04) | SCR-04, 21 | UAT-24, 25 | ⬜ Belum dimulai |
@@ -51,7 +51,7 @@ Nama dan peran mengikuti FS 3.2. Kolom "Milestone" kosong = belum ditempatkan (l
 | SCR-07 | Dashboard Kepala | Kepala | HP, desktop | M4 | 🔄 Ringkasan dan kartu absen opsional mock selesai; menu Dashboard/Akun tersedia, tujuan lain menunggu layar terkait |
 | SCR-08 | Dashboard Admin | Admin | Desktop | M4 | 🔄 Dashboard mock dan banner koordinat/Tutup Hari; menu Dashboard/Akun tersedia, validasi UAT-41 menunggu |
 | SCR-09 | Persetujuan Izin Guru | Kepala | HP, desktop | M7 | ⬜ |
-| SCR-10 | Master Data: Lembaga | Admin | Desktop | M5 | ⬜ |
+| SCR-10 | Master Data: Lembaga | Admin | Desktop | M5 | 🔄 Mock awal; validasi form dan izin akses telah diperiksa, UAT visual belum dilakukan |
 | SCR-11 | Master Data: Admin dan Kepala | Admin | Desktop | M5 | ⬜ |
 | SCR-12 | Master Data: Guru | Admin | Desktop | M5 | ⬜ |
 | SCR-13 | Master Data: Siswa | Admin | Desktop | M5 | ⬜ |
@@ -70,7 +70,7 @@ Nama dan peran mengikuti FS 3.2. Kolom "Milestone" kosong = belum ditempatkan (l
 | SCR-26 | Akun dan Ganti Password | Semua | HP, desktop | M1 | ✅ Selesai |
 | SCR-27 | Bantuan | Semua | HP, desktop | M9 | ⬜ |
 
-Rute: `/` = SCR-01; `/akun` = SCR-26; `/beranda` = SCR-02 mock untuk Guru, SCR-07 mock untuk Kepala, SCR-08 mock untuk Admin. Navigasi Kepala/Admin sementara menautkan Dashboard dan Akun; item lain ditambahkan saat rutenya tersedia.
+Rute: `/` = SCR-01; `/akun` = SCR-26; `/beranda` = SCR-02 mock untuk Guru, SCR-07 mock untuk Kepala, SCR-08 mock untuk Admin; `/master-data` = SCR-10 mock untuk Admin. Navigasi Kepala menautkan Dashboard/Akun; navigasi Admin juga menautkan Master Data. Tujuan lain ditambahkan saat rutenya tersedia.
 
 ---
 

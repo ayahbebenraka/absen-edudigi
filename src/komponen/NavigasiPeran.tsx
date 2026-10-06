@@ -2,17 +2,20 @@ import Link from "next/link";
 import { Ikon, type NamaIkon } from "./Ikon";
 
 type PeranPengelola = "kepala" | "admin";
-type TujuanPengelola = "dashboard" | "akun";
+type TujuanPengelola = "dashboard" | "master-data" | "akun";
 
 const tujuan: { id: TujuanPengelola; href: string; label: string; ikon: NamaIkon }[] = [
   { id: "dashboard", href: "/beranda", label: "Dashboard", ikon: "kotak-masuk" },
+  { id: "master-data", href: "/master-data", label: "Master Data", ikon: "berkas" },
   { id: "akun", href: "/akun", label: "Akun", ikon: "info" },
 ];
 
 export function NavigasiPeran({ role, aktif }: { role: PeranPengelola; aktif: TujuanPengelola }) {
   return (
     <nav className="navigasi-peran" aria-label={role === "kepala" ? "Menu Kepala" : "Menu Admin"}>
-      {tujuan.map((item) => (
+      {tujuan
+        .filter((item) => role === "admin" || item.id !== "master-data")
+        .map((item) => (
         <Link
           key={item.id}
           href={item.href}
