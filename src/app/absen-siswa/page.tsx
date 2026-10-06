@@ -197,8 +197,11 @@ export default function HalamanAbsenSiswa() {
     ].slice(0, 5));
     setJumlah((sebelumnya) => sebelumnya + 1);
     setNisn("");
-    if (!scanAktif) setKetikNisn(false);
-    else requestAnimationFrame(() => nisnRef.current?.focus());
+    if (!scanAktif) {
+      setKetikNisn(false);
+      setScanAktif(true);
+    }
+    requestAnimationFrame(() => nisnRef.current?.focus());
   }
 
   return (
