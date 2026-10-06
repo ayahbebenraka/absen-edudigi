@@ -236,72 +236,76 @@ export default function HalamanAbsenSiswa() {
           <Tombol label="Coba lagi lokasi" varian="sekunder" onClick={cobaLagiLokasi} nonaktif={scanAktif} />
         </div>
 
-        <div className="bingkai-pindai" aria-label="Area pemindai QR simulasi">
-          <span className="bingkai-pindai-ikon"><Ikon nama="pengguna" ukuran={32} /></span>
-          <strong>{scanAktif ? "Pemindai siap" : "Kamera belum aktif"}</strong>
-          <span className="ket">{scanAktif ? "Masukkan kode QR contoh di bawah." : "Lokasi dan kamera hanya digunakan selama sesi scan."}</span>
-        </div>
+        <div className="area-pindai">
+          <div className="kontrol-pindai">
+            <div className="bingkai-pindai" aria-label="Area pemindai QR simulasi">
+              <span className="bingkai-pindai-ikon"><Ikon nama="pengguna" ukuran={32} /></span>
+              <strong>{scanAktif ? "Pemindai siap" : "Kamera belum aktif"}</strong>
+              <span className="ket">{scanAktif ? "Masukkan kode QR contoh di bawah." : "Lokasi dan kamera hanya digunakan selama sesi scan."}</span>
+            </div>
 
-        <div className="tumpuk-rapat">
-          {!scanAktif ? (
-            <Tombol label="Mulai Scan" varian="utama" lebar onClick={mulaiScan} nonaktif={!jadwal.aktif || lokasi !== "dalam"} />
-          ) : (
-            <Tombol
-              label="Selesai"
-              varian="sekunder"
-              lebar
-              onClick={() => {
-                setScanAktif(false);
-                setHasil(null);
-              }}
-            />
-          )}
-          {!ketikNisn && !scanAktif ? (
-            <Tombol label="Ketik NISN" varian="sekunder" lebar onClick={() => setKetikNisn(true)} />
+            <div className="tumpuk-rapat">
+              {!scanAktif ? (
+                <Tombol label="Mulai Scan" varian="utama" lebar onClick={mulaiScan} nonaktif={!jadwal.aktif || lokasi !== "dalam"} />
+              ) : (
+                <Tombol
+                  label="Selesai"
+                  varian="sekunder"
+                  lebar
+                  onClick={() => {
+                    setScanAktif(false);
+                    setHasil(null);
+                  }}
+                />
+              )}
+              {!ketikNisn && !scanAktif ? (
+                <Tombol label="Ketik NISN" varian="sekunder" lebar onClick={() => setKetikNisn(true)} />
+              ) : null}
+            </div>
+
+            {(scanAktif || ketikNisn) ? (
+              <Kartu judul={scanAktif ? "Simulasi QR beruntun" : "Ketik NISN"}>
+                <form className="form-pindai" onSubmit={catatNisn}>
+                  <label htmlFor="nisn-siswa">{scanAktif ? "Kode QR / NISN" : "NISN"}</label>
+                  <input
+                    ref={nisnRef}
+                    id="nisn-siswa"
+                    value={nisn}
+                    onChange={(event) => setNisn(event.target.value.replace(/\D/g, ""))}
+                    inputMode="numeric"
+                    autoComplete="off"
+                    placeholder="Contoh: 0012345601"
+                  />
+                  {!scanAktif ? (
+                    <Tombol label={memproses ? "Memproses…" : "Catat"} varian="utama" tipe="submit" memproses={memproses} />
+                  ) : (
+                    <button className="tombol-tersembunyi" type="submit" aria-label="Catat hasil pindai" disabled={memproses} />
+                  )}
+                </form>
+                <p className="ket">Fase frontend memakai input contoh; lokasi dan kamera asli akan diperiksa saat backend.</p>
+              </Kartu>
+            ) : null}
+          </div>
+
+          {scanAktif || jumlah > 0 ? (
+            <Kartu judul={`Tercatat: ${jumlah}`}>
+              {tercatat.length > 0 ? (
+                <ul className="daftar-pindai">
+                  {tercatat.map((item) => (
+                    <li key={item.id}>
+                      <span><strong>{item.nama}</strong><span className="ket">{item.kelas} · {item.jam}</span></span>
+                      <span className="ket">{item.status}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="ket">Hasil pemindaian akan tampil di sini.</p>
+              )}
+            </Kartu>
           ) : null}
         </div>
 
-        {(scanAktif || ketikNisn) ? (
-          <Kartu judul={scanAktif ? "Simulasi QR beruntun" : "Ketik NISN"}>
-            <form className="form-pindai" onSubmit={catatNisn}>
-              <label htmlFor="nisn-siswa">{scanAktif ? "Kode QR / NISN" : "NISN"}</label>
-              <input
-                ref={nisnRef}
-                id="nisn-siswa"
-                value={nisn}
-                onChange={(event) => setNisn(event.target.value.replace(/\D/g, ""))}
-                inputMode="numeric"
-                autoComplete="off"
-                placeholder="Contoh: 0012345601"
-              />
-              {!scanAktif ? (
-                <Tombol label={memproses ? "Memproses…" : "Catat"} varian="utama" tipe="submit" memproses={memproses} />
-              ) : (
-                <button className="tombol-tersembunyi" type="submit" aria-label="Catat hasil pindai" disabled={memproses} />
-              )}
-            </form>
-            <p className="ket">Fase frontend memakai input contoh; lokasi dan kamera asli akan diperiksa saat backend.</p>
-          </Kartu>
-        ) : null}
-
         {hasil ? <Pesan jenis={hasil.jenis} teks={hasil.teks} onTutup={() => setHasil(null)} /> : null}
-
-        {scanAktif || jumlah > 0 ? (
-          <Kartu judul={`Tercatat: ${jumlah}`}>
-            {tercatat.length > 0 ? (
-              <ul className="daftar-pindai">
-                {tercatat.map((item) => (
-                  <li key={item.id}>
-                    <span><strong>{item.nama}</strong><span className="ket">{item.kelas} · {item.jam}</span></span>
-                    <span className="ket">{item.status}</span>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="ket">Hasil pemindaian akan tampil di sini.</p>
-            )}
-          </Kartu>
-        ) : null}
 
         <details className="uji-frontend">
           <summary>Skenario uji frontend</summary>

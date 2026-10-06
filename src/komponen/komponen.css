@@ -532,6 +532,14 @@
   color: var(--s-alpa);
 }
 
+.area-pindai,
+.kontrol-pindai {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--s-16);
+}
+
 .bingkai-pindai {
   display: flex;
   min-height: 220px;
@@ -705,6 +713,12 @@
   .daftar-kelas {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .area-pindai {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+    align-items: start;
   }
 }
 
