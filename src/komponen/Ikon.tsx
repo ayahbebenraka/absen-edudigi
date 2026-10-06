@@ -21,7 +21,8 @@ export type NamaIkon =
   | "gembok"
   | "pengguna"
   | "tambah"
-  | "ubah";
+  | "ubah"
+  | "cetak";
 
 const isi: Record<NamaIkon, ReactNode> = {
   periksa: (
@@ -124,6 +125,13 @@ const isi: Record<NamaIkon, ReactNode> = {
       <path d="M17 3a2.85 2.85 0 1 1-4 4L7 12l-4 1v3h3l10-10a2.85 2.85 0 0 0 0-4 2.85 2.85 0 0 0 1-2.9A2.85 2.85 0 0 0 17 3Z" />
       <path d="M10 10l-1.5-1.5" />
       <path d="M12 19h7" />
+    </>
+  ),
+  cetak: (
+    <>
+      <path d="M6 9V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4" />
+      <path d="M6 18h12v-8H6v8z" />
+      <path d="M9 13h6v6H9z" />
     </>
   ),
 };

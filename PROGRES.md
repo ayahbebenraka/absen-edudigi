@@ -53,8 +53,8 @@ Nama dan peran mengikuti FS 3.2. Kolom "Milestone" kosong = belum ditempatkan (l
 | SCR-09 | Persetujuan Izin Guru | Kepala | HP, desktop | M7 | ⬜ |
 | SCR-10 | Master Data: Lembaga | Admin | Desktop | M5 | 🔄 Mock awal; validasi form dan izin akses telah diperiksa, UAT visual belum dilakukan |
 | SCR-11 | Master Data: Admin dan Kepala | Admin | Desktop | M5 | ✅ Mock tersedia: daftar, tambah/ubah, validasi, nonaktifkan/aktifkan, aturan satu Kepala & minimal satu Admin aktif |
-| SCR-12 | Master Data: Guru | Admin | Desktop | M5 | ⬜ |
-| SCR-13 | Master Data: Siswa | Admin | Desktop | M5 | ⬜ |
+| SCR-12 | Master Data: Guru | Admin | Desktop | M5 | ✅ Mock tersedia: pencarian, filter status, tambah/ubah (NIP/email terkunci), aturan guru wali kelas aktif tidak bisa dinonaktifkan |
+| SCR-13 | Master Data: Siswa | Admin | Desktop | M5 | ✅ Mock tersedia: pencarian, filter status & kelas, tambah/ubah (NISN/email terkunci), kolom kelas/jenis kelamin/kontak wali tersinkronisasi; tombol Cetak QR tersedia |
 | SCR-14 | Master Data: Kelas dan Kenaikan Kelas | Admin | Desktop | M5 | ⬜ |
 | SCR-15 | Jadwal Default | Admin | Desktop | M6 | ⬜ |
 | SCR-16 | Override Guru | Admin | Desktop | M6 | ⬜ |

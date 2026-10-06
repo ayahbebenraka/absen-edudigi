@@ -14,7 +14,7 @@ import { Pesan } from "../../komponen/Pesan";
 import { Tombol } from "../../komponen/Tombol";
 import { Unggah } from "../../komponen/Unggah";
 import { NavigasiPeran } from "../../komponen/NavigasiPeran";
-import { lembaga, type BarisLembaga, users, type BarisUser } from "../../data/contoh";
+import { lembaga, type BarisLembaga, users, type BarisUser, kelas, siswa } from "../../data/contoh";
 import { ambilSesi, ambilSesiServer, dengarSesi, keluar, type Sesi } from "../../data/sesi";
 
 const MSG_TANPA_HAK_AKSES = "Halaman ini tidak tersedia untuk Anda.";
@@ -1198,6 +1198,497 @@ function ManajemenGuru({ sesi: _sesi }: { sesi: Sesi }) {
   );
 }
 
+type GalatSiswa = {
+  nisn?: string;
+  nama?: string;
+  email?: string;
+  kontak_wali?: string;
+  kelas_id?: string;
+  jenis_kelamin?: string;
+};
+
+type FormSiswa = {
+  nisn: string;
+  nama: string;
+  email: string;
+  kontak_wali: string;
+  kelas_id: string;
+  jenis_kelamin: "L" | "P";
+  aktif: boolean;
+  foto_path: string | null;
+};
+
+const FORM_SISWA_KOSONG: FormSiswa = {
+  nisn: "",
+  nama: "",
+  email: "",
+  kontak_wali: "",
+  kelas_id: "",
+  jenis_kelamin: "L",
+  aktif: true,
+  foto_path: null,
+};
+
+const MSG_NISN = "NISN wajib diisi, 5–30 karakter, huruf/angka tanpa spasi.";
+const MSG_NISN_GANDA = "NISN sudah dipakai akun lain.";
+const MSG_KELAS_WAJIB = "Pilih kelas.";
+const MSG_JENIS_KELAMIN_WAJIB = "Pilih jenis kelamin.";
+const MSG_KONTAK_WALI = "Kontak wali berupa angka 8–15 digit, boleh diawali +.";
+const MSG_NAMA_SISWA = "Nama wajib diisi, 3–100 karakter.";
+
+function ManajemenSiswa({ sesi: _sesi }: { sesi: Sesi }) {
+  void _sesi;
+  const router = useRouter();
+
+  const daftarSiswa = users.filter((u) => u.role === "siswa");
+  const daftarKelas = kelas;
+
+  const [modus, setModus] = useState<"daftar" | "tambah" | "ubah">("daftar");
+  const [form, setForm] = useState<FormSiswa>(FORM_SISWA_KOSONG);
+  const [galat, setGalat] = useState<GalatSiswa>({});
+  const [pesan, setPesan] = useState<{ jenis: "sukses" | "galat" | "info"; teks: string } | null>(null);
+  const [konfirmasiId, setKonfirmasiId] = useState<string | null>(null);
+  const [cari, setCari] = useState("");
+  const [filterAktif, setFilterAktif] = useState<"semua" | "aktif" | "nonaktif">("semua");
+  const [filterKelas, setFilterKelas] = useState("");
+
+  const daftarTerfilter = daftarSiswa.filter((u) => {
+    const dataSiswa = siswa.find((s) => s.user_id === u.id);
+    const cocokCari =
+      cari.trim() === "" ||
+      u.nama.toLowerCase().includes(cari.toLowerCase()) ||
+      u.nomor_induk.toLowerCase().includes(cari.toLowerCase()) ||
+      u.email.toLowerCase().includes(cari.toLowerCase());
+    const cocokStatus =
+      filterAktif === "semua" || (filterAktif === "aktif" ? u.aktif : !u.aktif);
+    const cocokKelas =
+      filterKelas === "" || (dataSiswa ? dataSiswa.kelas_id === filterKelas : false);
+    return cocokCari && cocokStatus && cocokKelas;
+  });
+
+  function mulaiNonaktif(user: BarisUser) {
+    setKonfirmasiId(user.id);
+  }
+
+  function konfirmasiNonaktif(user: BarisUser) {
+    if (konfirmasiId !== user.id) return;
+    user.aktif = !user.aktif;
+    setPesan({
+      jenis: "sukses",
+      teks: user.aktif ? `${user.nama} diaktifkan.` : `${user.nama} dinonaktifkan.`,
+    });
+    setKonfirmasiId(null);
+  }
+
+  function bukaForm() {
+    setForm(FORM_SISWA_KOSONG);
+    setGalat({});
+    setModus("tambah");
+  }
+
+  function editUser(user: BarisUser) {
+    const dataSiswa = siswa.find((s) => s.user_id === user.id);
+    setForm({
+      nisn: user.nomor_induk,
+      nama: user.nama,
+      email: user.email,
+      kontak_wali: dataSiswa?.kontak_wali ?? "",
+      kelas_id: dataSiswa?.kelas_id ?? "",
+      jenis_kelamin: dataSiswa?.jenis_kelamin ?? "L",
+      aktif: user.aktif,
+      foto_path: user.foto_path,
+    });
+    setGalat({});
+    setModus("ubah");
+  }
+
+  function validasi(userEdit?: BarisUser): GalatSiswa {
+    const g: GalatSiswa = {};
+
+    if (!form.nisn || !polaNip.test(form.nisn)) {
+      g.nisn = MSG_NISN;
+    } else if (modus === "tambah" || (userEdit && form.nisn !== userEdit.nomor_induk)) {
+      const ada = users.find((u) => u.nomor_induk === form.nisn);
+      if (ada) g.nisn = MSG_NISN_GANDA;
+    }
+
+    if (!form.nama || form.nama.trim().length < 3 || form.nama.trim().length > 100) {
+      g.nama = MSG_NAMA_SISWA;
+    }
+    if (!form.email || !polaEmail.test(form.email)) {
+      g.email = MSG_EMAIL;
+    } else if (modus === "tambah" || (userEdit && form.email.toLowerCase() !== userEdit.email)) {
+      const ada = users.find((u) => u.email === form.email.toLowerCase());
+      if (ada) g.email = MSG_EMAIL_GANDA;
+    }
+    if (form.kontak_wali && !polaTelepon.test(form.kontak_wali.trim())) {
+      g.kontak_wali = MSG_KONTAK_WALI;
+    }
+    if (!form.kelas_id) {
+      g.kelas_id = MSG_KELAS_WAJIB;
+    }
+    if (form.jenis_kelamin !== "L" && form.jenis_kelamin !== "P") {
+      g.jenis_kelamin = MSG_JENIS_KELAMIN_WAJIB;
+    }
+
+    return g;
+  }
+
+  function simpanHandler() {
+    let userEdit: BarisUser | undefined;
+    if (modus === "ubah") {
+      userEdit = users.find((u) => u.role === "siswa" && u.email === form.email && u.nomor_induk === form.nisn) ?? undefined;
+    }
+
+    const g = validasi(userEdit);
+    setGalat(g);
+    if (Object.keys(g).length > 0) return;
+
+    if (modus === "tambah") {
+      const idBaru = `u-siswa-${Date.now().toString(36).slice(-6)}`;
+      users.push({
+        id: idBaru,
+        email: form.email.toLowerCase(),
+        role: "siswa",
+        nomor_induk: form.nisn.trim(),
+        nama: form.nama.trim(),
+        kontak: null,
+        foto_path: form.foto_path,
+        aktif: form.aktif,
+        wajib_absen: false,
+      });
+      siswa.push({
+        user_id: idBaru,
+        kelas_id: form.kelas_id,
+        jenis_kelamin: form.jenis_kelamin,
+        kontak_wali: form.kontak_wali.trim(),
+      });
+      setPesan({ jenis: "sukses", teks: `Siswa ${form.nama} ditambahkan.` });
+    } else if (modus === "ubah" && userEdit) {
+      userEdit.nama = form.nama.trim();
+      userEdit.foto_path = form.foto_path;
+      userEdit.aktif = form.aktif;
+
+      const dataSiswa = siswa.find((s) => s.user_id === userEdit!.id);
+      if (dataSiswa) {
+        dataSiswa.kelas_id = form.kelas_id;
+        dataSiswa.jenis_kelamin = form.jenis_kelamin;
+        dataSiswa.kontak_wali = form.kontak_wali.trim();
+      }
+      setPesan({ jenis: "sukses", teks: MSG_TERSIMPAN });
+    }
+
+    setModus("daftar");
+    setForm(FORM_SISWA_KOSONG);
+    setGalat({});
+  }
+
+  function pilihFoto(berkas: File) {
+    if (berkas.type !== "image/jpeg" && berkas.type !== "image/png") {
+      setGalat((s) => ({ ...s, nama: "Berkas harus JPG atau PNG." }));
+      return;
+    }
+    if (berkas.size > 1024 * 1024) {
+      setGalat((s) => ({ ...s, nama: "Berkas melebihi 1 MB." }));
+      return;
+    }
+    setForm((f) => ({ ...f, foto_path: berkas.name }));
+  }
+
+  function renderDaftar() {
+    return (
+      <div className="tumpak">
+        <div className="form-pencarian-filter">
+          <Isian
+            id="cari-siswa"
+            label="Cari"
+            nilai={cari}
+            onChange={(v) => setCari(v)}
+            placeholder="Nama, NISN, email"
+          />
+
+          <span className="isian-satuan">
+            <label className="isian-label" htmlFor="filter-kelas">
+              Kelas
+            </label>
+            <select
+              id="filter-kelas"
+              className="isian-bulan"
+              value={filterKelas}
+              onChange={(e) => setFilterKelas(e.target.value)}
+            >
+              <option value="">Semua kelas</option>
+              {daftarKelas.map((k) => (
+                <option key={k.id} value={k.id}>
+                  {k.nama}
+                </option>
+              ))}
+            </select>
+          </span>
+
+          <div className="pil-peran">
+            {(["semua", "aktif", "nonaktif"] as const).map((f) => (
+              <label key={f}>
+                <input
+                  type="radio"
+                  name="filter-status"
+                  value={f}
+                  checked={filterAktif === f}
+                  onChange={() => setFilterAktif(f)}
+                />
+                <span>{f === "semua" ? "Semua" : f === "aktif" ? "Aktif" : "Nonaktif"}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {daftarTerfilter.length === 0 ? (
+          <Kartu>
+            <KeadaanKosong
+              ikon="pengguna"
+              teks="Belum ada data siswa."
+              aksi={<Tombol label="Tambah" varian="utama" onClick={bukaForm} />}
+            />
+          </Kartu>
+        ) : (
+          <Kartu judul={`Siswa (${daftarTerfilter.length})`}>
+            <ul className="daftar-pengguna">
+              {daftarTerfilter.map((user) => {
+                const dataSiswa = siswa.find((s) => s.user_id === user.id);
+                const sedangDikonfirmasi = konfirmasiId === user.id;
+
+                return (
+                  <li key={user.id} className="baris-pengguna">
+                    <div className="baris-pengguna-info">
+                      <strong>{user.nama}</strong>
+                      <div className="baris-pengguna-meta">
+                        <span className="ket">{user.email}</span>
+                        <span className="ket">NISN: {user.nomor_induk}</span>
+                        {dataSiswa ? (
+                          <span className="ket">Kelas: {dataSiswa.kelas_id ? kelas.find((k) => k.id === dataSiswa.kelas_id)?.nama ?? dataSiswa.kelas_id : "-"}</span>
+                        ) : null}
+                        {user.aktif ? (
+                          <Lencana status="hadir" />
+                        ) : (
+                          <Lencana status="alpa" />
+                        )}
+                      </div>
+                    </div>
+                    <div className="baris-pengguna-aksi">
+                      <Tombol
+                        label="Cetak QR"
+                        varian="teks"
+                        muatan={<Ikon nama="cetak" ukuran={16} />}
+                        onClick={() => setPesan({ jenis: "info", teks: "Cetak Kartu QR sedang dikembangkan." })}
+                      />
+                      <Tombol label="Ubah" varian="teks" onClick={() => editUser(user)} />
+                      {sedangDikonfirmasi ? (
+                        <span className="satuan">
+                          <Tombol
+                            label={user.aktif ? "Nonaktifkan" : "Aktifkan"}
+                            varian="bahaya"
+                            onClick={() => konfirmasiNonaktif(user)}
+                          />
+                          <Tombol label="Batal" varian="teks" onClick={() => setKonfirmasiId(null)} />
+                        </span>
+                      ) : (
+                        <Tombol
+                          label={user.aktif ? "Nonaktifkan" : "Aktifkan"}
+                          varian={user.aktif ? "bahaya" : "sekunder"}
+                          onClick={() => mulaiNonaktif(user)}
+                        />
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </Kartu>
+        )}
+
+        {modus === "tambah" && (
+          <Tombol label="Tambah" varian="utama" muatan={<Ikon nama="tambah" ukuran={20} />} onClick={bukaForm} />
+        )}
+      </div>
+    );
+  }
+
+  function renderForm() {
+    const labelTombol = modus === "tambah" ? "Simpan" : "Simpan";
+
+    return (
+      <Kartu judul={modus === "tambah" ? "Tambah" : "Ubah"} subjudul="Siswa">
+        <div className="tumpak-rapat">
+          <Isian
+            id="nisn"
+            label="NISN"
+            nilai={form.nisn}
+            onChange={(v) => setForm((f) => ({ ...f, nisn: v }))}
+            galat={galat.nisn}
+            nonaktif={modus === "ubah"}
+          />
+
+          <Isian
+            id="nama-siswa"
+            label="Nama"
+            nilai={form.nama}
+            onChange={(v) => setForm((f) => ({ ...f, nama: v }))}
+            galat={galat.nama}
+            placeholder="Nama lengkap"
+          />
+
+          <Isian
+            id="email-siswa"
+            label="Email"
+            tipe="email"
+            nilai={form.email}
+            onChange={(v) => setForm((f) => ({ ...f, email: v }))}
+            galat={galat.email}
+            nonaktif={modus === "ubah"}
+            placeholder="nama@akademik.sch.id"
+          />
+
+          <span className="isian-satuan">
+            <label className="isian-label" htmlFor="kelas-siswa">
+              Kelas
+            </label>
+            <select
+              id="kelas-siswa"
+              className="isian-bulan"
+              value={form.kelas_id}
+              onChange={(e) => setForm((f) => ({ ...f, kelas_id: e.target.value }))}
+            >
+              <option value="">Pilih kelas</option>
+              {daftarKelas.map((k) => (
+                <option key={k.id} value={k.id}>
+                  {k.nama}
+                </option>
+              ))}
+            </select>
+          </span>
+          {galat.kelas_id ? (
+            <span className="isian-keterangan isian-galat">
+              <Ikon nama="silang" ukuran={16} />
+              <span>{galat.kelas_id}</span>
+            </span>
+          ) : null}
+
+          <label className="satuan">
+            <span className="isian-label">Jenis Kelamin</span>
+            <div className="pil-peran">
+              <label>
+                <input
+                  type="radio"
+                  name="jenis_kelamin"
+                  value="L"
+                  checked={form.jenis_kelamin === "L"}
+                  onChange={() => setForm((f) => ({ ...f, jenis_kelamin: "L" }))}
+                />
+                <span>Laki-laki</span>
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="jenis_kelamin"
+                  value="P"
+                  checked={form.jenis_kelamin === "P"}
+                  onChange={() => setForm((f) => ({ ...f, jenis_kelamin: "P" }))}
+                />
+                <span>Perempuan</span>
+              </label>
+            </div>
+          </label>
+          {galat.jenis_kelamin ? (
+            <span className="isian-keterangan isian-galat">
+              <Ikon nama="silang" ukuran={16} />
+              <span>{galat.jenis_kelamin}</span>
+            </span>
+          ) : null}
+
+          <Isian
+            id="kontak-wali"
+            label="Kontak Wali"
+            nilai={form.kontak_wali}
+            onChange={(v) => setForm((f) => ({ ...f, kontak_wali: v }))}
+            galat={galat.kontak_wali}
+            placeholder="Opsional"
+            bantuan="Angka 8–15 digit, boleh diawali +."
+          />
+
+          <Unggah
+            id="foto-siswa"
+            label="Foto"
+            terima=".jpg,.png"
+            keterangan="JPG/PNG · maks 1 MB"
+            namaBerkas={form.foto_path}
+            onPilih={pilihFoto}
+          />
+
+          <label className="satuan">
+            <span className="isian-label">Status</span>
+            <div className="pil-peran">
+              <label>
+                <input
+                  type="radio"
+                  name="aktif"
+                  value="true"
+                  checked={form.aktif === true}
+                  onChange={() => setForm((f) => ({ ...f, aktif: true }))}
+                />
+                <span>Aktif</span>
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="aktif"
+                  value="false"
+                  checked={form.aktif === false}
+                  onChange={() => setForm((f) => ({ ...f, aktif: false }))}
+                />
+                <span>Nonaktif</span>
+              </label>
+            </div>
+          </label>
+        </div>
+
+        <div className="tumpak-rapat">
+          <Tombol label={labelTombol} varian="utama" lebar onClick={simpanHandler} />
+          <Tombol label="Batal" varian="teks" lebar onClick={() => { setModus("daftar"); setForm(FORM_SISWA_KOSONG); setGalat({}); }} />
+        </div>
+      </Kartu>
+    );
+  }
+
+  return (
+    <main className="rangka rangka-guru">
+      <Header
+        judul="Master Data"
+        aksi={
+          <Tombol
+            label="Keluar"
+            varian="sekunder"
+            muatan={<Ikon nama="keluar" ukuran={20} />}
+            onClick={() => {
+              keluar();
+              router.replace("/");
+            }}
+          />
+        }
+      />
+
+      {pesan ? <Pesan jenis={pesan.jenis} teks={pesan.teks} onTutup={() => setPesan(null)} /> : null}
+
+      <Kartu>
+        <div className="tumpak-rapat">
+          {modus === "daftar" ? renderDaftar() : renderForm()}
+        </div>
+      </Kartu>
+
+      <NavigasiPeran role="admin" aktif="master-data" />
+    </main>
+  );
+}
+
 function PlaceholderTab({ label }: { label: string }) {
   return (
     <Kartu>
@@ -1260,7 +1751,7 @@ function MasterDataApp({ sesi }: { sesi: Sesi }) {
         {tab === "lembaga" && <FormulirLembaga sesi={sesi} />}
         {tab === "admin-kepala" && <ManajemenAdminKepala sesi={sesi} />}
         {tab === "guru" && <ManajemenGuru sesi={sesi} />}
-        {tab === "siswa" && <PlaceholderTab label="Siswa" />}
+        {tab === "siswa" && <ManajemenSiswa sesi={sesi} />}
         {tab === "kelas" && <PlaceholderTab label="Kelas" />}
       </div>
     </>
