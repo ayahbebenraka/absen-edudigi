@@ -8,9 +8,9 @@ Sumber ID: BRD v1.1, FS v1.2, Data Model v1.0, dan plan M1 (`.kilo/plans/`).
 | Item | Nilai |
 |---|---|
 | Fase (BRD 18.2) | **Tahap 3 — Fase Frontend (layout)** dengan data contoh |
-| Milestone aktif | **M3** — SCR-03 Absen Siswa dan SCR-06 Kelas Saya (simulasi frontend) |
-| Commit implementasi terakhir | `1956256` (6 Okt 2026) · branch `main` · remote `origin` (SSH `github-ayahbebenraka`) |
-| Layar selesai | 3/27 (SCR-01, SCR-02, SCR-26); SCR-03 dan SCR-06 sedang dibangun |
+| Milestone aktif | **M4** — Dashboard Kepala/Admin (frontend mock) |
+| Commit implementasi terakhir | `9be7f7f` (6 Okt 2026) · branch `main` · remote `origin` (SSH `github-ayahbebenraka`) |
+| Layar selesai | 5/27 (SCR-01, SCR-02, SCR-03, SCR-06, SCR-26; frontend mock) |
 | Komponen selesai | 12/18 (KOM-01, 02, 03, 04, 05, 08, 10, 11, 12, 16, 17, 18) |
 | UAT lulus penuh | 8/41 |
 | Build/lint | Lulus (`npm run build`, `npm run lint`) |
@@ -25,8 +25,8 @@ Urutan mengikuti FS 11.1 / BRD 18.3. UAT ditulis pada milestone pemiliknya.
 |---|---|---|---|---|
 | **M1** | Fondasi Frontend: token (FS 2.5), komponen dasar, mock 13 tabel, sesi mock; SCR-01 Login + SCR-26 Akun dan Ganti Password (gerbang modul Akun, FS 3.1) | SCR-01, 26 | UAT-23, 35, 37 | ✅ **Selesai** (`c8778b0`, `f7bd64a`); UAT-23 lulus, UAT-35/37 menunggu cakupan terkait |
 | **M2** | SCR-02 Beranda Guru: 6 keadaan tombol (KOM-02), jadwal hari ini, simulasi GPS (dalam/luar radius, akurasi rendah) | SCR-02 | UAT-01..07, 27, 36 | ✅ Selesai untuk frontend SCR-02; UAT-01/02/03/05 lulus simulasi. Validasi server dan Tutup Hari tetap di M10; dashboard Kepala M4 |
-| **M3** | SCR-03 Absen Siswa: pemindai QR simulasi, scan beruntun, ketik NISN, kontrol segmen; Kelas Saya untuk wali kelas | SCR-03, 06 | UAT-11..14, 30, 39 | 🔄 Berjalan; status lokasi simulasi dan aksi coba ulang tersedia; kamera/GPS nyata menunggu M10, izin/koreksi menunggu M7 |
-| **M4** | SCR-07/08 Dashboard Kepala/Admin + navigasi final per peran (FS 2.3) | SCR-07, 08 | UAT-41 | ⬜ Belum dimulai |
+| **M3** | SCR-03 Absen Siswa: pemindai QR simulasi, scan beruntun, ketik NISN, kontrol segmen; Kelas Saya untuk wali kelas | SCR-03, 06 | UAT-11..14, 30, 39 | 🔄 Frontend mock SCR-03/06 selesai; UAT-11/39 menunggu kamera/GPS dan server M10, UAT-14 menunggu Alpa M10 serta izin/koreksi M7; belum lulus end-to-end |
+| **M4** | SCR-07/08 Dashboard Kepala/Admin + navigasi final per peran (FS 2.3) | SCR-07, 08 | UAT-41 | 🔄 Dimulai: SCR-07 ringkasan Kepala mock; kartu absen opsional, navigasi final, dan SCR-08 Admin belum selesai |
 | **M5** | Master Data: Lembaga, Admin/Kepala, Guru, Siswa, Kelas, wizard kenaikan kelas, impor Excel | SCR-10..14 | UAT-21, 23, 25, 29, 31 | ⬜ Belum dimulai |
 | **M6** | Jadwal Default, Override Guru, Kalender, Pengaturan | SCR-15..18 | UAT-08..10, 26 | ⬜ Belum dimulai |
 | **M7** | Izin & Koreksi: Izin Saya, Persetujuan, Izin input Admin, Koreksi Absen, Log Aktivitas | SCR-05, 09, 19, 20, 22 | UAT-16..20, 32, 33 | ⬜ Belum dimulai |
@@ -44,11 +44,11 @@ Nama dan peran mengikuti FS 3.2. Kolom "Milestone" kosong = belum ditempatkan (l
 |---|---|---|---|---|---|
 | SCR-01 | Login | Semua | HP | M1 | ✅ Selesai |
 | SCR-02 | Beranda Guru (Masuk/Pulang) | Guru; Kepala (kartu opsional di SCR-07) | HP | M2 | ✅ Selesai (frontend mock) |
-| SCR-03 | Absen Siswa (QR/NISN) | Guru | HP | M3 | 🔄 Berjalan (simulasi frontend; status lokasi dan coba ulang tersedia) |
+| SCR-03 | Absen Siswa (QR/NISN) | Guru | HP | M3 | ✅ Frontend mock selesai; kamera/GPS dan validasi server menunggu M10 |
 | SCR-04 | Rekap Saya | Guru | HP | M8 | ⬜ |
 | SCR-05 | Izin Saya | Guru | HP | M7 | ⬜ |
-| SCR-06 | Kelas Saya | Guru (wali kelas) | HP | M3 | 🔄 Berjalan (simulasi frontend) |
-| SCR-07 | Dashboard Kepala | Kepala | HP, desktop | M4 | ⬜ |
+| SCR-06 | Kelas Saya | Guru (wali kelas) | HP | M3 | ✅ Frontend mock selesai; input izin/koreksi menunggu M7 |
+| SCR-07 | Dashboard Kepala | Kepala | HP, desktop | M4 | 🔄 Ringkasan mock mulai dibangun; kartu absen opsional dan navigasi final belum selesai |
 | SCR-08 | Dashboard Admin | Admin | Desktop | M4 | ⬜ |
 | SCR-09 | Persetujuan Izin Guru | Kepala | HP, desktop | M7 | ⬜ |
 | SCR-10 | Master Data: Lembaga | Admin | Desktop | M5 | ⬜ |
@@ -70,7 +70,7 @@ Nama dan peran mengikuti FS 3.2. Kolom "Milestone" kosong = belum ditempatkan (l
 | SCR-26 | Akun dan Ganti Password | Semua | HP, desktop | M1 | ✅ Selesai |
 | SCR-27 | Bantuan | Semua | HP, desktop | M9 | ⬜ |
 
-Rute: `/` = SCR-01; `/akun` = SCR-26; `/beranda` = SCR-02 mock untuk Guru, placeholder peran lain sampai navigasi M4.
+Rute: `/` = SCR-01; `/akun` = SCR-26; `/beranda` = SCR-02 mock untuk Guru, SCR-07 mock untuk Kepala, dan placeholder Admin sampai SCR-08.
 
 ---
 
@@ -162,7 +162,8 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Pengujian dilakukan manual pe
 5. **Push:** remote `origin` sudah memakai SSH (`git@github-ayahbebenraka:...`); push dari terminal berfungsi.
 6. **SCR-26 (catatan implementasi):** pesan "Password lama tidak cocok. Periksa lalu coba lagi." adalah **usulan H-09** — Lampiran A belum memilikinya (mengikuti pola MSG-15); perlu dikukuhkan di versi FS berikutnya (PK-E3). Foto hanya dipratinjau namanya lewat KOM-16; unggah dan kompres sebenarnya (T-06) berjalan di Fase Backend (M10). Ikon `gembok` dan `pengguna` ditambahkan ke set baku (PK-C4). Mock `users` ditambah kolom `kontak` dan `foto_path` sesuai Data Model.
 7. **M2 (gerbang frontend ditutup):** SCR-02 menyimulasikan seluruh 6 keadaan tombol; UAT-01/02/03/05 lulus, termasuk luar radius, akurasi rendah, dan Pulang Awal. Waktu/lokasi tetap mock; duplikat dan MSG-08 baru dijamin server pada M10. UAT-06/07 menunggu Tutup Hari M10; UAT-27/36 menunggu dashboard M4 dan Tutup Hari M10; UAT-41 menunggu banner Dashboard Admin M4.
-8. **M3 (berjalan):** SCR-03 dan SCR-06 memakai fixture; NISN menjadi masukan simulasi QR, bukan pembacaan kamera. UAT-12/13/30 diverifikasi di browser; setelah input NISN manual sukses untuk Masuk maupun Pulang, layar kembali ke mode scan simulasi dan siap menerima siswa berikutnya tanpa ketukan Mulai Scan. Status lokasi, coba ulang, dan penahanan scan saat lokasi tidak valid juga diuji. Scan Masuk dan Pulang dengan lokasi simulasi dalam radius berhasil; hasil sukses SCR-03 menutup setelah 2 detik, galat bertahan sampai ditutup, dan KOM-10 tetap 4 detik pada perilaku default. Pola getar 1× sukses/2× galat diuji dengan stub browser; getar fisik menunggu uji perangkat. SCR-03 dan SCR-06 tidak overflow pada lebar 375 px maupun 1280 px; filter kelas dapat digeser pada HP, dan layout desktop SCR-03 menempatkan kontrol scan serta panel hasil dalam dua kolom. Rekap per siswa memuat Hadir/Terlambat/Izin/Sakit/Alpa dan persentase SF-09; penyebut nol tampil “—”, bulan tanpa data memakai ES-08. Jika pemilih bulan dikosongkan, kembali ke bulan berjalan agar rekap tidak mencampur seluruh bulan; diuji bersama keadaan ES-08 pada 375 px. Kamera/GPS nyata dan validasi server UAT-11/39 menunggu M10; input izin/koreksi menunggu M7. UAT-28 diverifikasi parsial: penolakan siswa memakai teks MSG-08; guru tidak mendapat kontrol Pulang tanpa Masuk dan validasi server menunggu M10. Tidak ada perubahan skema atau autentikasi.
+8. **M3 (frontend mock selesai; UAT tertunda):** SCR-03 dan SCR-06 memakai fixture; NISN menjadi masukan simulasi QR, bukan pembacaan kamera. UAT-12/13/30 diverifikasi di browser; setelah input NISN manual sukses Masuk atau Pulang, layar kembali ke mode scan simulasi untuk siswa berikutnya. UAT-11/39 menunggu kamera/GPS dan validasi server M10; UAT-14 menunggu Alpa M10 serta izin/koreksi M7. M3 belum lulus end-to-end. Status lokasi, debounce, feedback, rekap bulanan, dan responsivitas 375/1280 px sudah diuji; tidak ada perubahan skema atau autentikasi.
+9. **M4 (berjalan):** SCR-07 ringkasan Kepala mock mulai dibangun dari fixture sesuai SF-01; implementasi Admin, kartu absen opsional Kepala, dan navigasi final masih terbuka. UAT-41 tetap menunggu banner koordinat Admin dan validasi backend.
 
 ---
 
@@ -181,6 +182,7 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Pengujian dilakukan manual pe
 | 6 Okt 2026 | Verifikasi lanjutan M3: scan Pulang untuk siswa yang sudah Masuk | `30da07b` | ✅ | ✅ Scan simulasi tercatat 14:00, penghitung bertambah, status Hadir; UAT kamera/GPS nyata tetap terbuka |
 | 6 Okt 2026 | Verifikasi UAT-28: Pulang siswa tanpa Masuk cocok dengan MSG-08; jalur guru tidak tersedia di UI | — | ✅ | ⚠️ Parsial; penolakan server untuk guru dan siswa menunggu M10 |
 | 6 Okt 2026 | UAT-30 Pulang: duplikat dalam 3 detik diabaikan; setelah jeda tampil pesan netral | — | ✅ | ✅ Penghitung tidak bertambah pada duplikat; diuji dalam simulasi frontend |
+| 6 Okt 2026 | M4 dimulai: SCR-07 Dashboard Kepala ringkasan harian dari fixture/SF-01 | `9be7f7f` | ✅ | 🔄 M4 aktif; build/lint dan uji browser 375/1280 px lulus; SCR-08, kartu absen opsional, navigasi final, dan UAT-41 belum selesai |
 | 6 Okt 2026 | SCR-03: layout scanner dan panel hasil dua kolom desktop, satu kolom mobile | `82d426f` | ✅ | ✅ Uji browser 375/1280 px; scan sukses tampil di panel hasil; lint dan build lulus; UAT-37 tetap terbuka |
 | 6 Okt 2026 | SCR-03: hasil sukses 2 detik dan getar opsional; durasi default KOM-10 tetap 4 detik | `f50d865` | ✅ | ✅ Uji browser: sukses/galat/duplikat dan timer; pola getar via stub; lint/build lulus; getar fisik menunggu uji perangkat |
 | 6 Okt 2026 | SCR-06: hitungan status dan persentase per siswa sesuai SF-09; ES-08 untuk bulan tanpa data | `a512522` | ✅ | ✅ Uji browser 375/1280 px; data fixture dan keadaan kosong terverifikasi; lint/build lulus |
