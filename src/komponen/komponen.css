@@ -979,6 +979,107 @@
   margin-bottom: 0;
 }
 
+/* --- Utilitas tumpukan rapat -------------------------------------- */
+.tumpak-rapat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-12);
+}
+
+/* --- Jadwal: grid default dan override guru --------------------------- */
+.jadwal-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-12);
+  margin: var(--s-12) 0;
+}
+
+.jadwal-grid-header {
+  display: none;
+  font-size: var(--ukuran-keterangan);
+  font-weight: 600;
+  color: var(--redup);
+}
+
+.baris-jadwal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-8);
+  padding: var(--s-12) 0;
+  border-bottom: var(--garis-tipis);
+}
+
+.baris-jadwal:last-child {
+  border-bottom: 0;
+}
+
+.baris-jadwal-label {
+  font-size: var(--ukuran-isi);
+  font-weight: 600;
+}
+
+.baris-jadwal-aktif,
+.pil-mode {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-4);
+  font-size: var(--ukuran-isi);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.baris-jadwal-aktif input[type="checkbox"],
+.pil-mode input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.isian-waktu {
+  width: 100%;
+  min-height: var(--tinggi-isian);
+  padding: 0 var(--s-12);
+  border: var(--garis-tipis);
+  border-radius: var(--r-isian);
+  background: var(--perm);
+  color: var(--teks);
+}
+
+.isian-waktu:focus {
+  outline: none;
+  border-color: var(--utama);
+}
+
+.isian-waktu:disabled {
+  color: var(--redup);
+  cursor: not-allowed;
+  background: var(--abu);
+}
+
+@media (min-width: 1024px) {
+  .jadwal-grid {
+    gap: 0;
+  }
+
+  .jadwal-grid-header,
+  .baris-jadwal {
+    display: grid;
+    grid-template-columns: 110px 1.2fr 130px 130px;
+    gap: var(--s-12);
+    align-items: center;
+    padding: var(--s-8) 0;
+    border-bottom: var(--garis-tipis);
+  }
+
+  .jadwal-grid-header {
+    padding-bottom: var(--s-4);
+  }
+
+  .baris-jadwal:last-child {
+    border-bottom: 0;
+  }
+}
+
 /* --- Manajemen Kelas ---------------------------------------------------- */
 
 .wizard-langkah {

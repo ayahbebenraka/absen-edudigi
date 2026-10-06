@@ -8,12 +8,12 @@ Sumber ID: BRD v1.1, FS v1.2, Data Model v1.0, dan plan M1 (`.kilo/plans/`).
 | Item | Nilai |
 |---|---|
 | Fase (BRD 18.2) | **Tahap 3 — Fase Frontend (layout)** dengan data contoh |
-| Milestone aktif | **M5** — Master Data (frontend mock) |
-| Commit implementasi terakhir | SCR-12 (`064088d` — belum push), SCR-11 (`064088d`) | branch `main` · remote `origin` (SSH `github-ayahbebenraka`) |
-| Layar selesai | 6/27 (SCR-01, 02, 03, 06, 26; + SCR-10/11 mock) |
+| Milestone aktif | **M6** — Jadwal dan Pengaturan (frontend mock) |
+| Commit implementasi terakhir | SCR-14 (`35d51e8`); SCR-15/16 menunggu commit | branch `main` · remote `origin` (SSH `github-ayahbebenraka`) |
+| Layar selesai | 8/27 (SCR-01, 02, 03, 06, 26, 15, 16; + SCR-10/11/12/13/14 mock) |
 | Komponen selesai | 13/18 (KOM-01, 02, 03, 04, 05, 08, 10, 11, 12, 13, 16, 17, 18) |
 | UAT lulus penuh | 8/41 |
-| Build/lint | Lulus (`npm run build`, `npm run lint`) |
+| Build/lint | Lulus (`npm run build`, `npm run lint`, `tsc --noEmit`) |
 
 ---
 
@@ -27,8 +27,8 @@ Urutan mengikuti FS 11.1 / BRD 18.3. UAT ditulis pada milestone pemiliknya.
 | **M2** | SCR-02 Beranda Guru: 6 keadaan tombol (KOM-02), jadwal hari ini, simulasi GPS (dalam/luar radius, akurasi rendah) | SCR-02 | UAT-01..07, 27, 36 | ✅ Selesai untuk frontend SCR-02; UAT-01/02/03/05 lulus simulasi. Validasi server dan Tutup Hari tetap di M10; dashboard Kepala M4 |
 | **M3** | SCR-03 Absen Siswa: pemindai QR simulasi, scan beruntun, ketik NISN, kontrol segmen; Kelas Saya untuk wali kelas | SCR-03, 06 | UAT-11..14, 30, 39 | 🔄 Frontend mock SCR-03/06 selesai; UAT-11/39 menunggu kamera/GPS dan server M10, UAT-14 menunggu Alpa M10 serta izin/koreksi M7; belum lulus end-to-end |
 | **M4** | SCR-07/08 Dashboard Kepala/Admin + navigasi per peran (FS 2.3) | SCR-07, 08 | UAT-41 | ✅ Selesai sebagai mock; UAT-41 lulus simulasi frontend, validasi server menunggu M10 |
-| **M5** | Master Data: Lembaga, Admin/Kepala, Guru, Siswa, Kelas, wizard kenaikan kelas, impor Excel | SCR-10..14 | UAT-21, 23, 25, 29, 31 | 🔄 SCR-10 mock awal tersedia dan dibatasi untuk Admin; UAT layar belum diverifikasi; SCR-11..14 belum dimulai |
-| **M6** | Jadwal Default, Override Guru, Kalender, Pengaturan | SCR-15..18 | UAT-08..10, 26 | ⬜ Belum dimulai |
+| **M5** | Master Data: Lembaga, Admin/Kepala, Guru, Siswa, Kelas, wizard kenaikan kelas, impor Excel | SCR-10..14 | UAT-21, 23, 25, 29, 31 | ✅ Selesai sebagai mock (SCR-10..14); UAT-21/29 (impor Excel) menunggu M10; UAT-25/31 menunggu laporan M8 |
+| **M6** | Jadwal Default, Override Guru, Kalender, Pengaturan | SCR-15..18 | UAT-08..10, 26 | 🔄 SCR-15/16 mock selesai (Admin edit, Kepala lihat); SCR-17 Kalender dan SCR-18 Pengaturan belum dimulai; UAT-08..10 menunggu kalender M6 + SF-01 M10; UAT-26 parsial (banner tampil, fixture berubah langsung) |
 | **M7** | Izin & Koreksi: Izin Saya, Persetujuan, Izin input Admin, Koreksi Absen, Log Aktivitas | SCR-05, 09, 19, 20, 22 | UAT-16..20, 32, 33 | ⬜ Belum dimulai |
 | **M8** | Laporan + ekspor Excel/PDF + Rekap Saya (SCR-04) | SCR-04, 21 | UAT-24, 25 | ⬜ Belum dimulai |
 | **M9** | Rekap Siswa, Kartu QR (cetak massal + saya), Bantuan | SCR-23, 24, 25, 27 | UAT-22, 34 | ⬜ Belum dimulai |
@@ -56,8 +56,8 @@ Nama dan peran mengikuti FS 3.2. Kolom "Milestone" kosong = belum ditempatkan (l
 | SCR-12 | Master Data: Guru | Admin | Desktop | M5 | ✅ Mock tersedia: pencarian, filter status, tambah/ubah (NIP/email terkunci), aturan guru wali kelas aktif tidak bisa dinonaktifkan |
 | SCR-13 | Master Data: Siswa | Admin | Desktop | M5 | ✅ Mock tersedia: pencarian, filter status & kelas, tambah/ubah (NISN/email terkunci), kolom kelas/jenis kelamin/kontak wali tersinkronisasi; tombol Cetak QR tersedia |
 | SCR-14 | Master Data: Kelas dan Kenaikan Kelas | Admin | Desktop | M5 | ✅ Manajemen kelas: daftar, tambah/ubah (nama, tahun ajaran, wali), validasi unik; Kenaikan Kelas massal wizard 3 langkah (FR-MD-08): tahun ajaran baru, pemetaan (teruskan/lulus), pratinjau + konfirmasi MSG-24 |
-| SCR-15 | Jadwal Default | Admin | Desktop | M6 | ⬜ |
-| SCR-16 | Override Guru | Admin | Desktop | M6 | ⬜ |
+| SCR-15 | Jadwal Default | Admin edit; Kepala lihat | Desktop | M6 | ✅ Mock: dua target Guru/Siswa, 7 baris (Sabtu..Jumat) sesuai AB-21, sakelar Aktif, validasi jam wajib dan Pulang > Masuk, banner "Berlaku mulai besok." |
+| SCR-16 | Override Guru | Admin edit; Kepala lihat | Desktop | M6 | ✅ Mock: pilih guru, 7 baris segmen Default/Override/Nonaktif, Override menampilkan jam, lencana "Ada pengecualian", banner "Berlaku mulai besok." |
 | SCR-17 | Kalender | Admin | Desktop | M6 | ⬜ |
 | SCR-18 | Pengaturan | Admin | Desktop | M6 | ⬜ |
 | SCR-19 | Izin (input Admin) | Admin | Desktop | M7 | ⬜ |
@@ -70,7 +70,7 @@ Nama dan peran mengikuti FS 3.2. Kolom "Milestone" kosong = belum ditempatkan (l
 | SCR-26 | Akun dan Ganti Password | Semua | HP, desktop | M1 | ✅ Selesai |
 | SCR-27 | Bantuan | Semua | HP, desktop | M9 | ⬜ |
 
-Rute: `/` = SCR-01; `/akun` = SCR-26; `/beranda` = SCR-02 mock untuk Guru, SCR-07 mock untuk Kepala, SCR-08 mock untuk Admin; `/master-data` = SCR-10 mock untuk Admin. Navigasi Kepala menautkan Dashboard/Akun; navigasi Admin juga menautkan Master Data. Tujuan lain ditambahkan saat rutenya tersedia.
+Rute: `/` = SCR-01; `/akun` = SCR-26; `/beranda` = SCR-02 mock untuk Guru, SCR-07 mock untuk Kepala, SCR-08 mock untuk Admin; `/master-data` = SCR-10..14 mock untuk Admin; `/jadwal` = SCR-15/16 mock (Admin edit, Kepala lihat). Navigasi Kepala: Dashboard/Jadwal/Akun; navigasi Admin: Dashboard/Master Data/Jadwal/Akun. Tujuan lain ditambahkan saat rutenya tersedia.
 
 ---
 
@@ -164,6 +164,7 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Pengujian dilakukan manual pe
 7. **M2 (gerbang frontend ditutup):** SCR-02 menyimulasikan seluruh 6 keadaan tombol; UAT-01/02/03/05 lulus, termasuk luar radius, akurasi rendah, dan Pulang Awal. Waktu/lokasi tetap mock; duplikat dan MSG-08 baru dijamin server pada M10. UAT-06/07 menunggu Tutup Hari M10; UAT-27/36 menunggu dashboard M4 dan Tutup Hari M10; UAT-41 menunggu banner Dashboard Admin M4.
 8. **M3 (frontend mock selesai; UAT tertunda):** SCR-03 dan SCR-06 memakai fixture; NISN menjadi masukan simulasi QR, bukan pembacaan kamera. UAT-12/13/30 diverifikasi di browser; setelah input NISN manual sukses Masuk atau Pulang, layar kembali ke mode scan simulasi untuk siswa berikutnya. UAT-11/39 menunggu kamera/GPS dan validasi server M10; UAT-14 menunggu Alpa M10 serta izin/koreksi M7. M3 belum lulus end-to-end. Status lokasi, debounce, feedback, rekap bulanan, dan responsivitas 375/1280 px sudah diuji; tidak ada perubahan skema atau autentikasi.
 9. **M4 (berjalan):** SCR-07 ringkasan Kepala dan kartu absen opsional mock memakai fixture serta jadwal guru sesuai SF-01; Kepala tetap tidak masuk hitungan wajib. Panel absen dipakai bersama Beranda Guru agar aturan waktu/lokasi/status tidak diduplikasi. SCR-08 Admin mock memakai ringkasan fixture, banner koordinat belum diatur, banner Tutup Hari tertinggal, dan perhatian lokasi mencurigakan; UAT-41 belum lulus karena validasi server belum tersedia. Navigasi Kepala/Admin responsif: saat ini hanya Dashboard/Akun ditautkan; menu final menunggu rute layar lain. Uji browser 375/1280 px lulus dan tidak ada overflow.
+10. **M6 (SCR-15/16, 7 Okt 2026):** Halaman `/jadwal` memakai satu rute dengan dua tab. Jadwal Default: target Guru/Siswa, 7 baris, nilai awal sesuai AB-21 (Sabtu–Rabu 07:00–14:00; Kamis 07:00–12:00; Jumat libur), validasi jam wajib dan Pulang > Masuk. Override Guru: pemilih guru, segmen Default/Override/Nonaktif per hari, lencana "Ada pengecualian" bila guru punya override. Admin dapat mengubah; Kepala mode lihat (seluruh masukan nonaktif, tanpa tombol Simpan) sesuai FR-JD-01/02 "Admin; Kepala lihat". Banner KOM-13 "Perubahan berlaku mulai besok." Ditambahkan utilitas `.tumpak-rapat` dan gaya grid jadwal di `komponen.css`; ikon `kalender` dan `pengaturan` ditambahkan ke set baku untuk SCR-17/18. **Deviasi:** pemilih guru memakai `<select>` sederhana, bukan KOM-15 (Pencarian) yang belum dibuat; lencana pengecualian tampil di samping pemilih, bukan di dalam daftar opsi. **UAT-26 parsial:** banner tampil, tetapi mock mengubah fixture langsung sehingga "hari ini ikut berubah" dalam simulasi; perilaku sebenarnya menunggu `jadwal_efektif` (SF-01) di M10. UAT-08/09/10 menunggu SCR-17 Kalender dan M10. Diverifikasi di browser: admin (edit + validasi galat), kepala (lihat saja, navigasi Dashboard/Jadwal/Akun), 375 px (stacked, tanpa overflow) dan 1280 px (grid 4 kolom).
 
 ---
 
@@ -195,3 +196,4 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Pengujian dilakukan manual pe
 | 6 Okt 2026 | M5: SCR-12 Guru mock — pencarian, filter status, tambah/ubah (NIP/email terkunci), aturan guru wali kelas aktif tidak bisa dinonaktifkan; `subjudul` prop pada Kartu, `nonaktif` prop pada Isian; kolom `mata_pelajaran` & `wali_kelas` pada `users` mock | — | Belum didorong | ✅ Lint/build lulus; perubahan belum di-commit/push |
 | 6 Okt 2026 | M5: SCR-13 Siswa mock — pencarian, filter status & kelas, tambah/ubah (NISN/email terkunci), kolom kelas/jenis kelamin/kontak wali; tombol Cetak QR tersedia | `903c966` | ✅ | ✅ Commit & push; lint/build lulus |
 | 6 Okt 2026 | M5: SCR-14 Kelas & Kenaikan Kelas — daftar, tambah/ubah kelas, validasi unik; wizard 3 langkah (FR-MD-08): tahun ajaran baru, pemetaan teruskan/lulus, pratinjau + konfirmasi MSG-24 | `35d51e8` | ✅ | ✅ Commit & push; lint/build lulus |
+| 7 Okt 2026 | M6: SCR-15/16 Jadwal — halaman `/jadwal`, tab Jadwal Default (Guru/Siswa, 7 hari, AB-21, validasi jam) dan Override Guru (segmen Default/Override/Nonaktif, lencana pengecualian); Admin edit, Kepala lihat; utilitas `.tumpak-rapat` + gaya grid jadwal | menunggu commit | Belum didorong | ✅ tsc/lint/build lulus; uji browser admin & kepala, 375/1280 px; UAT-26 parsial |

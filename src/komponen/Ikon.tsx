@@ -22,7 +22,9 @@ export type NamaIkon =
   | "pengguna"
   | "tambah"
   | "ubah"
-  | "cetak";
+  | "cetak"
+  | "kalender"
+  | "pengaturan";
 
 const isi: Record<NamaIkon, ReactNode> = {
   periksa: (
@@ -132,6 +134,18 @@ const isi: Record<NamaIkon, ReactNode> = {
       <path d="M6 9V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4" />
       <path d="M6 18h12v-8H6v8z" />
       <path d="M9 13h6v6H9z" />
+    </>
+  ),
+  kalender: (
+    <>
+      <rect x="3" y="6" width="18" height="15" rx="2" />
+      <path d="M7 2h2v4H7zM15 2h2v4h-2z" />
+    </>
+  ),
+  pengaturan: (
+    <>
+      <circle cx="12" cy="12" r="3" />
+      <path d="M12 2v4m0 12v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4m14 0h4M4.9 19.1l2.8-2.8M16.3 7.9l2.8-2.8" />
     </>
   ),
 };
