@@ -10,8 +10,9 @@ import { Lencana } from "../../komponen/Lencana";
 import { Pemuat } from "../../komponen/Pemuat";
 import { Tombol } from "../../komponen/Tombol";
 import { Pesan } from "../../komponen/Pesan";
-import { absensi_guru, izin_guru, lembaga, type BarisAbsensiGuru } from "../../data/contoh";
-import { jadwalGuruEfektif, jamWib, labelTanggalWib, menitDariJam, tanggalWib } from "../../data/absensi";
+import { NavigasiGuru } from "../../komponen/NavigasiGuru";
+import { absensi_guru, izin_guru, kelas, lembaga, type BarisAbsensiGuru } from "../../data/contoh";
+import { jadwalGuruEfektif, jamWib, labelTanggalWib, menitDariJam, statusMasuk, tanggalWib } from "../../data/absensi";
 import { ambilSesi, ambilSesiServer, dengarSesi, keluar, namaPeran, type Sesi } from "../../data/sesi";
 
 const MSG_TANPA_HAK_AKSES = "Halaman ini tidak tersedia untuk Anda.";
@@ -212,8 +213,7 @@ function BerandaGuru({ sesi }: { sesi: Sesi }) {
         setMemproses(false);
         return;
       }
-      const terlambat = menitTercatat > menitMasuk + pengaturan.toleransi_menit;
-      const status = terlambat ? "terlambat" : "hadir";
+      const status = statusMasuk(jamTercatat, jadwal.jamMasuk!, pengaturan.toleransi_menit);
       setCatatan({ ...dasar, jam_masuk: jamTercatat, status });
       setPesan({
         jenis: "sukses",
@@ -238,7 +238,7 @@ function BerandaGuru({ sesi }: { sesi: Sesi }) {
       : undefined;
 
   return (
-    <main className="rangka">
+    <main className="rangka rangka-guru">
       <Header
         judul={`${sapaan(waktu)}, ${sesi.nama}`}
         tanggal={labelTanggalWib()}
@@ -339,10 +339,15 @@ function BerandaGuru({ sesi }: { sesi: Sesi }) {
         </details>
 
         <div className="rata-tengah">
+          <Tombol label="Absen Siswa" varian="teks" onClick={() => router.push("/absen-siswa")} />
+          {kelas.some((baris) => baris.wali_user_id === sesi.userId) ? (
+            <Tombol label="Kelas Saya" varian="teks" onClick={() => router.push("/kelas-saya")} />
+          ) : null}
           <Tombol label="Rekap saya" varian="teks" onClick={() => setPesan({ jenis: "info", teks: "Rekap saya tersedia pada modul laporan." })} />
           <Tombol label="Ajukan koreksi" varian="teks" onClick={() => setPesan({ jenis: "info", teks: "Pengajuan koreksi tersedia pada modul Izin dan Koreksi." })} />
         </div>
       </div>
+      <NavigasiGuru userId={sesi.userId} aktif="beranda" />
     </main>
   );
 }

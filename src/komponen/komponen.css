@@ -437,6 +437,244 @@
   gap: var(--s-16);
 }
 
+.rangka-guru {
+  padding-bottom: 104px;
+}
+
+.navigasi-guru {
+  position: fixed;
+  z-index: 10;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-around;
+  padding: var(--s-8) var(--s-8) calc(var(--s-8) + env(safe-area-inset-bottom));
+  border-top: var(--garis-tipis);
+  background: var(--perm);
+}
+
+.navigasi-guru-link {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-4);
+  min-height: var(--tinggi-sentuh);
+  color: var(--redup);
+  font-size: var(--ukuran-isi);
+  text-decoration: none;
+}
+
+.navigasi-guru-link.aktif {
+  color: var(--utama);
+  font-weight: 600;
+}
+
+.segmen {
+  display: flex;
+  overflow: hidden;
+  border: var(--garis-tipis);
+  border-radius: var(--r-isian);
+}
+
+.segmen button,
+.filter-status button {
+  min-height: var(--tinggi-sentuh);
+  padding: 0 var(--s-16);
+  border: 0;
+  background: var(--perm);
+  color: var(--teks);
+  cursor: pointer;
+}
+
+.segmen button {
+  flex: 1;
+}
+
+.segmen button.aktif {
+  background: var(--utama);
+  color: var(--atas-utama);
+  font-weight: 600;
+}
+
+.bingkai-pindai {
+  display: flex;
+  min-height: 220px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-8);
+  padding: var(--s-24);
+  border: 2px dashed var(--garis);
+  border-radius: var(--r-kartu);
+  background: var(--perm);
+  text-align: center;
+}
+
+.bingkai-pindai-ikon {
+  display: grid;
+  width: 56px;
+  height: 56px;
+  place-items: center;
+  border-radius: var(--r-kartu);
+  background: var(--lembut);
+  color: var(--utama);
+}
+
+.form-pindai {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-8);
+  align-items: end;
+}
+
+.form-pindai label {
+  width: 100%;
+  font-weight: 600;
+}
+
+.form-pindai input {
+  flex: 1;
+  min-width: 160px;
+  min-height: var(--tinggi-isian);
+  padding: 0 var(--s-12);
+  border: var(--garis-tipis);
+  border-radius: var(--r-isian);
+  background: var(--perm);
+}
+
+.tombol-tersembunyi {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.daftar-pindai,
+.daftar-kelas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-8);
+  padding: 0;
+  list-style: none;
+}
+
+.daftar-pindai li,
+.baris-kelas-kepala {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-8);
+}
+
+.daftar-pindai li {
+  min-height: 48px;
+  border-bottom: var(--garis-tipis);
+}
+
+.daftar-pindai li > span:first-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-status {
+  display: flex;
+  gap: var(--s-8);
+  overflow-x: auto;
+  padding-bottom: var(--s-4);
+}
+
+.filter-status button {
+  flex: 0 0 auto;
+  min-height: 40px;
+  border: var(--garis-tipis);
+  border-radius: var(--r-pil);
+}
+
+.filter-status button.aktif {
+  border-color: var(--utama);
+  background: var(--lembut);
+  color: var(--utama);
+  font-weight: 600;
+}
+
+.baris-kelas-kepala p {
+  margin-top: var(--s-4);
+}
+
+.aksi-kelas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-8);
+  margin-top: var(--s-8);
+}
+
+.label-bulan {
+  font-weight: 600;
+}
+
+.isian-bulan {
+  min-height: var(--tinggi-isian);
+  padding: 0 var(--s-12);
+  border: var(--garis-tipis);
+  border-radius: var(--r-isian);
+  background: var(--perm);
+}
+
+.ringkasan-kelas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-12);
+}
+
+.ringkasan-kelas div {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+  .rangka-guru {
+    width: calc(100% - 220px);
+    max-width: var(--lebar-konten);
+    margin-left: 220px;
+  }
+
+  .navigasi-guru {
+    top: 0;
+    right: auto;
+    bottom: 0;
+    width: 220px;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: var(--s-8);
+    padding: var(--s-24) var(--s-12);
+    border-top: 0;
+    border-right: var(--garis-tipis);
+  }
+
+  .navigasi-guru-link {
+    flex: 0 0 auto;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: var(--s-12);
+    padding: 0 var(--s-12);
+    border-radius: var(--r-isian);
+  }
+
+  .navigasi-guru-link.aktif {
+    background: var(--lembut);
+  }
+
+  .daftar-kelas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 .rincian-absen {
   display: flex;
   flex-wrap: wrap;

@@ -142,6 +142,54 @@ export const users: BarisUser[] = [
     wajib_absen: true,
   },
   {
+    id: "u-g4",
+    email: "guru4@akademik.sch.id",
+    role: "guru",
+    nomor_induk: "G-004",
+    nama: "Guru Empat (wali kelas VII-C)",
+    kontak: null,
+    foto_path: null,
+    aktif: true,
+    wajib_absen: true,
+  },
+  {
+    id: "u-g5",
+    email: "guru5@akademik.sch.id",
+    role: "guru",
+    nomor_induk: "G-005",
+    nama: "Guru Lima",
+    kontak: null,
+    foto_path: null,
+    aktif: true,
+    wajib_absen: true,
+  },
+  {
+    id: "u-g6",
+    email: "guru6@akademik.sch.id",
+    role: "guru",
+    nomor_induk: "G-006",
+    nama: "Guru Enam",
+    kontak: null,
+    foto_path: null,
+    aktif: true,
+    wajib_absen: true,
+  },
+  ...Array.from({ length: 28 }, (_, index) => {
+    const nomor = index + 3;
+    const nisn = `00123456${String(nomor).padStart(2, "0")}`;
+    return {
+      id: `u-s${nomor}`,
+      email: `${nisn}@siswa.akademik.sch.id`,
+      role: "siswa" as const,
+      nomor_induk: nisn,
+      nama: `Siswa Contoh ${String(nomor).padStart(2, "0")}`,
+      kontak: null,
+      foto_path: null,
+      aktif: true,
+      wajib_absen: false,
+    };
+  }),
+  {
     id: "u-s1",
     email: "0012345601@siswa.akademik.sch.id",
     role: "siswa",
@@ -176,7 +224,8 @@ export type BarisKelas = {
 
 export const kelas: BarisKelas[] = [
   { id: "k-7a", nama: "VII-A", tahun_ajaran: "2026/2027", wali_user_id: "u-g1" },
-  { id: "k-7b", nama: "VII-B", tahun_ajaran: "2026/2027", wali_user_id: null },
+  { id: "k-7b", nama: "VII-B", tahun_ajaran: "2026/2027", wali_user_id: "u-g2" },
+  { id: "k-7c", nama: "VII-C", tahun_ajaran: "2026/2027", wali_user_id: "u-g4" },
 ];
 
 /* ---------------------------------------------------------------- 5.3 */
@@ -191,6 +240,16 @@ export type BarisSiswa = {
 export const siswa: BarisSiswa[] = [
   { user_id: "u-s1", kelas_id: "k-7a", jenis_kelamin: "L", kontak_wali: "081200000001" },
   { user_id: "u-s2", kelas_id: "k-7a", jenis_kelamin: "P", kontak_wali: "081200000002" },
+  ...Array.from({ length: 28 }, (_, index) => {
+    const nomor = index + 3;
+    const kelasIndex = Math.floor((nomor - 1) / 10);
+    return {
+      user_id: `u-s${nomor}`,
+      kelas_id: kelasIndex === 0 ? "k-7a" : kelasIndex === 1 ? "k-7b" : "k-7c",
+      jenis_kelamin: (nomor % 2 === 0 ? "P" : "L") as "L" | "P",
+      kontak_wali: `08120000${String(nomor).padStart(4, "0")}`,
+    };
+  }),
 ];
 
 /* ---------------------------------------------------------------- 5.5 */
@@ -365,6 +424,30 @@ export const absensi_guru: BarisAbsensiGuru[] = [
     flag_curiga: false,
     dikoreksi: true,
   },
+  {
+    id: "ag-7",
+    user_id: "u-g4",
+    tanggal: "2026-10-02",
+    jam_masuk: null,
+    jam_pulang: null,
+    status: "izin",
+    pulang_awal: false,
+    tidak_lengkap: false,
+    flag_curiga: false,
+    dikoreksi: false,
+  },
+  {
+    id: "ag-8",
+    user_id: "u-g5",
+    tanggal: "2026-10-02",
+    jam_masuk: null,
+    jam_pulang: null,
+    status: "dinas_luar",
+    pulang_awal: false,
+    tidak_lengkap: false,
+    flag_curiga: false,
+    dikoreksi: false,
+  },
 ];
 
 /* ---------------------------------------------------------------- 5.9 */
@@ -385,6 +468,62 @@ export type BarisAbsensiSiswa = {
 };
 
 export const absensi_siswa: BarisAbsensiSiswa[] = [
+  {
+    siswa_id: "u-s1",
+    kelas_id: "k-7a",
+    tanggal: "2026-10-06",
+    jam_masuk: "06:55",
+    jam_pulang: null,
+    status: "hadir",
+    pulang_awal: false,
+    tidak_lengkap: false,
+    flag_curiga: false,
+    dikoreksi: false,
+    discan_masuk_oleh: "u-g1",
+    discan_pulang_oleh: null,
+  },
+  {
+    siswa_id: "u-s2",
+    kelas_id: "k-7a",
+    tanggal: "2026-10-06",
+    jam_masuk: "07:20",
+    jam_pulang: null,
+    status: "terlambat",
+    pulang_awal: false,
+    tidak_lengkap: false,
+    flag_curiga: false,
+    dikoreksi: false,
+    discan_masuk_oleh: "u-g1",
+    discan_pulang_oleh: null,
+  },
+  {
+    siswa_id: "u-s3",
+    kelas_id: "k-7a",
+    tanggal: "2026-10-06",
+    jam_masuk: null,
+    jam_pulang: null,
+    status: "sakit",
+    pulang_awal: false,
+    tidak_lengkap: false,
+    flag_curiga: false,
+    dikoreksi: false,
+    discan_masuk_oleh: null,
+    discan_pulang_oleh: null,
+  },
+  {
+    siswa_id: "u-s4",
+    kelas_id: "k-7a",
+    tanggal: "2026-10-06",
+    jam_masuk: null,
+    jam_pulang: null,
+    status: "alpa",
+    pulang_awal: false,
+    tidak_lengkap: false,
+    flag_curiga: false,
+    dikoreksi: false,
+    discan_masuk_oleh: null,
+    discan_pulang_oleh: null,
+  },
   {
     siswa_id: "u-s1",
     kelas_id: "k-7a",
@@ -485,6 +624,30 @@ export const izin_guru: BarisIzinGuru[] = [
     diputuskan_oleh: null,
     catatan_keputusan: null,
   },
+  {
+    id: "ig-3",
+    user_id: "u-g4",
+    jenis: "izin",
+    tgl_mulai: "2026-10-02",
+    tgl_selesai: "2026-10-02",
+    alasan: "Keperluan keluarga",
+    status: "disetujui",
+    diajukan_oleh: "u-g4",
+    diputuskan_oleh: "u-kepala",
+    catatan_keputusan: null,
+  },
+  {
+    id: "ig-4",
+    user_id: "u-g5",
+    jenis: "dinas_luar",
+    tgl_mulai: "2026-10-02",
+    tgl_selesai: "2026-10-02",
+    alasan: "Kegiatan luar madrasah",
+    status: "disetujui",
+    diajukan_oleh: "u-g5",
+    diputuskan_oleh: "u-kepala",
+    catatan_keputusan: null,
+  },
 ];
 
 /* ---------------------------------------------------------------- 5.11 */
@@ -501,6 +664,16 @@ export type BarisIzinSiswa = {
 };
 
 export const izin_siswa: BarisIzinSiswa[] = [
+  {
+    id: "is-2",
+    siswa_id: "u-s3",
+    jenis: "sakit",
+    tgl_mulai: "2026-10-06",
+    tgl_selesai: "2026-10-06",
+    keterangan: "Demam",
+    diinput_oleh: "u-g1",
+    dibatalkan: false,
+  },
   {
     id: "is-1",
     siswa_id: "u-s2",
