@@ -11,8 +11,8 @@ Sumber ID: BRD v1.1, FS v1.2, Data Model v1.0, dan plan M1 (`.kilo/plans/`).
 | Milestone aktif | **M2** — SCR-02 Beranda Guru (simulasi frontend) |
 | Commit terakhir | `f36d0a4` (5 Okt 2026) · branch `main` · remote `origin` (SSH `github-ayahbebenraka`) |
 | Layar selesai | 2/27 (SCR-01, SCR-26) |
-| Komponen selesai | 9/18 (KOM-01, 03, 05, 08, 10, 11, 12, 16, 17) |
-| UAT dijalankan | 1/41 |
+| Komponen selesai | 10/18 (KOM-01, 02, 03, 05, 08, 10, 11, 12, 16, 17) |
+| UAT dijalankan | 5/41 |
 | Build/lint | Lulus (`npm run build`, `npm run lint`) |
 
 ---
@@ -24,7 +24,7 @@ Urutan mengikuti FS 11.1 / BRD 18.3. UAT ditulis pada milestone pemiliknya.
 | ID | Isi | Layar | UAT | Status |
 |---|---|---|---|---|
 | **M1** | Fondasi Frontend: token (FS 2.5), komponen dasar, mock 13 tabel, sesi mock; SCR-01 Login + SCR-26 Akun dan Ganti Password (gerbang modul Akun, FS 3.1) | SCR-01, 26 | UAT-23, 35, 37 | ✅ **Selesai** (`c8778b0`, `f7bd64a`); UAT-23 lulus, UAT-35/37 menunggu cakupan terkait |
-| **M2** | SCR-02 Beranda Guru: 6 keadaan tombol (KOM-02), jadwal hari ini, simulasi GPS (dalam/luar radius, akurasi rendah) | SCR-02 | UAT-01..07, 27, 36 | ⬜ Belum dimulai |
+| **M2** | SCR-02 Beranda Guru: 6 keadaan tombol (KOM-02), jadwal hari ini, simulasi GPS (dalam/luar radius, akurasi rendah) | SCR-02 | UAT-01..07, 27, 36 | 🔄 Berjalan; layar mock tersedia, UAT-01/02/03/05 lulus |
 | **M3** | SCR-03 Absen Siswa: pemindai QR (KOM-18), scan beruntun, ketik NISN (KOM-15), kontrol segmen (KOM-04) | SCR-03, 06 | UAT-11..14, 30, 39 | ⬜ Belum dimulai |
 | **M4** | SCR-07/08 Dashboard Kepala/Admin + navigasi final per peran (FS 2.3) | SCR-07, 08 | UAT-41 | ⬜ Belum dimulai |
 | **M5** | Master Data: Lembaga, Admin/Kepala, Guru, Siswa, Kelas, wizard kenaikan kelas, impor Excel | SCR-10..14 | UAT-21, 23, 25, 29, 31 | ⬜ Belum dimulai |
@@ -43,7 +43,7 @@ Nama dan peran mengikuti FS 3.2. Kolom "Milestone" kosong = belum ditempatkan (l
 | ID | Layar | Peran | Perangkat | Milestone | Status |
 |---|---|---|---|---|---|
 | SCR-01 | Login | Semua | HP | M1 | ✅ Selesai |
-| SCR-02 | Beranda Guru (Masuk/Pulang) | Guru; Kepala (kartu opsional di SCR-07) | HP | M2 | ⬜ |
+| SCR-02 | Beranda Guru (Masuk/Pulang) | Guru; Kepala (kartu opsional di SCR-07) | HP | M2 | 🔄 Berjalan (frontend mock) |
 | SCR-03 | Absen Siswa (QR/NISN) | Guru | HP | M3 | ⬜ |
 | SCR-04 | Rekap Saya | Guru | HP | M8 | ⬜ |
 | SCR-05 | Izin Saya | Guru | HP | M7 | ⬜ |
@@ -70,7 +70,7 @@ Nama dan peran mengikuti FS 3.2. Kolom "Milestone" kosong = belum ditempatkan (l
 | SCR-26 | Akun dan Ganti Password | Semua | HP, desktop | M1 | ✅ Selesai |
 | SCR-27 | Bantuan | Semua | HP, desktop | M9 | ⬜ |
 
-Rute: `/` = SCR-01; `/akun` = SCR-26; `/beranda` = placeholder hasil masuk (bukan SCR final; diganti navigasi final di M4).
+Rute: `/` = SCR-01; `/akun` = SCR-26; `/beranda` = SCR-02 mock untuk Guru, placeholder peran lain sampai navigasi M4.
 
 ---
 
@@ -81,7 +81,7 @@ Spesifikasi mengikuti FS 2.6. Milestone = perkiraan pertama dipakai.
 | ID | Komponen | Milestone pertama | Status |
 |---|---|---|---|
 | KOM-01 | Tombol (Utama/Sekunder/Bahaya/Teks) | M1 | ✅ Selesai |
-| KOM-02 | Tombol Absen Besar (≥72 px, label Masuk/Pulang) | M2 | ⬜ |
+| KOM-02 | Tombol Absen Besar (≥72 px, label Masuk/Pulang) | M2 | ✅ Selesai |
 | KOM-03 | Isian (label di atas, galat inline) | M1 | ✅ Selesai |
 | KOM-04 | Pilihan (dropdown, segmen, sakelar) | M3 (segmen Masuk/Pulang) | ⬜ |
 | KOM-05 | Lencana Status (pil ikon + teks) | M1 | ✅ Selesai |
@@ -99,21 +99,21 @@ Spesifikasi mengikuti FS 2.6. Milestone = perkiraan pertama dipakai.
 | KOM-17 | Header Halaman | M1 | ✅ Selesai |
 | KOM-18 | Pemindai QR (bingkai kamera, hitungan, 5 terakhir) | M3 | ⬜ |
 
-Sesuai PK-F2, komponen dibuat saat pertama dipakai; KOM-02, 04, 06, 07, 09, 13, 14, 15, 16, 18 sengaja belum ada.
+Sesuai PK-F2, komponen dibuat saat pertama dipakai; KOM-04, 06, 07, 09, 13, 14, 15, 18 sengaja belum ada.
 
 ---
 
 ## 4. UAT (UAT-01..41)
 
-UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Semua **belum dijalankan** (0/41) — diuji manual per modul (tanpa test framework, keputusan M1).
+UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Pengujian dilakukan manual per modul (tanpa test framework, keputusan M1).
 
 | ID | Skenario (ringkas) | Sumber | Milestone | Status |
 |---|---|---|---|---|
-| UAT-01 | Guru Masuk dalam radius, sebelum jam masuk + toleransi → Hadir + konfirmasi jam/status/jarak | BRD | M2 | ⬜ |
-| UAT-02 | Masuk setelah toleransi → Terlambat | BRD | M2 | ⬜ |
-| UAT-03 | Masuk di luar radius → ditolak, pesan menyebut jarak, tombol Coba lagi lokasi | BRD | M2 | ⬜ |
+| UAT-01 | Guru Masuk dalam radius, sebelum jam masuk + toleransi → Hadir + konfirmasi jam/status/jarak | BRD | M2 | ✅ Lulus (simulasi frontend, 6 Okt 2026) |
+| UAT-02 | Masuk setelah toleransi → Terlambat | BRD | M2 | ✅ Lulus (simulasi frontend, 6 Okt 2026) |
+| UAT-03 | Masuk di luar radius → ditolak, pesan menyebut jarak, tombol Coba lagi lokasi | BRD | M2 | ✅ Lulus (simulasi frontend, 6 Okt 2026) |
 | UAT-04 | Masuk dua kali → percobaan kedua ditolak | BRD | M2 | ⬜ |
-| UAT-05 | Pulang sebelum jendela buka Pulang → tersimpan + penanda Pulang Awal (tidak diblokir) | BRD | M2 | ⬜ |
+| UAT-05 | Pulang sebelum jendela buka Pulang → tersimpan + penanda Pulang Awal (tidak diblokir) | BRD | M2 | ✅ Lulus (simulasi frontend, 6 Okt 2026) |
 | UAT-06 | Masuk tanpa Pulang sampai tutup hari → penanda Tidak Lengkap | BRD | M2/M10 | ⬜ |
 | UAT-07 | Tanpa absen dan izin pada hari aktif → Alpa otomatis setelah tutup hari | BRD | M10 | ⬜ |
 | UAT-08 | Hari libur / guru Override nonaktif → tombol absen tidak tersedia; tidak dihitung Alpa | BRD | M6 | ⬜ |
@@ -161,6 +161,7 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Semua **belum dijalankan** (0
 4. **Dokumen:** nama berkas FS sudah `002_..._v1.2.md` dan Master Instruction sudah diperbarui (6 Okt 2026). Persetujuan BRD §22 dan FS §14 masih kosong.
 5. **Push:** remote `origin` sudah memakai SSH (`git@github-ayahbebenraka:...`); push dari terminal berfungsi.
 6. **SCR-26 (catatan implementasi):** pesan "Password lama tidak cocok. Periksa lalu coba lagi." adalah **usulan H-09** — Lampiran A belum memilikinya (mengikuti pola MSG-15); perlu dikukuhkan di versi FS berikutnya (PK-E3). Foto hanya dipratinjau namanya lewat KOM-16; unggah dan kompres sebenarnya (T-06) berjalan di Fase Backend (M10). Ikon `gembok` dan `pengguna` ditambahkan ke set baku (PK-C4). Mock `users` ditambah kolom `kontak` dan `foto_path` sesuai Data Model.
+7. **M2 (catatan implementasi):** lokasi dan waktu hanya disimulasikan; kontrol uji tidak menggantikan GPS atau validasi server. Koordinat mock lembaga masih kosong, sehingga percobaan awal menampilkan MSG-25. UAT-41 belum lulus penuh sampai banner Dashboard Admin tersedia di M4.
 
 ---
 

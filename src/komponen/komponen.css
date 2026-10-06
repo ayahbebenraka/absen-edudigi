@@ -44,6 +44,15 @@
   padding: 0 var(--s-8);
 }
 
+.btn-absen {
+  width: 100%;
+  min-height: 72px;
+  background: var(--utama);
+  border-color: var(--utama);
+  color: var(--atas-utama);
+  font-size: var(--ukuran-judul);
+}
+
 .btn-lebar {
   width: 100%;
 }
@@ -422,4 +431,55 @@
 
 .tumpuk-rapat {
   gap: var(--s-12);
+}
+
+.beranda-absen {
+  gap: var(--s-16);
+}
+
+.rincian-absen {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-8);
+}
+
+.uji-frontend {
+  border-top: var(--garis-tipis);
+  padding-top: var(--s-16);
+}
+
+.uji-frontend summary {
+  min-height: var(--tinggi-sentuh);
+  display: flex;
+  align-items: center;
+  color: var(--redup);
+  cursor: pointer;
+}
+
+.uji-frontend label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  font-size: var(--ukuran-keterangan);
+  font-weight: 600;
+}
+
+.uji-frontend input,
+.uji-frontend select {
+  width: 100%;
+  min-height: var(--tinggi-isian);
+  padding: 0 var(--s-12);
+  border: var(--garis-tipis);
+  border-radius: var(--r-isian);
+  background: var(--perm);
+}
+
+@media (min-width: 1024px) {
+  .btn-absen {
+    display: flex;
+    max-width: 360px;
+    margin-inline: auto;
+  }
 }

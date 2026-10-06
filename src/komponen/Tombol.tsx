@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 
 /** KOM-01 Tombol — gaya Utama, Sekunder, Bahaya, Teks. */
-type VarianTombol = "utama" | "sekunder" | "bahaya" | "teks";
+type VarianTombol = "utama" | "sekunder" | "bahaya" | "teks" | "absen";
 
 type TombolProps = {
   label: string;

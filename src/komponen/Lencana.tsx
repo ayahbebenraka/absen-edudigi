@@ -5,10 +5,9 @@ type StatusAbsen = "hadir" | "terlambat" | "izin" | "sakit" | "dinas_luar" | "al
 
 type Penanda = "Pulang Awal" | "Tidak Lengkap" | "Dikoreksi";
 
-type LencanaProps = {
-  status: StatusAbsen;
-  penanda?: Penanda;
-};
+type LencanaProps =
+  | { status: StatusAbsen; penanda?: Penanda }
+  | { status?: undefined; penanda: Penanda };
 
 const gaya: Record<StatusAbsen, { kelas: string; label: string; ikon: NamaIkon }> = {
   hadir: { kelas: "pil-hadir", label: "Hadir", ikon: "periksa" },
@@ -20,15 +19,18 @@ const gaya: Record<StatusAbsen, { kelas: string; label: string; ikon: NamaIkon }
 };
 
 export function Lencana({ status, penanda }: LencanaProps) {
-  const statusGaya = gaya[status];
+  const statusGaya = status ? gaya[status] : null;
   return (
     <span className="pil-berbaris">
-      <span className={`pil ${statusGaya.kelas}`}>
-        <Ikon nama={statusGaya.ikon} ukuran={16} label={statusGaya.label} />
-        <span>{statusGaya.label}</span>
-      </span>
+      {statusGaya ? (
+        <span className={`pil ${statusGaya.kelas}`}>
+          <Ikon nama={statusGaya.ikon} ukuran={16} label={statusGaya.label} />
+          <span>{statusGaya.label}</span>
+        </span>
+      ) : null}
       {penanda ? (
         <span className="pil pil-penanda">
+          <Ikon nama="info" ukuran={16} label={penanda} />
           <span>{penanda}</span>
         </span>
       ) : null}
