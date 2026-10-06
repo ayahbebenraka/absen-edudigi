@@ -71,7 +71,7 @@ export default function HalamanBeranda() {
   }
 
   if (sesi.role === "guru") return <BerandaGuru sesi={sesi} />;
-  if (sesi.role === "kepala") return <DashboardKepala />;
+  if (sesi.role === "kepala") return <DashboardKepala sesi={sesi} />;
 
   return (
     <main className="rangka">
@@ -111,7 +111,7 @@ export default function HalamanBeranda() {
   );
 }
 
-function DashboardKepala() {
+function DashboardKepala({ sesi }: { sesi: Sesi }) {
   const router = useRouter();
   const [diperbarui, setDiperbarui] = useState(() => new Date());
   const tanggal = tanggalWib(diperbarui);
@@ -195,6 +195,8 @@ function DashboardKepala() {
       />
 
       <div className="tumpuk">
+        <PanelAbsenGuru sesi={sesi} ringkas />
+
         <section className="tumpuk-rapat" aria-labelledby="ringkasan-guru">
           <h2 id="ringkasan-guru">Guru</h2>
           <div className="ringkasan-kelas">
@@ -252,6 +254,10 @@ function DashboardKepala() {
 }
 
 function BerandaGuru({ sesi }: { sesi: Sesi }) {
+  return <PanelAbsenGuru sesi={sesi} />;
+}
+
+function PanelAbsenGuru({ sesi, ringkas = false }: { sesi: Sesi; ringkas?: boolean }) {
   const router = useRouter();
   const tanggal = tanggalWib();
   const jadwal = jadwalGuruEfektif(sesi.userId, tanggal);
@@ -377,6 +383,71 @@ function BerandaGuru({ sesi }: { sesi: Sesi }) {
       ? `Absen Masuk dibuka pukul ${jadwal.jamMasuk}.`
       : undefined;
 
+  const tombolAbsen = tampilkanTombol ? (
+    <div className="tumpuk-rapat">
+      <Tombol
+        label={statusTombol === "pulang" ? "Pulang" : "Masuk"}
+        varian="absen"
+        lebar
+        memproses={memproses}
+        nonaktif={statusTombol === "belum-dibuka"}
+        alasan={alasanNonaktif}
+        onClick={catatAbsen}
+      />
+      <p className="ket rata-tengah">Lokasi hanya diminta saat tombol absen ditekan.</p>
+    </div>
+  ) : null;
+
+  const skenarioUji = (
+    <details className="uji-frontend">
+      <summary>Skenario uji frontend</summary>
+      <div className="tumpuk-rapat">
+        <label>
+          Waktu simulasi (WIB)
+          <input type="time" value={waktu} onChange={(event) => setWaktu(event.target.value)} />
+        </label>
+        <label>
+          Hasil lokasi simulasi
+          <select value={lokasi} onChange={(event) => setLokasi(event.target.value as SkenarioLokasi)}>
+            <option value="dalam">Dalam radius</option>
+            <option value="luar">Di luar radius</option>
+            <option value="akurasi">Akurasi rendah</option>
+            <option value="belum-diatur">Koordinat madrasah belum diatur</option>
+          </select>
+        </label>
+        <p className="ket">
+          Hasil lokasi dibuat untuk simulasi frontend. Backend tetap wajib memeriksa koordinat dan radius madrasah.
+        </p>
+      </div>
+    </details>
+  );
+
+  if (ringkas) {
+    return (
+      <>
+        {pesan ? <Pesan jenis={pesan.jenis} teks={pesan.teks} onTutup={() => setPesan(null)} /> : null}
+        <Kartu judul="Absen saya (opsional)">
+          <div className="tumpuk-rapat">
+            {izinHariIni ? <p>Hari ini tercatat <Lencana status={izinHariIni.jenis === "dinas_luar" ? "dinas_luar" : izinHariIni.jenis === "sakit" ? "sakit" : "izin"} />.</p> : null}
+            <p className="angka">Jadwal {jadwal.aktif && jadwal.jamMasuk && jadwal.jamPulang ? `${jadwal.jamMasuk}–${jadwal.jamPulang}` : jadwal.keterangan ?? "Hari ini bukan hari aktif Anda."}</p>
+            {catatan?.jam_masuk ? (
+              <div className="rincian-absen">
+                <span>Masuk {catatan.jam_masuk}</span>
+                <Lencana status={catatan.status} />
+                {catatan.jam_pulang ? <span>Pulang {catatan.jam_pulang}</span> : null}
+                {catatan.pulang_awal ? <Lencana penanda="Pulang Awal" /> : null}
+              </div>
+            ) : catatan ? <Lencana status={catatan.status} /> : <p>Belum absen</p>}
+            {statusTombol === "ditutup" ? <p>Absen Masuk sudah ditutup pukul {jadwal.jamMasuk}. Hubungi Admin.</p> : null}
+            {statusTombol === "selesai" ? <p className="ket">Selesai untuk hari ini.</p> : null}
+            {tombolAbsen}
+          </div>
+        </Kartu>
+        {skenarioUji}
+      </>
+    );
+  }
+
   return (
     <main className="rangka rangka-guru">
       <Header
@@ -441,42 +512,8 @@ function BerandaGuru({ sesi }: { sesi: Sesi }) {
 
         {statusTombol === "selesai" ? <p className="rata-tengah ket">Selesai untuk hari ini.</p> : null}
 
-        {tampilkanTombol ? (
-          <div className="tumpuk-rapat">
-            <Tombol
-              label={statusTombol === "pulang" ? "Pulang" : "Masuk"}
-              varian="absen"
-              lebar
-              memproses={memproses}
-              nonaktif={statusTombol === "belum-dibuka"}
-              alasan={alasanNonaktif}
-              onClick={catatAbsen}
-            />
-            <p className="ket rata-tengah">Lokasi hanya diminta saat tombol absen ditekan.</p>
-          </div>
-        ) : null}
-
-        <details className="uji-frontend">
-          <summary>Skenario uji frontend</summary>
-          <div className="tumpuk-rapat">
-            <label>
-              Waktu simulasi (WIB)
-              <input type="time" value={waktu} onChange={(event) => setWaktu(event.target.value)} />
-            </label>
-            <label>
-              Hasil lokasi simulasi
-              <select value={lokasi} onChange={(event) => setLokasi(event.target.value as SkenarioLokasi)}>
-                <option value="dalam">Dalam radius</option>
-                <option value="luar">Di luar radius</option>
-                <option value="akurasi">Akurasi rendah</option>
-                <option value="belum-diatur">Koordinat madrasah belum diatur</option>
-              </select>
-            </label>
-            <p className="ket">
-              Hasil lokasi dibuat untuk simulasi frontend. Backend tetap wajib memeriksa koordinat dan radius madrasah.
-            </p>
-          </div>
-        </details>
+        {tombolAbsen}
+        {skenarioUji}
 
         <div className="rata-tengah">
           <Tombol label="Absen Siswa" varian="teks" onClick={() => router.push("/absen-siswa")} />
