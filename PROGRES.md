@@ -26,7 +26,7 @@ Urutan mengikuti FS 11.1 / BRD 18.3. UAT ditulis pada milestone pemiliknya.
 | **M1** | Fondasi Frontend: token (FS 2.5), komponen dasar, mock 13 tabel, sesi mock; SCR-01 Login + SCR-26 Akun dan Ganti Password (gerbang modul Akun, FS 3.1) | SCR-01, 26 | UAT-23, 35, 37 | ✅ **Selesai** (`c8778b0`, `f7bd64a`); UAT-23 lulus, UAT-35/37 menunggu cakupan terkait |
 | **M2** | SCR-02 Beranda Guru: 6 keadaan tombol (KOM-02), jadwal hari ini, simulasi GPS (dalam/luar radius, akurasi rendah) | SCR-02 | UAT-01..07, 27, 36 | ✅ Selesai untuk frontend SCR-02; UAT-01/02/03/05 lulus simulasi. Validasi server dan Tutup Hari tetap di M10; dashboard Kepala M4 |
 | **M3** | SCR-03 Absen Siswa: pemindai QR simulasi, scan beruntun, ketik NISN, kontrol segmen; Kelas Saya untuk wali kelas | SCR-03, 06 | UAT-11..14, 30, 39 | 🔄 Frontend mock SCR-03/06 selesai; UAT-11/39 menunggu kamera/GPS dan server M10, UAT-14 menunggu Alpa M10 serta izin/koreksi M7; belum lulus end-to-end |
-| **M4** | SCR-07/08 Dashboard Kepala/Admin + navigasi final per peran (FS 2.3) | SCR-07, 08 | UAT-41 | 🔄 SCR-07/08 mock tersedia; navigasi Kepala/Admin sementara hanya Dashboard/Akun; menu final menunggu layar terkait; UAT-41 menunggu validasi server |
+| **M4** | SCR-07/08 Dashboard Kepala/Admin + navigasi per peran (FS 2.3) | SCR-07, 08 | UAT-41 | 🔄 SCR-07/08 mock tersedia; navigasi Kepala/Admin hanya Dashboard/Akun; UAT-41 lulus simulasi frontend, validasi server menunggu M10 |
 | **M5** | Master Data: Lembaga, Admin/Kepala, Guru, Siswa, Kelas, wizard kenaikan kelas, impor Excel | SCR-10..14 | UAT-21, 23, 25, 29, 31 | ⬜ Belum dimulai |
 | **M6** | Jadwal Default, Override Guru, Kalender, Pengaturan | SCR-15..18 | UAT-08..10, 26 | ⬜ Belum dimulai |
 | **M7** | Izin & Koreksi: Izin Saya, Persetujuan, Izin input Admin, Koreksi Absen, Log Aktivitas | SCR-05, 09, 19, 20, 22 | UAT-16..20, 32, 33 | ⬜ Belum dimulai |
@@ -149,7 +149,7 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Pengujian dilakukan manual pe
 | UAT-38 | Tutup Hari tidak berjalan satu hari → hari berikutnya menyusul tanggal tertinggal; tidak ada duplikasi | FS | M10 | ⬜ |
 | UAT-39 | Scan beruntun 20 siswa dengan lokasi dalam radius → tercatat berturut-turut; lokasi diambil ulang hanya bila usia > T-04 | FS | M3 | ⚠️ 20 scan simulasi beruntun tercatat pada 375 px; pengambilan ulang GPS nyata saat usia >60 detik menunggu M10 |
 | UAT-40 | Uji Struktur (PK-F): skema identik 13 tabel; tidak ada angka bisnis tertanam; logika hanya lewat SF/`jadwal_efektif`; DT-01..DT-16 lulus | FS | M10 | ⬜ |
-| UAT-41 | Koordinat madrasah belum diisi lalu guru menekan Masuk → ditolak MSG-25; Dashboard Admin menampilkan banner pengingat | FS | M4/M10 | ⬜ |
+| UAT-41 | Koordinat madrasah belum diisi lalu guru menekan Masuk → ditolak MSG-25; Dashboard Admin menampilkan banner pengingat | FS | M4/M10 | ⚠️ Lulus simulasi frontend (banner + MSG-25); validasi server tetap menunggu M10 |
 
 ---
 
@@ -185,7 +185,7 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Pengujian dilakukan manual pe
 | 6 Okt 2026 | M4 dimulai: SCR-07 Dashboard Kepala ringkasan harian dari fixture/SF-01 | `9be7f7f` | ✅ | 🔄 M4 aktif; build/lint dan uji browser 375/1280 px lulus; SCR-08, kartu absen opsional, navigasi final, dan UAT-41 belum selesai |
 | 6 Okt 2026 | SCR-07: kartu Absen saya opsional Kepala memakai panel bersama Beranda Guru | `786e194` | ✅ | ✅ Uji mock: Kepala absen tanpa masuk denominator; Admin tanpa tombol absen; responsif 375/1280 px; SCR-08/navigasi/UAT-41 tetap terbuka |
 | 6 Okt 2026 | SCR-08: Dashboard Admin mock, banner koordinat/Tutup Hari, dan perhatian lokasi; KOM-13 | `741a247` | ✅ | ✅ Uji browser banner/refresh, ringkasan Admin dan responsivitas 375/1280 px; UAT-41 tetap menunggu backend |
-| 6 Okt 2026 | Navigasi Kepala/Admin bertahap: Dashboard/Akun, mobile dan desktop | `a4a8148` | ✅ | ✅ Rute aktif berfungsi; bilah bawah 375 px, sidebar 1280 px, tanpa overflow; tujuan lain menunggu layar terkait |
+| 6 Okt 2026 | M4 dokumentasi: UAT-41 lulus simulasi frontend; checkpoint navigasi role | `92c3ee9` | ✅ | ✅ Lint/build lulus; UAT-11/39 (kamera/GPS nyata) dan UAT server validasi tetap menunggu M10 |
 | 6 Okt 2026 | SCR-03: layout scanner dan panel hasil dua kolom desktop, satu kolom mobile | `82d426f` | ✅ | ✅ Uji browser 375/1280 px; scan sukses tampil di panel hasil; lint dan build lulus; UAT-37 tetap terbuka |
 | 6 Okt 2026 | SCR-03: hasil sukses 2 detik dan getar opsional; durasi default KOM-10 tetap 4 detik | `f50d865` | ✅ | ✅ Uji browser: sukses/galat/duplikat dan timer; pola getar via stub; lint/build lulus; getar fisik menunggu uji perangkat |
 | 6 Okt 2026 | SCR-06: hitungan status dan persentase per siswa sesuai SF-09; ES-08 untuk bulan tanpa data | `a512522` | ✅ | ✅ Uji browser 375/1280 px; data fixture dan keadaan kosong terverifikasi; lint/build lulus |
