@@ -499,6 +499,21 @@
   font-weight: 600;
 }
 
+.banner-info {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-8);
+  padding: var(--s-12);
+  border: 1px solid var(--s-terlambat);
+  border-radius: var(--r-kartu);
+  background: var(--s-terlambat-bg);
+  color: var(--s-terlambat);
+}
+
+.banner-info > svg {
+  flex: 0 0 auto;
+}
+
 .status-lokasi {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);

@@ -3,6 +3,7 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { Header } from "../../komponen/Header";
+import { BannerInfo } from "../../komponen/BannerInfo";
 import { Ikon } from "../../komponen/Ikon";
 import { Kartu } from "../../komponen/Kartu";
 import { KeadaanKosong } from "../../komponen/KeadaanKosong";
@@ -71,7 +72,7 @@ export default function HalamanBeranda() {
   }
 
   if (sesi.role === "guru") return <BerandaGuru sesi={sesi} />;
-  if (sesi.role === "kepala") return <DashboardKepala sesi={sesi} />;
+  if (sesi.role === "kepala" || sesi.role === "admin") return <DashboardRingkasan sesi={sesi} />;
 
   return (
     <main className="rangka">
@@ -111,8 +112,9 @@ export default function HalamanBeranda() {
   );
 }
 
-function DashboardKepala({ sesi }: { sesi: Sesi }) {
+function DashboardRingkasan({ sesi }: { sesi: Sesi }) {
   const router = useRouter();
+  const admin = sesi.role === "admin";
   const [diperbarui, setDiperbarui] = useState(() => new Date());
   const tanggal = tanggalWib(diperbarui);
   const jadwalSiswa = jadwalEfektif("", tanggal, "siswa");
@@ -158,6 +160,12 @@ function DashboardKepala({ sesi }: { sesi: Sesi }) {
   const izinSakitSiswa = statusSiswa.filter((baris) => baris.status === "izin" || baris.status === "sakit").length;
   const belumAbsenSiswa = statusSiswa.filter((baris) => baris.status === null || baris.status === "alpa").length;
   const izinMenunggu = izin_guru.filter((baris) => baris.status === "menunggu");
+  const koordinatBelumDiatur = lembaga[0].lat == null || lembaga[0].lng == null;
+  const terakhirTutup = lembaga[0].tutup_hari_terakhir;
+  const tutupHariTertinggal = terakhirTutup !== null && terakhirTutup < tanggal;
+  const jumlahLokasiMencurigakan =
+    absensi_guru.filter((baris) => baris.tanggal === tanggal && baris.flag_curiga).length +
+    absensi_siswa.filter((baris) => baris.tanggal === tanggal && baris.flag_curiga).length;
   const belumPulang = jendelaPulangDibuka
     ? absensi_siswa.filter((baris) => baris.tanggal === tanggal && baris.jam_masuk && !baris.jam_pulang).length
     : null;
@@ -182,7 +190,7 @@ function DashboardKepala({ sesi }: { sesi: Sesi }) {
   }
 
   return (
-    <main className="rangka rangka-guru">
+    <main className="rangka">
       <Header
         judul="Dashboard"
         tanggal={labelTanggalWib(diperbarui)}
@@ -195,7 +203,20 @@ function DashboardKepala({ sesi }: { sesi: Sesi }) {
       />
 
       <div className="tumpuk">
-        <PanelAbsenGuru sesi={sesi} ringkas />
+        {admin && koordinatBelumDiatur ? (
+          <BannerInfo>
+            <strong>Lokasi madrasah belum diatur.</strong>
+            <p>Absen akan ditolak sampai koordinat madrasah diisi.</p>
+            <p className="ket">Lengkapi koordinat pada Data Lembaga.</p>
+          </BannerInfo>
+        ) : null}
+        {admin && tutupHariTertinggal ? (
+          <BannerInfo>
+            <strong>Tutup Hari tertinggal.</strong>
+            <p>Terakhir dijalankan {labelTanggalWib(new Date(`${terakhirTutup}T12:00:00+07:00`))}.</p>
+          </BannerInfo>
+        ) : null}
+        {!admin ? <PanelAbsenGuru sesi={sesi} ringkas /> : null}
 
         <section className="tumpuk-rapat" aria-labelledby="ringkasan-guru">
           <h2 id="ringkasan-guru">Guru</h2>
@@ -226,14 +247,18 @@ function DashboardKepala({ sesi }: { sesi: Sesi }) {
                 {belumAbsenGuru.map((baris) => <li key={baris.user.id}>{baris.user.nama}</li>)}
               </ul>
             </div>
-            <div>
-              <strong>Izin menunggu persetujuan · {izinMenunggu.length}</strong>
-              <ul className="daftar-pindai">
-                {izinMenunggu.map((baris) => (
-                  <li key={baris.id}>{users.find((user) => user.id === baris.user_id)?.nama ?? "Guru"} · {baris.jenis}</li>
-                ))}
-              </ul>
-            </div>
+            {admin ? (
+              <div><strong>Lokasi Mencurigakan hari ini · {jumlahLokasiMencurigakan}</strong></div>
+            ) : (
+              <div>
+                <strong>Izin menunggu persetujuan · {izinMenunggu.length}</strong>
+                <ul className="daftar-pindai">
+                  {izinMenunggu.map((baris) => (
+                    <li key={baris.id}>{users.find((user) => user.id === baris.user_id)?.nama ?? "Guru"} · {baris.jenis}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </Kartu>
 
