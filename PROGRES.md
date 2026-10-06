@@ -9,7 +9,7 @@ Sumber ID: BRD v1.1, FS v1.2, Data Model v1.0, dan plan M1 (`.kilo/plans/`).
 |---|---|
 | Fase (BRD 18.2) | **Tahap 3 — Fase Frontend (layout)** dengan data contoh |
 | Milestone aktif | **M3** — SCR-03 Absen Siswa dan SCR-06 Kelas Saya (simulasi frontend) |
-| Commit implementasi terakhir | `82d426f` (6 Okt 2026) · branch `main` · remote `origin` (SSH `github-ayahbebenraka`) |
+| Commit implementasi terakhir | `f50d865` (6 Okt 2026) · branch `main` · remote `origin` (SSH `github-ayahbebenraka`) |
 | Layar selesai | 3/27 (SCR-01, SCR-02, SCR-26); SCR-03 dan SCR-06 sedang dibangun |
 | Komponen selesai | 12/18 (KOM-01, 02, 03, 04, 05, 08, 10, 11, 12, 16, 17, 18) |
 | UAT lulus penuh | 8/41 |
@@ -119,7 +119,7 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Pengujian dilakukan manual pe
 | UAT-08 | Hari libur / guru Override nonaktif → tombol absen tidak tersedia; tidak dihitung Alpa | BRD | M6 | ⬜ |
 | UAT-09 | Libur "Untuk: Siswa" → siswa tidak dapat absen; guru tetap dapat | BRD | M6 | ⬜ |
 | UAT-10 | Hari Khusus + guru nonaktif hari itu → jam mengikuti Hari Khusus; guru nonaktif tidak Alpa | BRD | M6 | ⬜ |
-| UAT-11 | Scan QR siswa (Masuk) dalam radius → Hadir/Terlambat; pemindai tercatat | BRD | M3 | ⚠️ Simulasi Masuk/Pulang dan status/lokasi berhasil diuji; kamera/GPS nyata dan validasi server menunggu M10 |
+| UAT-11 | Scan QR siswa (Masuk) dalam radius → Hadir/Terlambat; pemindai tercatat | BRD | M3 | ⚠️ Simulasi Masuk/Pulang, status, dan hasil sukses 2 detik teruji; getar diuji dengan stub, kamera/GPS nyata dan validasi server menunggu M10 |
 | UAT-12 | Scan beruntun 10 siswa → semua tercatat tanpa ketukan tambahan | BRD | M3 | ✅ Lulus simulasi frontend: 20 NISN beruntun tercatat, penghitung benar, 5 terakhir tampil (6 Okt 2026) |
 | UAT-13 | Kartu hilang: guru mengetik NISN → tercatat sama seperti scan QR | BRD | M3 | ✅ Lulus simulasi frontend: input manual mencatat siswa dan kembali menutup form (6 Okt 2026) |
 | UAT-14 | Siswa tidak scan dan tanpa izin → Alpa otomatis; wali kelas dapat ubah ke Izin/Sakit | BRD | M3/M7 | ⚠️ Daftar kelas/filter tersedia; Alpa otomatis menunggu M10 dan input izin/koreksi M7 |
@@ -162,7 +162,7 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Pengujian dilakukan manual pe
 5. **Push:** remote `origin` sudah memakai SSH (`git@github-ayahbebenraka:...`); push dari terminal berfungsi.
 6. **SCR-26 (catatan implementasi):** pesan "Password lama tidak cocok. Periksa lalu coba lagi." adalah **usulan H-09** — Lampiran A belum memilikinya (mengikuti pola MSG-15); perlu dikukuhkan di versi FS berikutnya (PK-E3). Foto hanya dipratinjau namanya lewat KOM-16; unggah dan kompres sebenarnya (T-06) berjalan di Fase Backend (M10). Ikon `gembok` dan `pengguna` ditambahkan ke set baku (PK-C4). Mock `users` ditambah kolom `kontak` dan `foto_path` sesuai Data Model.
 7. **M2 (gerbang frontend ditutup):** SCR-02 menyimulasikan seluruh 6 keadaan tombol; UAT-01/02/03/05 lulus, termasuk luar radius, akurasi rendah, dan Pulang Awal. Waktu/lokasi tetap mock; duplikat dan MSG-08 baru dijamin server pada M10. UAT-06/07 menunggu Tutup Hari M10; UAT-27/36 menunggu dashboard M4 dan Tutup Hari M10; UAT-41 menunggu banner Dashboard Admin M4.
-8. **M3 (berjalan):** SCR-03 dan SCR-06 memakai fixture; NISN menjadi masukan simulasi QR, bukan pembacaan kamera. UAT-12/13/30 diverifikasi di browser; status lokasi, coba ulang, dan penahanan scan saat lokasi tidak valid juga diuji. Scan Masuk dan Pulang dengan lokasi simulasi dalam radius berhasil; SCR-03 dan SCR-06 tidak overflow pada lebar 375 px maupun 1280 px, dan filter kelas dapat digeser pada HP. Layout desktop SCR-03 kini menempatkan kontrol scan dan panel hasil dalam dua kolom; di mobile tetap satu kolom. UAT-11/39 tetap parsial sampai kamera/GPS dan validasi server tersedia di M10; input izin/koreksi menunggu M7. UAT-28 diverifikasi parsial: penolakan siswa memakai teks MSG-08; guru tidak mendapat kontrol Pulang tanpa Masuk dan validasi server menunggu M10. Tidak ada perubahan skema atau autentikasi.
+8. **M3 (berjalan):** SCR-03 dan SCR-06 memakai fixture; NISN menjadi masukan simulasi QR, bukan pembacaan kamera. UAT-12/13/30 diverifikasi di browser; status lokasi, coba ulang, dan penahanan scan saat lokasi tidak valid juga diuji. Scan Masuk dan Pulang dengan lokasi simulasi dalam radius berhasil; hasil sukses SCR-03 menutup setelah 2 detik, galat bertahan sampai ditutup, dan KOM-10 tetap 4 detik pada perilaku default. Pola getar 1× sukses/2× galat diuji dengan stub browser; getar fisik menunggu uji perangkat. SCR-03 dan SCR-06 tidak overflow pada lebar 375 px maupun 1280 px, dan filter kelas dapat digeser pada HP. Layout desktop SCR-03 menempatkan kontrol scan dan panel hasil dalam dua kolom; di mobile tetap satu kolom. UAT-11/39 tetap parsial sampai kamera/GPS dan validasi server tersedia di M10; input izin/koreksi menunggu M7. UAT-28 diverifikasi parsial: penolakan siswa memakai teks MSG-08; guru tidak mendapat kontrol Pulang tanpa Masuk dan validasi server menunggu M10. Tidak ada perubahan skema atau autentikasi.
 
 ---
 
@@ -181,3 +181,4 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Pengujian dilakukan manual pe
 | 6 Okt 2026 | Verifikasi lanjutan M3: scan Pulang untuk siswa yang sudah Masuk | `30da07b` | ✅ | ✅ Scan simulasi tercatat 14:00, penghitung bertambah, status Hadir; UAT kamera/GPS nyata tetap terbuka |
 | 6 Okt 2026 | Verifikasi UAT-28: Pulang siswa tanpa Masuk cocok dengan MSG-08; jalur guru tidak tersedia di UI | — | ✅ | ⚠️ Parsial; penolakan server untuk guru dan siswa menunggu M10 |
 | 6 Okt 2026 | SCR-03: layout scanner dan panel hasil dua kolom desktop, satu kolom mobile | `82d426f` | ✅ | ✅ Uji browser 375/1280 px; scan sukses tampil di panel hasil; lint dan build lulus; UAT-37 tetap terbuka |
+| 6 Okt 2026 | SCR-03: hasil sukses 2 detik dan getar opsional; durasi default KOM-10 tetap 4 detik | `f50d865` | ✅ | ✅ Uji browser: sukses/galat/duplikat dan timer; pola getar via stub; lint/build lulus; getar fisik menunggu uji perangkat |
