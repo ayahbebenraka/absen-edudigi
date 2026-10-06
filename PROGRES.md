@@ -9,7 +9,7 @@ Sumber ID: BRD v1.1, FS v1.2, Data Model v1.0, dan plan M1 (`.kilo/plans/`).
 |---|---|
 | Fase (BRD 18.2) | **Tahap 3 — Fase Frontend (layout)** dengan data contoh |
 | Milestone aktif | **M5** — Master Data (frontend mock) |
-| Commit implementasi terakhir | belum di-commit/push | branch `main` · remote `origin` (SSH `github-ayahbebenraka`) |
+| Commit implementasi terakhir | SCR-12 (`064088d` — belum push), SCR-11 (`064088d`) | branch `main` · remote `origin` (SSH `github-ayahbebenraka`) |
 | Layar selesai | 6/27 (SCR-01, 02, 03, 06, 26; + SCR-10/11 mock) |
 | Komponen selesai | 13/18 (KOM-01, 02, 03, 04, 05, 08, 10, 11, 12, 13, 16, 17, 18) |
 | UAT lulus penuh | 8/41 |
@@ -52,7 +52,7 @@ Nama dan peran mengikuti FS 3.2. Kolom "Milestone" kosong = belum ditempatkan (l
 | SCR-08 | Dashboard Admin | Admin | Desktop | M4 | 🔄 Dashboard mock dan banner koordinat/Tutup Hari; menu Dashboard/Akun tersedia, validasi UAT-41 menunggu |
 | SCR-09 | Persetujuan Izin Guru | Kepala | HP, desktop | M7 | ⬜ |
 | SCR-10 | Master Data: Lembaga | Admin | Desktop | M5 | 🔄 Mock awal; validasi form dan izin akses telah diperiksa, UAT visual belum dilakukan |
-| SCR-11 | Master Data: Admin dan Kepala | Admin | Desktop | M5 | 🔄 Mock tersedia: daftar, tambah/ubah, validasi, nonaktifkan/aktifkan, aturan satu Kepala dan minimal satu Admin |
+| SCR-11 | Master Data: Admin dan Kepala | Admin | Desktop | M5 | ✅ Mock tersedia: daftar, tambah/ubah, validasi, nonaktifkan/aktifkan, aturan satu Kepala & minimal satu Admin aktif |
 | SCR-12 | Master Data: Guru | Admin | Desktop | M5 | ⬜ |
 | SCR-13 | Master Data: Siswa | Admin | Desktop | M5 | ⬜ |
 | SCR-14 | Master Data: Kelas dan Kenaikan Kelas | Admin | Desktop | M5 | ⬜ |
@@ -191,4 +191,5 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Pengujian dilakukan manual pe
 | 6 Okt 2026 | SCR-06: hitungan status dan persentase per siswa sesuai SF-09; ES-08 untuk bulan tanpa data | `a512522` | ✅ | ✅ Uji browser 375/1280 px; data fixture dan keadaan kosong terverifikasi; lint/build lulus |
 | 6 Okt 2026 | SCR-06: input bulan kosong kembali ke bulan berjalan dan tidak mencampur catatan semua bulan | `48e4080` | ✅ | ✅ Uji browser: bulan kosong pulih ke Oktober, 10 kartu Oktober tampil, September menampilkan ES-08; lint/build lulus |
 | 6 Okt 2026 | SCR-03: input NISN manual kembali ke scan simulasi untuk pemindaian berikutnya | `1956256` | ✅ | ✅ Uji browser Masuk dan Pulang, dua siswa berurutan; form tetap fokus; kamera nyata tetap menunggu M10; lint/build lulus |
-| 6 Okt 2026 | M5: SCR-11 Admin & Kepala mock — daftar, tambah/ubah, validasi, nonaktifkan/aktifkan, aturan satu Kepala & minimal satu Admin; ikon `tambah`/`ubah`; CSS `.tab-master-data`, `.daftar-pengguna`, `.baris-pengguna`, `.pil-peran` | — | Belum didorong | ✅ Lint/build lulus; perubahan belum di-commit/push
+| 6 Okt 2026 | M5: SCR-11 Admin & Kepala mock — daftar, tambah/ubah, validasi, nonaktifkan/aktifkan, aturan satu Kepala & minimal satu Admin; ikon `tambah`/`ubah`; CSS `.tab-master-data`, `.daftar-pengguna`, `.baris-pengguna`, `.pil-peran` | `064088d` | ✅ | ✅ Commit & push; lint/build lulus |
+| 6 Okt 2026 | M5: SCR-12 Guru mock — pencarian, filter status, tambah/ubah (NIP/email terkunci), aturan guru wali kelas aktif tidak bisa dinonaktifkan; `subjudul` prop pada Kartu, `nonaktif` prop pada Isian; kolom `mata_pelajaran` & `wali_kelas` pada `users` mock | — | Belum didorong | ✅ Lint/build lulus; perubahan belum di-commit/push |

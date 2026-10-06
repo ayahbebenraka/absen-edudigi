@@ -83,6 +83,8 @@ export type BarisUser = {
   foto_path: string | null;
   aktif: boolean;
   wajib_absen: boolean;
+  mata_pelajaran?: string | null;
+  wali_kelas?: boolean;
 };
 
 export const users: BarisUser[] = [
@@ -118,6 +120,8 @@ export const users: BarisUser[] = [
     foto_path: null,
     aktif: true,
     wajib_absen: true,
+    mata_pelajaran: "Matematika",
+    wali_kelas: true,
   },
   {
     id: "u-g2",
@@ -129,6 +133,8 @@ export const users: BarisUser[] = [
     foto_path: null,
     aktif: true,
     wajib_absen: true,
+    mata_pelajaran: "Bahasa Indonesia",
+    wali_kelas: false,
   },
   {
     id: "u-g3",
@@ -140,6 +146,8 @@ export const users: BarisUser[] = [
     foto_path: null,
     aktif: true,
     wajib_absen: true,
+    mata_pelajaran: "Pendidikan Agama",
+    wali_kelas: false,
   },
   {
     id: "u-g4",
@@ -151,6 +159,8 @@ export const users: BarisUser[] = [
     foto_path: null,
     aktif: true,
     wajib_absen: true,
+    mata_pelajaran: "IPA Terpadu",
+    wali_kelas: true,
   },
   {
     id: "u-g5",
@@ -162,6 +172,8 @@ export const users: BarisUser[] = [
     foto_path: null,
     aktif: true,
     wajib_absen: true,
+    mata_pelajaran: "IPS Terpadu",
+    wali_kelas: false,
   },
   {
     id: "u-g6",
@@ -173,6 +185,8 @@ export const users: BarisUser[] = [
     foto_path: null,
     aktif: true,
     wajib_absen: true,
+    mata_pelajaran: "PKn",
+    wali_kelas: false,
   },
   ...Array.from({ length: 28 }, (_, index) => {
     const nomor = index + 3;
