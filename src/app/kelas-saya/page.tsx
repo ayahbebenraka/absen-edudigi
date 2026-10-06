@@ -140,22 +140,50 @@ export default function HalamanKelasSaya() {
           <>
             <label className="label-bulan" htmlFor="bulan-rekap">Bulan rekap</label>
             <input id="bulan-rekap" className="isian-bulan" type="month" value={bulan} onChange={(event) => setBulan(event.target.value)} />
-            <Kartu judul={`Rekap ${bulan}`}>
-              <div className="ringkasan-kelas">
-                <div><strong>{jumlahHadir}</strong><span className="ket">Hadir</span></div>
-                <div><strong>{terlambat}</strong><span className="ket">Terlambat</span></div>
-                <div><strong>{izinSakit}</strong><span className="ket">Izin/Sakit</span></div>
-                <div><strong>{alpa}</strong><span className="ket">Alpa</span></div>
-              </div>
-            </Kartu>
-            <div className="daftar-kelas">
-              {dataSiswa.map((baris) => {
-                const jumlahHadir = absensiBulan.filter((absen) => absen.siswa_id === baris.userId && absen.status === "hadir").length;
-                const jumlahTerlambat = absensiBulan.filter((absen) => absen.siswa_id === baris.userId && absen.status === "terlambat").length;
-                const jumlahAlpa = absensiBulan.filter((absen) => absen.siswa_id === baris.userId && absen.status === "alpa").length;
-                return <Kartu key={baris.userId}><div className="baris-kelas-kepala"><strong>{baris.nama}</strong><span className="ket">Hadir {jumlahHadir} · Terlambat {jumlahTerlambat} · Alpa {jumlahAlpa}</span></div></Kartu>;
-              })}
-            </div>
+            {absensiBulan.length > 0 ? (
+              <>
+                <Kartu judul={`Rekap ${bulan}`}>
+                  <div className="ringkasan-kelas">
+                    <div><strong>{jumlahHadir}</strong><span className="ket">Hadir</span></div>
+                    <div><strong>{terlambat}</strong><span className="ket">Terlambat</span></div>
+                    <div><strong>{izinSakit}</strong><span className="ket">Izin/Sakit</span></div>
+                    <div><strong>{alpa}</strong><span className="ket">Alpa</span></div>
+                  </div>
+                </Kartu>
+                <div className="daftar-kelas">
+                  {dataSiswa.map((baris) => {
+                    const riwayatSiswa = absensiBulan.filter((absen) => absen.siswa_id === baris.userId);
+                    const hitungStatus = (status: StatusAbsensi) => riwayatSiswa.filter((absen) => absen.status === status).length;
+                    const jumlahHadir = hitungStatus("hadir");
+                    const jumlahTerlambat = hitungStatus("terlambat");
+                    const jumlahIzin = hitungStatus("izin");
+                    const jumlahSakit = hitungStatus("sakit");
+                    const jumlahAlpa = hitungStatus("alpa");
+                    const persentase = riwayatSiswa.length > 0
+                      ? `${(((jumlahHadir + jumlahTerlambat) / riwayatSiswa.length) * 100).toLocaleString("id-ID", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`
+                      : "—";
+
+                    return (
+                      <Kartu key={baris.userId}>
+                        <div className="baris-kelas-kepala">
+                          <strong>{baris.nama}</strong>
+                          <span className="ket">Kehadiran {persentase}</span>
+                        </div>
+                        <div className="ringkasan-kelas">
+                          <div><strong>{jumlahHadir}</strong><span className="ket">Hadir</span></div>
+                          <div><strong>{jumlahTerlambat}</strong><span className="ket">Terlambat</span></div>
+                          <div><strong>{jumlahIzin}</strong><span className="ket">Izin</span></div>
+                          <div><strong>{jumlahSakit}</strong><span className="ket">Sakit</span></div>
+                          <div><strong>{jumlahAlpa}</strong><span className="ket">Alpa</span></div>
+                        </div>
+                      </Kartu>
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
+              <KeadaanKosong teks="Belum ada catatan kehadiran pada bulan ini." />
+            )}
           </>
         )}
       </div>
