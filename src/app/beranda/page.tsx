@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { Header } from "../../komponen/Header";
 import { Ikon } from "../../komponen/Ikon";
@@ -11,8 +11,8 @@ import { Pemuat } from "../../komponen/Pemuat";
 import { Tombol } from "../../komponen/Tombol";
 import { Pesan } from "../../komponen/Pesan";
 import { NavigasiGuru } from "../../komponen/NavigasiGuru";
-import { absensi_guru, izin_guru, kelas, lembaga, type BarisAbsensiGuru } from "../../data/contoh";
-import { jadwalGuruEfektif, jamWib, labelTanggalWib, menitDariJam, statusMasuk, tanggalWib } from "../../data/absensi";
+import { absensi_guru, absensi_siswa, izin_guru, kelas, lembaga, siswa, users, type BarisAbsensiGuru, type StatusAbsensi } from "../../data/contoh";
+import { jadwalEfektif, jadwalGuruEfektif, jamWib, labelTanggalWib, menitDariJam, statusMasuk, tanggalWib } from "../../data/absensi";
 import { ambilSesi, ambilSesiServer, dengarSesi, keluar, namaPeran, type Sesi } from "../../data/sesi";
 
 const MSG_TANPA_HAK_AKSES = "Halaman ini tidak tersedia untuk Anda.";
@@ -71,6 +71,7 @@ export default function HalamanBeranda() {
   }
 
   if (sesi.role === "guru") return <BerandaGuru sesi={sesi} />;
+  if (sesi.role === "kepala") return <DashboardKepala />;
 
   return (
     <main className="rangka">
@@ -88,10 +89,9 @@ export default function HalamanBeranda() {
       />
 
       <div className="tumpuk">
-        <Kartu judul="Modul berikutnya">
+        <Kartu judul="Dashboard Admin">
           <p>
-            Modul berikutnya: Beranda Guru — absen Masuk dan Pulang dengan geo tagging. Modul ini belum
-            dibangun.
+            Dashboard Admin belum dibangun.
           </p>
         </Kartu>
 
@@ -106,6 +106,146 @@ export default function HalamanBeranda() {
             onClick={() => router.push("/akun")}
           />
         </Kartu>
+      </div>
+    </main>
+  );
+}
+
+function DashboardKepala() {
+  const router = useRouter();
+  const [diperbarui, setDiperbarui] = useState(() => new Date());
+  const tanggal = tanggalWib(diperbarui);
+  const jadwalSiswa = jadwalEfektif("", tanggal, "siswa");
+  const menitSekarang = menitDariJam(jamWib(diperbarui));
+  const jendelaPulangDibuka = jadwalSiswa.jamPulang
+    ? menitSekarang >= menitDariJam(jadwalSiswa.jamPulang) - lembaga[0].buka_pulang_menit
+    : false;
+
+  useEffect(() => {
+    const interval = setInterval(() => setDiperbarui(new Date()), 60_000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const guruWajib = users.filter((user) =>
+    user.role === "guru" && user.aktif && user.wajib_absen && jadwalGuruEfektif(user.id, tanggal).aktif
+  );
+  const statusGuru = guruWajib.map((user) => {
+    const absen = absensi_guru.find((baris) => baris.user_id === user.id && baris.tanggal === tanggal);
+    const izin = izin_guru.find((baris) =>
+      baris.user_id === user.id &&
+      baris.status === "disetujui" &&
+      baris.tgl_mulai <= tanggal &&
+      baris.tgl_selesai >= tanggal
+    );
+    const statusIzin: StatusAbsensi | undefined = izin
+      ? izin.jenis === "dinas_luar" ? "dinas_luar" : izin.jenis === "sakit" ? "sakit" : "izin"
+      : undefined;
+    return { user, status: absen?.status ?? statusIzin ?? null };
+  });
+  const siswaWajib = users.filter((user) =>
+    user.role === "siswa" && user.aktif && jadwalSiswa.aktif
+  );
+  const statusSiswa = siswaWajib.map((user) => ({
+    user,
+    status: absensi_siswa.find((baris) => baris.siswa_id === user.id && baris.tanggal === tanggal)?.status ?? null,
+  }));
+  const hadirGuru = statusGuru.filter((baris) => baris.status === "hadir" || baris.status === "terlambat").length;
+  const terlambatGuru = statusGuru.filter((baris) => baris.status === "terlambat").length;
+  const izinGuru = statusGuru.filter((baris) => baris.status === "izin" || baris.status === "sakit" || baris.status === "dinas_luar").length;
+  const belumAbsenGuru = statusGuru.filter((baris) => baris.status === null || baris.status === "alpa");
+  const hadirSiswa = statusSiswa.filter((baris) => baris.status === "hadir" || baris.status === "terlambat").length;
+  const terlambatSiswa = statusSiswa.filter((baris) => baris.status === "terlambat").length;
+  const izinSakitSiswa = statusSiswa.filter((baris) => baris.status === "izin" || baris.status === "sakit").length;
+  const belumAbsenSiswa = statusSiswa.filter((baris) => baris.status === null || baris.status === "alpa").length;
+  const izinMenunggu = izin_guru.filter((baris) => baris.status === "menunggu");
+  const belumPulang = jendelaPulangDibuka
+    ? absensi_siswa.filter((baris) => baris.tanggal === tanggal && baris.jam_masuk && !baris.jam_pulang).length
+    : null;
+
+  const ringkasanKelas = kelas.map((barisKelas) => {
+    const anggota = siswa.filter((profil) => {
+      const user = users.find((baris) => baris.id === profil.user_id);
+      return profil.kelas_id === barisKelas.id && user?.aktif && jadwalSiswa.aktif;
+    });
+    const catatan = absensi_siswa.filter((baris) => baris.kelas_id === barisKelas.id && baris.tanggal === tanggal);
+    return {
+      nama: barisKelas.nama,
+      jumlahWajib: anggota.length,
+      hadir: catatan.filter((baris) => baris.status === "hadir" || baris.status === "terlambat").length,
+      terlambat: catatan.filter((baris) => baris.status === "terlambat").length,
+      alpa: catatan.filter((baris) => baris.status === "alpa").length,
+    };
+  });
+
+  function segarkan() {
+    setDiperbarui(new Date());
+  }
+
+  return (
+    <main className="rangka rangka-guru">
+      <Header
+        judul="Dashboard"
+        tanggal={labelTanggalWib(diperbarui)}
+        aksi={(
+          <div className="aksi-kelas">
+            <Tombol label="Segarkan" varian="sekunder" onClick={segarkan} />
+            <Tombol label="Keluar" varian="sekunder" muatan={<Ikon nama="keluar" ukuran={20} />} onClick={() => { keluar(); router.replace("/"); }} />
+          </div>
+        )}
+      />
+
+      <div className="tumpuk">
+        <section className="tumpuk-rapat" aria-labelledby="ringkasan-guru">
+          <h2 id="ringkasan-guru">Guru</h2>
+          <div className="ringkasan-kelas">
+            <div><strong>{hadirGuru}/{guruWajib.length}</strong><span className="ket">Hadir</span></div>
+            <div><strong>{terlambatGuru}</strong><span className="ket">Terlambat</span></div>
+            <div><strong>{izinGuru}</strong><span className="ket">Izin/Sakit/Dinas Luar</span></div>
+            <div><strong>{belumAbsenGuru.length}</strong><span className="ket">Belum Absen</span></div>
+          </div>
+        </section>
+
+        <section className="tumpuk-rapat" aria-labelledby="ringkasan-siswa">
+          <h2 id="ringkasan-siswa">Siswa</h2>
+          <div className="ringkasan-kelas">
+            <div><strong>{hadirSiswa}/{siswaWajib.length}</strong><span className="ket">Hadir</span></div>
+            <div><strong>{terlambatSiswa}</strong><span className="ket">Terlambat</span></div>
+            <div><strong>{izinSakitSiswa}</strong><span className="ket">Izin/Sakit</span></div>
+            <div><strong>{belumAbsenSiswa}</strong><span className="ket">Belum Absen</span></div>
+            {belumPulang !== null ? <div><strong>{belumPulang}</strong><span className="ket">Belum Pulang</span></div> : null}
+          </div>
+        </section>
+
+        <Kartu judul="Perlu perhatian">
+          <div className="daftar-kelas">
+            <div>
+              <strong>Guru Belum Absen · {belumAbsenGuru.length}</strong>
+              <ul className="daftar-pindai">
+                {belumAbsenGuru.map((baris) => <li key={baris.user.id}>{baris.user.nama}</li>)}
+              </ul>
+            </div>
+            <div>
+              <strong>Izin menunggu persetujuan · {izinMenunggu.length}</strong>
+              <ul className="daftar-pindai">
+                {izinMenunggu.map((baris) => (
+                  <li key={baris.id}>{users.find((user) => user.id === baris.user_id)?.nama ?? "Guru"} · {baris.jenis}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Kartu>
+
+        <section className="tumpuk-rapat" aria-labelledby="ringkasan-kelas">
+          <h2 id="ringkasan-kelas">Per kelas</h2>
+          <div className="daftar-kelas">
+            {ringkasanKelas.map((baris) => (
+              <Kartu key={baris.nama}>
+                <div className="baris-kelas-kepala"><strong>{baris.nama}</strong><span className="ket">Hadir {baris.hadir}/{baris.jumlahWajib}</span></div>
+                <div className="rincian-absen"><span>Terlambat {baris.terlambat}</span><span>Alpa {baris.alpa}</span></div>
+              </Kartu>
+            ))}
+          </div>
+        </section>
       </div>
     </main>
   );
