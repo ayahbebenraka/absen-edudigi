@@ -32,12 +32,12 @@ export function NavigasiGuru({ userId, aktif }: { userId: string; aktif: Tujuan 
   tujuan.push({ id: "akun", href: "/akun" });
 
   return (
-    <nav className="navigasi-guru" aria-label="Menu Guru">
+    <nav className="navigasi-peran" aria-label="Menu Guru">
       {tujuan.map((item) => (
         <Link
           key={item.id}
           href={item.href}
-          className={`navigasi-guru-link${aktif === item.id ? " aktif" : ""}`}
+          className={`navigasi-peran-link${aktif === item.id ? " aktif" : ""}`}
           aria-current={aktif === item.id ? "page" : undefined}
         >
           <Ikon nama={ikonTujuan[item.id]} ukuran={20} />

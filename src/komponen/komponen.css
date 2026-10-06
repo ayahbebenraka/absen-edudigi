@@ -441,7 +441,7 @@
   padding-bottom: 104px;
 }
 
-.navigasi-guru {
+.navigasi-peran {
   position: fixed;
   z-index: 10;
   right: 0;
@@ -454,7 +454,7 @@
   background: var(--perm);
 }
 
-.navigasi-guru-link {
+.navigasi-peran-link {
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -467,7 +467,7 @@
   text-decoration: none;
 }
 
-.navigasi-guru-link.aktif {
+.navigasi-peran-link.aktif {
   color: var(--utama);
   font-weight: 600;
 }
@@ -699,7 +699,7 @@
     margin-left: 220px;
   }
 
-  .navigasi-guru {
+  .navigasi-peran {
     top: 0;
     right: auto;
     bottom: 0;
@@ -712,7 +712,7 @@
     border-right: var(--garis-tipis);
   }
 
-  .navigasi-guru-link {
+  .navigasi-peran-link {
     flex: 0 0 auto;
     flex-direction: row;
     justify-content: flex-start;
@@ -721,7 +721,7 @@
     border-radius: var(--r-isian);
   }
 
-  .navigasi-guru-link.aktif {
+  .navigasi-peran-link.aktif {
     background: var(--lembut);
   }
 

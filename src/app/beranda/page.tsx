@@ -12,6 +12,7 @@ import { Pemuat } from "../../komponen/Pemuat";
 import { Tombol } from "../../komponen/Tombol";
 import { Pesan } from "../../komponen/Pesan";
 import { NavigasiGuru } from "../../komponen/NavigasiGuru";
+import { NavigasiPeran } from "../../komponen/NavigasiPeran";
 import { absensi_guru, absensi_siswa, izin_guru, kelas, lembaga, siswa, users, type BarisAbsensiGuru, type StatusAbsensi } from "../../data/contoh";
 import { jadwalEfektif, jadwalGuruEfektif, jamWib, labelTanggalWib, menitDariJam, statusMasuk, tanggalWib } from "../../data/absensi";
 import { ambilSesi, ambilSesiServer, dengarSesi, keluar, namaPeran, type Sesi } from "../../data/sesi";
@@ -75,7 +76,7 @@ export default function HalamanBeranda() {
   if (sesi.role === "kepala" || sesi.role === "admin") return <DashboardRingkasan sesi={sesi} />;
 
   return (
-    <main className="rangka">
+    <main className="rangka rangka-guru">
       <Header
         judul={sesi.nama}
         tanggal={labelTanggalWib()}
@@ -190,7 +191,7 @@ function DashboardRingkasan({ sesi }: { sesi: Sesi }) {
   }
 
   return (
-    <main className="rangka">
+    <main className="rangka rangka-guru">
       <Header
         judul="Dashboard"
         tanggal={labelTanggalWib(diperbarui)}
@@ -274,6 +275,7 @@ function DashboardRingkasan({ sesi }: { sesi: Sesi }) {
           </div>
         </section>
       </div>
+      <NavigasiPeran role={admin ? "admin" : "kepala"} aktif="dashboard" />
     </main>
   );
 }
