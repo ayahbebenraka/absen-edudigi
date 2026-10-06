@@ -139,7 +139,7 @@ export default function HalamanKelasSaya() {
         ) : (
           <>
             <label className="label-bulan" htmlFor="bulan-rekap">Bulan rekap</label>
-            <input id="bulan-rekap" className="isian-bulan" type="month" value={bulan} onChange={(event) => setBulan(event.target.value)} />
+            <input id="bulan-rekap" className="isian-bulan" type="month" value={bulan} onChange={(event) => setBulan(event.target.value || tanggalWib().slice(0, 7))} />
             {absensiBulan.length > 0 ? (
               <>
                 <Kartu judul={`Rekap ${bulan}`}>
