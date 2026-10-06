@@ -55,7 +55,7 @@ Nama dan peran mengikuti FS 3.2. Kolom "Milestone" kosong = belum ditempatkan (l
 | SCR-11 | Master Data: Admin dan Kepala | Admin | Desktop | M5 | ✅ Mock tersedia: daftar, tambah/ubah, validasi, nonaktifkan/aktifkan, aturan satu Kepala & minimal satu Admin aktif |
 | SCR-12 | Master Data: Guru | Admin | Desktop | M5 | ✅ Mock tersedia: pencarian, filter status, tambah/ubah (NIP/email terkunci), aturan guru wali kelas aktif tidak bisa dinonaktifkan |
 | SCR-13 | Master Data: Siswa | Admin | Desktop | M5 | ✅ Mock tersedia: pencarian, filter status & kelas, tambah/ubah (NISN/email terkunci), kolom kelas/jenis kelamin/kontak wali tersinkronisasi; tombol Cetak QR tersedia |
-| SCR-14 | Master Data: Kelas dan Kenaikan Kelas | Admin | Desktop | M5 | ⬜ |
+| SCR-14 | Master Data: Kelas dan Kenaikan Kelas | Admin | Desktop | M5 | ✅ Manajemen kelas: daftar, tambah/ubah (nama, tahun ajaran, wali), validasi unik; Kenaikan Kelas massal wizard 3 langkah (FR-MD-08): tahun ajaran baru, pemetaan (teruskan/lulus), pratinjau + konfirmasi MSG-24 |
 | SCR-15 | Jadwal Default | Admin | Desktop | M6 | ⬜ |
 | SCR-16 | Override Guru | Admin | Desktop | M6 | ⬜ |
 | SCR-17 | Kalender | Admin | Desktop | M6 | ⬜ |
@@ -193,3 +193,5 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Pengujian dilakukan manual pe
 | 6 Okt 2026 | SCR-03: input NISN manual kembali ke scan simulasi untuk pemindaian berikutnya | `1956256` | ✅ | ✅ Uji browser Masuk dan Pulang, dua siswa berurutan; form tetap fokus; kamera nyata tetap menunggu M10; lint/build lulus |
 | 6 Okt 2026 | M5: SCR-11 Admin & Kepala mock — daftar, tambah/ubah, validasi, nonaktifkan/aktifkan, aturan satu Kepala & minimal satu Admin; ikon `tambah`/`ubah`; CSS `.tab-master-data`, `.daftar-pengguna`, `.baris-pengguna`, `.pil-peran` | `064088d` | ✅ | ✅ Commit & push; lint/build lulus |
 | 6 Okt 2026 | M5: SCR-12 Guru mock — pencarian, filter status, tambah/ubah (NIP/email terkunci), aturan guru wali kelas aktif tidak bisa dinonaktifkan; `subjudul` prop pada Kartu, `nonaktif` prop pada Isian; kolom `mata_pelajaran` & `wali_kelas` pada `users` mock | — | Belum didorong | ✅ Lint/build lulus; perubahan belum di-commit/push |
+| 6 Okt 2026 | M5: SCR-13 Siswa mock — pencarian, filter status & kelas, tambah/ubah (NISN/email terkunci), kolom kelas/jenis kelamin/kontak wali; tombol Cetak QR tersedia | `903c966` | ✅ | ✅ Commit & push; lint/build lulus |
+| 6 Okt 2026 | M5: SCR-14 Kelas & Kenaikan Kelas — daftar, tambah/ubah kelas, validasi unik; wizard 3 langkah (FR-MD-08): tahun ajaran baru, pemetaan teruskan/lulus, pratinjau + konfirmasi MSG-24 | `35d51e8` | ✅ | ✅ Commit & push; lint/build lulus |
