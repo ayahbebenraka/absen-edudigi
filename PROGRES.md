@@ -9,7 +9,7 @@ Sumber ID: BRD v1.1, FS v1.2, Data Model v1.0, dan plan M1 (`.kilo/plans/`).
 |---|---|
 | Fase (BRD 18.2) | **Tahap 3 — Fase Frontend (layout)** dengan data contoh |
 | Milestone aktif | **M2** — SCR-02 Beranda Guru (simulasi frontend) |
-| Commit terakhir | `f36d0a4` (5 Okt 2026) · branch `main` · remote `origin` (SSH `github-ayahbebenraka`) |
+| Commit terakhir | `bb25856` (6 Okt 2026) · branch `main` · remote `origin` (SSH `github-ayahbebenraka`) |
 | Layar selesai | 2/27 (SCR-01, SCR-26) |
 | Komponen selesai | 10/18 (KOM-01, 02, 03, 05, 08, 10, 11, 12, 16, 17) |
 | UAT dijalankan | 5/41 |
@@ -174,3 +174,4 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Pengujian dilakukan manual pe
 | 6 Okt 2026 | Pelacakan: `PROGRES.md` (4 tabel) | `c621e95` | ✅ | ✅ Berhasil |
 | 6 Okt 2026 | Keputusan 1A/2A/3A: plan dilacak git; berkas FS → v1.2; penempatan SCR-26/06/04 | `6a51081`, `baf1142` | ✅ | ✅ Berhasil |
 | 6 Okt 2026 | M1 penutup gerbang: SCR-26 Akun dan Ganti Password + KOM-16 | `f7bd64a` | ✅ | ✅ Berhasil (lint + build lulus) |
+| 6 Okt 2026 | UAT-23; M2 SCR-02 mock + UAT-01/02/03/05 | `587b0af`, `bb25856` | Belum didorong | 🔄 M2 berjalan; lint/build lulus |
