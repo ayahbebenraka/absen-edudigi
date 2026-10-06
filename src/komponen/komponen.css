@@ -499,6 +499,39 @@
   font-weight: 600;
 }
 
+.status-lokasi {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--s-8);
+  padding: var(--s-12);
+  border: var(--garis-tipis);
+  border-radius: var(--r-kartu);
+}
+
+.status-lokasi > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.status-lokasi .btn {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.status-lokasi.valid {
+  border-color: var(--s-hadir);
+  background: var(--s-hadir-bg);
+  color: var(--s-hadir);
+}
+
+.status-lokasi.perlu {
+  border-color: var(--s-alpa);
+  background: var(--s-alpa-bg);
+  color: var(--s-alpa);
+}
+
 .bingkai-pindai {
   display: flex;
   min-height: 220px;

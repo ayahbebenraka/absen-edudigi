@@ -108,6 +108,14 @@ export default function HalamanAbsenSiswa() {
     requestAnimationFrame(() => nisnRef.current?.focus());
   }
 
+  function cobaLagiLokasi() {
+    const masalahLokasi = pesanLokasi();
+    setHasil(masalahLokasi
+      ? { jenis: "galat", teks: masalahLokasi }
+      : { jenis: "sukses", teks: "Lokasi dalam radius (simulasi). Pemindai siap digunakan." }
+    );
+  }
+
   async function catatNisn(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (memproses) return;
@@ -219,6 +227,15 @@ export default function HalamanAbsenSiswa() {
           )}
         </Kartu>
 
+        <div className={`status-lokasi ${lokasi === "dalam" ? "valid" : "perlu"}`} role="status" aria-live="polite">
+          <Ikon nama={lokasi === "dalam" ? "periksa" : "info"} ukuran={20} />
+          <div>
+            <strong>{lokasi === "dalam" ? "Lokasi dalam radius (simulasi)" : pesanLokasi()}</strong>
+            <span className="ket">Lokasi perangkat nyata diperiksa pada fase backend.</span>
+          </div>
+          <Tombol label="Coba lagi lokasi" varian="sekunder" onClick={cobaLagiLokasi} nonaktif={scanAktif} />
+        </div>
+
         <div className="bingkai-pindai" aria-label="Area pemindai QR simulasi">
           <span className="bingkai-pindai-ikon"><Ikon nama="pengguna" ukuran={32} /></span>
           <strong>{scanAktif ? "Pemindai siap" : "Kamera belum aktif"}</strong>
@@ -227,7 +244,7 @@ export default function HalamanAbsenSiswa() {
 
         <div className="tumpuk-rapat">
           {!scanAktif ? (
-            <Tombol label="Mulai Scan" varian="utama" lebar onClick={mulaiScan} nonaktif={!jadwal.aktif} />
+            <Tombol label="Mulai Scan" varian="utama" lebar onClick={mulaiScan} nonaktif={!jadwal.aktif || lokasi !== "dalam"} />
           ) : (
             <Tombol
               label="Selesai"
