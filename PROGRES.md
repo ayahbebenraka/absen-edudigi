@@ -138,7 +138,7 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Pengujian dilakukan manual pe
 | UAT-27 | Kepala tanpa absen pada hari aktif → tidak dihitung Alpa | BRD | M2/M4 | ⬜ |
 | UAT-28 | Pulang tanpa Masuk (guru dan siswa) → ditolak dengan MSG-08 | FS | M2 | ⚠️ Siswa ditolak dengan teks mock yang cocok persis dengan MSG-08; UI guru hanya menampilkan Masuk saat belum absen, penolakan server menunggu M10 |
 | UAT-29 | Impor dengan baris bermasalah (email ganda, kelas tidak ada) → pratinjau menampilkan alasan; hanya baris valid disimpan; daftar kesalahan dapat diunduh | FS | M5 | ⬜ |
-| UAT-30 | Scan QR sama dua kali dalam 3 detik → detik pertama diabaikan; scan ulang → kartu netral "sudah tercatat" (bukan galat merah) | FS | M3 | ✅ Lulus simulasi frontend: scan dalam 3 detik diabaikan; setelah 3 detik tampil pesan netral duplikat (6 Okt 2026) |
+| UAT-30 | Scan QR sama dua kali dalam 3 detik → detik pertama diabaikan; scan ulang → kartu netral "sudah tercatat" (bukan galat merah) | FS | M3 | ✅ Lulus simulasi frontend Masuk/Pulang: scan dalam 3 detik diabaikan; setelah 3 detik tampil pesan netral dan penghitung tetap (6 Okt 2026) |
 | UAT-31 | Kenaikan kelas (wizard) lalu buka laporan kelas tahun lalu → siswa pindah/lulus sesuai pemetaan; laporan lama tetap benar | FS | M5 | ⬜ |
 | UAT-32 | Ajukan izin guru yang tumpang tindih → ditolak dengan MSG-22 | FS | M7 | ⬜ |
 | UAT-33 | Batalkan izin siswa yang sudah diterapkan → baris tanpa jam masuk kembali Alpa; tercatat di log | FS | M7 | ⬜ |
@@ -180,6 +180,7 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Pengujian dilakukan manual pe
 | 6 Okt 2026 | M3 SCR-03: status lokasi simulasi, coba ulang, dan scan dikunci saat lokasi tidak valid; UAT/responsivitas diverifikasi | `30da07b` | ✅ | ✅ Lint/build lulus; uji browser 375/1280 px; UAT-12/13/30 terverifikasi; UAT-11/39 tetap parsial |
 | 6 Okt 2026 | Verifikasi lanjutan M3: scan Pulang untuk siswa yang sudah Masuk | `30da07b` | ✅ | ✅ Scan simulasi tercatat 14:00, penghitung bertambah, status Hadir; UAT kamera/GPS nyata tetap terbuka |
 | 6 Okt 2026 | Verifikasi UAT-28: Pulang siswa tanpa Masuk cocok dengan MSG-08; jalur guru tidak tersedia di UI | — | ✅ | ⚠️ Parsial; penolakan server untuk guru dan siswa menunggu M10 |
+| 6 Okt 2026 | UAT-30 Pulang: duplikat dalam 3 detik diabaikan; setelah jeda tampil pesan netral | — | ✅ | ✅ Penghitung tidak bertambah pada duplikat; diuji dalam simulasi frontend |
 | 6 Okt 2026 | SCR-03: layout scanner dan panel hasil dua kolom desktop, satu kolom mobile | `82d426f` | ✅ | ✅ Uji browser 375/1280 px; scan sukses tampil di panel hasil; lint dan build lulus; UAT-37 tetap terbuka |
 | 6 Okt 2026 | SCR-03: hasil sukses 2 detik dan getar opsional; durasi default KOM-10 tetap 4 detik | `f50d865` | ✅ | ✅ Uji browser: sukses/galat/duplikat dan timer; pola getar via stub; lint/build lulus; getar fisik menunggu uji perangkat |
 | 6 Okt 2026 | SCR-06: hitungan status dan persentase per siswa sesuai SF-09; ES-08 untuk bulan tanpa data | `a512522` | ✅ | ✅ Uji browser 375/1280 px; data fixture dan keadaan kosong terverifikasi; lint/build lulus |
