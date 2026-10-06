@@ -8,11 +8,11 @@ Sumber ID: BRD v1.1, FS v1.2, Data Model v1.0, dan plan M1 (`.kilo/plans/`).
 | Item | Nilai |
 |---|---|
 | Fase (BRD 18.2) | **Tahap 3 — Fase Frontend (layout)** dengan data contoh |
-| Milestone aktif | **M1** — Fondasi Frontend + SCR-01 Login |
+| Milestone aktif | **M2** — SCR-02 Beranda Guru (simulasi frontend) |
 | Commit terakhir | `f36d0a4` (5 Okt 2026) · branch `main` · remote `origin` (SSH `github-ayahbebenraka`) |
 | Layar selesai | 2/27 (SCR-01, SCR-26) |
 | Komponen selesai | 9/18 (KOM-01, 03, 05, 08, 10, 11, 12, 16, 17) |
-| UAT dijalankan | 0/41 |
+| UAT dijalankan | 1/41 |
 | Build/lint | Lulus (`npm run build`, `npm run lint`) |
 
 ---
@@ -23,7 +23,7 @@ Urutan mengikuti FS 11.1 / BRD 18.3. UAT ditulis pada milestone pemiliknya.
 
 | ID | Isi | Layar | UAT | Status |
 |---|---|---|---|---|
-| **M1** | Fondasi Frontend: token (FS 2.5), komponen dasar, mock 13 tabel, sesi mock; SCR-01 Login + SCR-26 Akun dan Ganti Password (gerbang modul Akun, FS 3.1) | SCR-01, 26 | UAT-23, 35, 37 | ✅ **Selesai** (`c8778b0`, `f7bd64a`); UAT-23/35/37 menyusul |
+| **M1** | Fondasi Frontend: token (FS 2.5), komponen dasar, mock 13 tabel, sesi mock; SCR-01 Login + SCR-26 Akun dan Ganti Password (gerbang modul Akun, FS 3.1) | SCR-01, 26 | UAT-23, 35, 37 | ✅ **Selesai** (`c8778b0`, `f7bd64a`); UAT-23 lulus, UAT-35/37 menunggu cakupan terkait |
 | **M2** | SCR-02 Beranda Guru: 6 keadaan tombol (KOM-02), jadwal hari ini, simulasi GPS (dalam/luar radius, akurasi rendah) | SCR-02 | UAT-01..07, 27, 36 | ⬜ Belum dimulai |
 | **M3** | SCR-03 Absen Siswa: pemindai QR (KOM-18), scan beruntun, ketik NISN (KOM-15), kontrol segmen (KOM-04) | SCR-03, 06 | UAT-11..14, 30, 39 | ⬜ Belum dimulai |
 | **M4** | SCR-07/08 Dashboard Kepala/Admin + navigasi final per peran (FS 2.3) | SCR-07, 08 | UAT-41 | ⬜ Belum dimulai |
@@ -131,7 +131,7 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Semua **belum dijalankan** (0
 | UAT-20 | Wali kelas mengoreksi siswa tanpa alasan → ditolak; alasan wajib | BRD | M7 | ⬜ |
 | UAT-21 | Impor Excel guru dan siswa → akun dibuat otomatis; siswa tanpa email mendapat `NISN@siswa.[domain]` | BRD | M5 | ⬜ |
 | UAT-22 | Login siswa → hanya melihat rekap sendiri, Kartu QR saya, ganti password | BRD | M9 | ⬜ |
-| UAT-23 | Guru mengedit profil sendiri → email dan NIP tidak dapat diubah | BRD | M1 (SCR-26) | ⬜ |
+| UAT-23 | Guru mengedit profil sendiri → email dan NIP tidak dapat diubah | BRD | M1 (SCR-26) | ✅ Lulus (manual, 6 Okt 2026) |
 | UAT-24 | Laporan rentang tanggal, ekspor Excel dan PDF → data benar; kop dan tanda tangan Kepala tampil | BRD | M8 | ⬜ |
 | UAT-25 | Kenaikan kelas, lalu laporan kelas tahun lalu → laporan lama tetap benar | BRD | M5 | ⬜ |
 | UAT-26 | Ubah jadwal hari ini → berlaku mulai besok; hari ini tidak berubah | BRD | M6 | ⬜ |
@@ -155,7 +155,7 @@ UAT-01..27 dari BRD 16.2; UAT-28..41 dari FS 12.2. Semua **belum dijalankan** (0
 
 ## 5. Catatan, Gap, dan Menunggu Keputusan
 
-1. **Gerbang M1 (modul Akun):** FS 3.1 dan 12.1 menetapkan modul Akun = **SCR-01 + SCR-26** (UAT-23, UAT-35). Diputuskan 6 Okt 2026 (pilihan A): **SCR-26 masuk M1**. SCR-01 selesai; SCR-26 menyusul sebagai penutup gerbang M1.
+1. **Gerbang M1 (modul Akun):** FS 3.1 dan 12.1 menetapkan modul Akun = **SCR-01 + SCR-26**. UAT-23 lulus manual di browser: guru dapat menyimpan nama/kontak, sedangkan email dan nomor induk tetap terkunci. UAT-35 menunggu layar sesuai peran; UAT-37 menunggu seluruh layar.
 2. **Penempatan layar (diputuskan 6 Okt 2026, pilihan A):** SCR-26 → M1, SCR-06 → M3, SCR-04 → M8. Roadmap kini mencakup 27/27 layar.
 3. **Data contoh vs FS 11.1:** mock `src/data/contoh.ts` berisi 3 guru, 2 kelas, 2 siswa; syarat minimum FS 11.1 = 6 guru (1 wali kelas, 1 dengan override, 1 dengan izin), 3 kelas, ±30 siswa. `absensi_guru` mock belum memuat status Izin dan Dinas Luar. Perlu dilengkapi saat M2/M3.
 4. **Dokumen:** nama berkas FS sudah `002_..._v1.2.md` dan Master Instruction sudah diperbarui (6 Okt 2026). Persetujuan BRD §22 dan FS §14 masih kosong.
