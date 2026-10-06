@@ -24,13 +24,18 @@ import { ambilSesi, ambilSesiServer, dengarSesi, keluar } from "../../data/sesi"
 
 type JenisAbsen = "masuk" | "pulang";
 type LokasiUji = "dalam" | "luar" | "akurasi" | "belum-diatur";
-type HasilLayar = { jenis: "sukses" | "info" | "galat"; teks: string };
+type HasilLayar = { jenis: "sukses" | "info" | "galat"; teks: string; durasiOtomatis?: number };
 type BarisTercatat = { id: string; nama: string; kelas: string; jam: string; status: string };
 
 const MSG_TANPA_HAK_AKSES = "Halaman ini tidak tersedia untuk Anda.";
 
 function labelJenis(jenis: JenisAbsen) {
   return jenis === "masuk" ? "Masuk" : "Pulang";
+}
+
+function beriGetar(jumlah: 1 | 2) {
+  if (typeof navigator === "undefined" || typeof navigator.vibrate !== "function") return;
+  navigator.vibrate(jumlah === 1 ? 100 : [100, 80, 100]);
 }
 
 export default function HalamanAbsenSiswa() {
@@ -157,6 +162,7 @@ export default function HalamanAbsenSiswa() {
     setMemproses(false);
 
     if (!hasilCatat.berhasil) {
+      if (hasilCatat.sebab !== "sudah-tercatat") beriGetar(2);
       const pesanGagal = {
         "siswa-tidak-ditemukan": "NISN tidak ditemukan. Periksa angkanya lalu coba lagi.",
         "siswa-nonaktif": "Siswa ini tidak aktif. Hubungi Admin.",
@@ -179,9 +185,11 @@ export default function HalamanAbsenSiswa() {
     const nama = users.find((user) => user.id === baris.siswa_id)?.nama ?? "Siswa";
     const kelasNama = namaKelas(baris.kelas_id);
     const status = baris.status === "hadir" ? "Hadir" : "Terlambat";
+    beriGetar(1);
     setHasil({
       jenis: "sukses",
       teks: `${nama} (${kelasNama}) tercatat ${labelJenis(jenis)} ${waktu} · ${status}.`,
+      durasiOtomatis: 2000,
     });
     setTercatat((sebelumnya) => [
       { id: baris.siswa_id, nama, kelas: kelasNama, jam: waktu, status },
@@ -305,7 +313,7 @@ export default function HalamanAbsenSiswa() {
           ) : null}
         </div>
 
-        {hasil ? <Pesan jenis={hasil.jenis} teks={hasil.teks} onTutup={() => setHasil(null)} /> : null}
+        {hasil ? <Pesan jenis={hasil.jenis} teks={hasil.teks} durasiOtomatis={hasil.durasiOtomatis} onTutup={() => setHasil(null)} /> : null}
 
         <details className="uji-frontend">
           <summary>Skenario uji frontend</summary>

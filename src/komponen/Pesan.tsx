@@ -13,6 +13,7 @@ type PesanProps = {
   jenis: JenisPesan;
   teks: string;
   onTutup?: () => void;
+  durasiOtomatis?: number;
 };
 
 const DURASI_SENJA = 4000;
@@ -23,15 +24,15 @@ const gaya: Record<JenisPesan, { kelas: string; ikon: NamaIkon }> = {
   info: { kelas: "pesan-info", ikon: "info" },
 };
 
-export function Pesan({ jenis, teks, onTutup }: PesanProps) {
+export function Pesan({ jenis, teks, onTutup, durasiOtomatis = DURASI_SENJA }: PesanProps) {
   const id = useId();
   const gayaPesan = gaya[jenis];
 
   useEffect(() => {
     if (jenis === "galat") return;
-    const timer = setTimeout(() => onTutup?.(), DURASI_SENJA);
+    const timer = setTimeout(() => onTutup?.(), durasiOtomatis);
     return () => clearTimeout(timer);
-  }, [jenis, onTutup]);
+  }, [jenis, onTutup, durasiOtomatis]);
 
   return (
     <div
